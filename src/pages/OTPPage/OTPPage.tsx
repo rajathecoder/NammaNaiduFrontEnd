@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import logoOnly from '../../assets/images/logoonly.png';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { setAuthData } from '../../utils/auth';
+import { DeviceInfo } from '../../utils/deviceInfo';
 
 const OTPPage = () => {
     const [otp, setOtp] = useState(['', '', '', '', '']);
@@ -145,6 +146,12 @@ const OTPPage = () => {
                         user.accountId || '',
                         user
                     );
+
+                    // Register FCM token after OTP verification
+                    registerFcmToken(user.accountId || '', data.data.token).catch(err => {
+                        console.error('Failed to register FCM token:', err);
+                        // Don't block registration if FCM token registration fails
+                    });
                 }
                 
                 // Clear registration data
@@ -204,6 +211,33 @@ const OTPPage = () => {
                 console.error('Error resending OTP:', error);
                 alert('An error occurred. Please try again.');
             }
+        }
+    };
+
+    // Register FCM token
+    const registerFcmToken = async (accountId: string, token: string) => {
+        try {
+            const fcmToken = await DeviceInfo.getFcmToken();
+            const deviceModel = DeviceInfo.getDeviceModel();
+            const deviceIP = await DeviceInfo.getDeviceIP();
+
+            await fetch(getApiUrl(API_ENDPOINTS.DEVICES.STORE_FCM_TOKEN), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    uuid: accountId,
+                    fcmToken: fcmToken,
+                    device: DeviceInfo.deviceType,
+                    deviceModel: deviceModel,
+                    ip: deviceIP
+                })
+            });
+        } catch (error) {
+            console.error('Error registering FCM token:', error);
+            // Silently fail - don't block registration
         }
     };
 

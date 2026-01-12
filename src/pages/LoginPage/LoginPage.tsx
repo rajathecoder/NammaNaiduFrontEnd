@@ -5,6 +5,7 @@ import familyAnimation from '../../assets/images/family.json';
 import logoOnly from '../../assets/images/logoonly.png';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { setAuthData } from '../../utils/auth';
+import { DeviceInfo } from '../../utils/deviceInfo';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -46,6 +47,12 @@ const LoginPage = () => {
                         user
                     );
 
+                    // Register FCM token after successful login
+                    registerFcmToken(user.accountId || '', data.data.token).catch(err => {
+                        console.error('Failed to register FCM token:', err);
+                        // Don't block login if FCM token registration fails
+                    });
+
                     // Check if basicDetails exists, if not redirect to personal-religious-details screen
                     if (!data.data.hasBasicDetails) {
                         navigate('/personal-religious-details');
@@ -60,6 +67,33 @@ const LoginPage = () => {
         } catch (error) {
             console.error('Login error:', error);
             alert('Failed to connect to server. Please try again.');
+        }
+    };
+
+    // Register FCM token
+    const registerFcmToken = async (accountId: string, token: string) => {
+        try {
+            const fcmToken = await DeviceInfo.getFcmToken();
+            const deviceModel = DeviceInfo.getDeviceModel();
+            const deviceIP = await DeviceInfo.getDeviceIP();
+
+            await fetch(getApiUrl(API_ENDPOINTS.DEVICES.STORE_FCM_TOKEN), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    uuid: accountId,
+                    fcmToken: fcmToken,
+                    device: DeviceInfo.deviceType,
+                    deviceModel: deviceModel,
+                    ip: deviceIP
+                })
+            });
+        } catch (error) {
+            console.error('Error registering FCM token:', error);
+            // Silently fail - don't block login
         }
     };
 

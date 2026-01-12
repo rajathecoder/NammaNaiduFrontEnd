@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getApiUrl, API_ENDPOINTS } from '../../../config/api.config';
 
 const NotificationManagement: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'push' | 'email' | 'templates' | 'scheduled'>('push');
@@ -9,11 +10,79 @@ const NotificationManagement: React.FC = () => {
     scheduleDate: '',
     scheduleTime: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Notification sent successfully!');
-    setFormData({ title: '', message: '', target: 'all', scheduleDate: '', scheduleTime: '' });
+    
+    if (activeTab === 'push') {
+      await handleSendPushNotification();
+    } else if (activeTab === 'email') {
+      // Email functionality - to be implemented
+      alert('Email functionality coming soon!');
+    } else if (activeTab === 'scheduled') {
+      // Scheduled messages - to be implemented
+      alert('Scheduled messages functionality coming soon!');
+    }
+  };
+
+  const handleSendPushNotification = async () => {
+    if (!formData.title || !formData.message) {
+      setSubmitMessage({ type: 'error', text: 'Please fill in all required fields' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitMessage(null);
+
+    try {
+      const adminToken = localStorage.getItem('adminToken');
+      if (!adminToken) {
+        setSubmitMessage({ type: 'error', text: 'Admin authentication required' });
+        setIsSubmitting(false);
+        return;
+      }
+
+      const response = await fetch(getApiUrl(API_ENDPOINTS.ADMIN.SEND_PUSH_NOTIFICATION), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify({
+          title: formData.title,
+          message: formData.message,
+          target: formData.target,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitMessage({
+          type: 'success',
+          text: data.message || `Notification sent to ${data.data?.sentCount || 0} users successfully!`,
+        });
+        setFormData({ title: '', message: '', target: 'all', scheduleDate: '', scheduleTime: '' });
+        
+        // Clear success message after 5 seconds
+        setTimeout(() => setSubmitMessage(null), 5000);
+      } else {
+        setSubmitMessage({
+          type: 'error',
+          text: data.message || 'Failed to send notification. Please try again.',
+        });
+      }
+    } catch (error) {
+      console.error('Error sending push notification:', error);
+      setSubmitMessage({
+        type: 'error',
+        text: 'An error occurred while sending the notification. Please try again.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -102,11 +171,23 @@ const NotificationManagement: React.FC = () => {
                   <option value="active">Active Users</option>
                 </select>
               </div>
+              {submitMessage && (
+                <div
+                  className={`p-4 rounded-lg ${
+                    submitMessage.type === 'success'
+                      ? 'bg-green-50 text-green-800 border border-green-200'
+                      : 'bg-red-50 text-red-800 border border-red-200'
+                  }`}
+                >
+                  {submitMessage.text}
+                </div>
+              )}
               <button
                 type="submit"
-                className="flex items-center gap-2 py-2.5 px-6 bg-[#14b8a6] text-white rounded-lg font-semibold cursor-pointer transition-colors duration-200 hover:bg-[#0d9488]"
+                disabled={isSubmitting}
+                className="flex items-center gap-2 py-2.5 px-6 bg-[#14b8a6] text-white rounded-lg font-semibold cursor-pointer transition-colors duration-200 hover:bg-[#0d9488] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                📤 Send Notification
+                {isSubmitting ? '⏳ Sending...' : '📤 Send Notification'}
               </button>
             </form>
           </div>

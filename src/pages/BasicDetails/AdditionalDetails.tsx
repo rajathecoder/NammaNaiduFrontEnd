@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logoOnly from '../../assets/images/logoonly.png';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
+import { getAuthData } from '../../utils/auth';
+import { DeviceInfo } from '../../utils/deviceInfo';
 
 const AdditionalDetails = () => {
     const [familyStatus, setFamilyStatus] = useState('');
@@ -69,6 +71,15 @@ const AdditionalDetails = () => {
             const result = await response.json();
 
             if (result.success) {
+                // Register FCM token after successful registration completion
+                const authData = getAuthData();
+                if (authData?.token && authData?.accountId) {
+                    registerFcmToken(authData.accountId, authData.token).catch(err => {
+                        console.error('Failed to register FCM token:', err);
+                        // Don't block registration completion if FCM token registration fails
+                    });
+                }
+
                 // Clear localStorage data
                 localStorage.removeItem('basicDetails');
                 localStorage.removeItem('personalReligiousDetails');
@@ -84,6 +95,33 @@ const AdditionalDetails = () => {
             console.error('Error submitting basic details:', error);
             alert('An error occurred. Please try again.');
             setIsSubmitting(false);
+        }
+    };
+
+    // Register FCM token
+    const registerFcmToken = async (accountId: string, token: string) => {
+        try {
+            const fcmToken = await DeviceInfo.getFcmToken();
+            const deviceModel = DeviceInfo.getDeviceModel();
+            const deviceIP = await DeviceInfo.getDeviceIP();
+
+            await fetch(getApiUrl(API_ENDPOINTS.DEVICES.STORE_FCM_TOKEN), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    uuid: accountId,
+                    fcmToken: fcmToken,
+                    device: DeviceInfo.deviceType,
+                    deviceModel: deviceModel,
+                    ip: deviceIP
+                })
+            });
+        } catch (error) {
+            console.error('Error registering FCM token:', error);
+            // Silently fail - don't block registration completion
         }
     };
 

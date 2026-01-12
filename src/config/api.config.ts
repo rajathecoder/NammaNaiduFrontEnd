@@ -35,6 +35,10 @@ export const API_ENDPOINTS = {
       READ_ALL: '/api/notifications/read-all',
     }
   },
+  // Device endpoints
+  DEVICES: {
+    STORE_FCM_TOKEN: '/api/devices/fcm-token',
+  },
   // Public master endpoints (no authentication required)
   PUBLIC: {
     MASTER: (type: string) => `/api/masters/${type}`,
@@ -65,6 +69,8 @@ export const API_ENDPOINTS = {
     ADMIN_USERS: '/api/admin/admin-users',
     ADMIN_USER_BY_ID: (id: number) => `/api/admin/admin-users/${id}`,
     ADMIN_USER_STATUS: (id: number) => `/api/admin/admin-users/${id}/status`,
+    // Admin notification endpoints
+    SEND_PUSH_NOTIFICATION: '/api/admin/notifications/send-push',
   },
 };
 
