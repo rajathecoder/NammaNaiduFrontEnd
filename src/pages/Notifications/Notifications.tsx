@@ -4,17 +4,6 @@ import { getAuthData } from '../../utils/auth';
 import { useNavigate } from 'react-router-dom';
 import { API_ENDPOINTS, getApiUrl } from '../../config/api.config';
 
-interface UserNotification {
-    id: number;
-    title: string;
-    message: string;
-    type: 'interest' | 'message' | 'system' | 'view';
-    time: string;
-    read: boolean;
-    senderId?: string;
-    senderName?: string;
-}
-
 const Notifications = () => {
     const navigate = useNavigate();
     const [notifications, setNotifications] = useState<any[]>([]);

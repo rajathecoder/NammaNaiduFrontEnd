@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/layout/Header';
-import verifiedBadge from '../../assets/images/verified-badge.png';
 
 // Mock data for messages list
 const MOCK_CONVERSATIONS = [
@@ -81,20 +80,15 @@ const MessagesList = () => {
     const [messageInput, setMessageInput] = useState('');
     const [chatData, setChatData] = useState<any>(null);
     const [showMenu, setShowMenu] = useState(false);
-    const [showChatMenu, setShowChatMenu] = useState(false);
     const [isChatListMinimized, setIsChatListMinimized] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
-    const chatMenuRef = useRef<HTMLDivElement>(null);
 
     // Close menu when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 setShowMenu(false);
-            }
-            if (chatMenuRef.current && !chatMenuRef.current.contains(event.target as Node)) {
-                setShowChatMenu(false);
             }
         };
 

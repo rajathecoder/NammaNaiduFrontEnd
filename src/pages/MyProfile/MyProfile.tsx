@@ -162,9 +162,6 @@ const MyProfile = () => {
         cuisines: false,
         languages: false,
     });
-    const [savingHoroscope, setSavingHoroscope] = useState(false);
-    const [savingFamily, setSavingFamily] = useState(false);
-    const [savingHobbies, setSavingHobbies] = useState(false);
     const [showFamilyModal, setShowFamilyModal] = useState(false);
     const [showPhotoModal, setShowPhotoModal] = useState(false);
     const [personPhotos, setPersonPhotos] = useState<PhotoUpload[]>([]);
@@ -351,7 +348,6 @@ const MyProfile = () => {
     const handleSaveHoroscope = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            setSavingHoroscope(true);
             const authData = getAuthData();
             if (!authData?.token) {
                 navigate('/login');
@@ -383,8 +379,6 @@ const MyProfile = () => {
         } catch (error) {
             console.error('Error saving horoscope:', error);
             alert('Failed to save horoscope details. Please try again.');
-        } finally {
-            setSavingHoroscope(false);
         }
     };
 
@@ -433,7 +427,6 @@ const MyProfile = () => {
     const handleSaveFamily = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            setSavingFamily(true);
             const authData = getAuthData();
             if (!authData?.token) {
                 navigate('/login');
@@ -468,8 +461,6 @@ const MyProfile = () => {
         } catch (error) {
             console.error('Error saving family:', error);
             alert('Failed to save family details. Please try again.');
-        } finally {
-            setSavingFamily(false);
         }
     };
 
@@ -513,7 +504,6 @@ const MyProfile = () => {
 
     const handleSaveHobbies = async () => {
         try {
-            setSavingHobbies(true);
             const authData = getAuthData();
             if (!authData?.token) {
                 navigate('/login');
@@ -558,8 +548,6 @@ const MyProfile = () => {
         } catch (error) {
             console.error('Error saving hobbies:', error);
             alert('Failed to save hobbies. Please try again.');
-        } finally {
-            setSavingHobbies(false);
         }
     };
 
@@ -854,28 +842,6 @@ const MyProfile = () => {
         }
     };
 
-    const handleProofUploadEdit = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        if (!file.type.startsWith('image/')) {
-            alert('Please upload an image file');
-            return;
-        }
-
-        if (file.size > 10 * 1024 * 1024) {
-            alert('File size is too large. Please upload an image smaller than 10MB.');
-            return;
-        }
-
-        try {
-            const base64 = await fileToBase64(file, true);
-            setEditingProofPhoto({ base64, preview: base64 });
-        } catch (error) {
-            console.error('Error processing proof image:', error);
-            alert('Failed to process image. Please try again.');
-        }
-    };
 
     const fetchProfile = async () => {
         try {

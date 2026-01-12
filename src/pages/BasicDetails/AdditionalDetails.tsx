@@ -87,10 +87,6 @@ const AdditionalDetails = () => {
         }
     };
 
-    const handleBack = () => {
-        navigate(-1);
-    };
-
     return (
         <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#fdf4ff] via-white to-[#eef2ff] text-gray-900">
             {/* Header */}

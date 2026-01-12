@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { adminApi } from '../../../admin/services/api/admin.api';
-import { getApiUrl, API_ENDPOINTS } from '../../../config/api.config';
+import { getApiUrl } from '../../../config/api.config';
 
 interface UserProfileData {
   id: number;

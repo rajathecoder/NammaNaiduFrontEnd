@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { getApiUrl } from '../../../config/api.config';
 
 interface Photo {
@@ -266,93 +265,7 @@ const PendingApprovals: React.FC = () => {
     }
   };
 
-  const handleApprove = async (photo: FullScreenImage) => {
-    if (window.confirm(`Are you sure you want to approve this ${photo.label}?`)) {
-      try {
-        const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
-        if (!token) {
-          alert('Please login to continue');
-          return;
-        }
 
-        const apiType = photo.type === 'proof' ? 'proof' : 'photo';
-
-        const response = await fetch(getApiUrl('/api/admin/users/pending/approve'), {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            userId: photo.userId,
-            type: apiType
-          })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            alert(`${photo.label} approved successfully!`);
-            setFullScreenImage(null);
-            fetchPendingUsers();
-          } else {
-            alert(data.message || 'Failed to approve');
-    }
-        } else {
-          const errorData = await response.json();
-          alert(errorData.message || 'Failed to approve');
-        }
-      } catch (error) {
-        console.error('Error approving photo:', error);
-        alert('Error approving photo');
-      }
-    }
-  };
-
-  const handleReject = async (photo: FullScreenImage) => {
-    const reason = window.prompt(`Please provide a reason for rejecting this ${photo.label}:`);
-    if (!reason) return;
-
-    try {
-      const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
-      if (!token) {
-        alert('Please login to continue');
-        return;
-      }
-
-      const apiType = photo.type === 'proof' ? 'proof' : 'photo';
-
-      const response = await fetch(getApiUrl('/api/admin/users/pending/reject'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          userId: photo.userId,
-          type: apiType,
-          reason: reason
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          alert(`${photo.label} rejected successfully.`);
-          setFullScreenImage(null);
-          fetchPendingUsers();
-        } else {
-          alert(data.message || 'Failed to reject');
-        }
-      } else {
-        const errorData = await response.json();
-        alert(errorData.message || 'Failed to reject');
-      }
-    } catch (error) {
-      console.error('Error rejecting photo:', error);
-      alert('Error rejecting photo');
-    }
-  };
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-[400px] text-lg text-gray-600">Loading profile verifications...</div>;

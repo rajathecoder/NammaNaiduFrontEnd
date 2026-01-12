@@ -17,7 +17,6 @@ const ProfileDetail = () => {
     const [profile, setProfile] = useState<UserProfile | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [similarMatches, setSimilarMatches] = useState<UserProfile[]>([]);
-    const [similarMatchesLoading, setSimilarMatchesLoading] = useState(false);
     const [currentProfileIndex, setCurrentProfileIndex] = useState<number>(-1);
     const [profilePhotos, setProfilePhotos] = useState<{ photo1link?: string; photo2link?: string; photo3link?: string; photo4link?: string; photo5link?: string; prooflink?: string } | null>(null);
     const [showImageGallery, setShowImageGallery] = useState(false);
@@ -31,7 +30,6 @@ const ProfileDetail = () => {
         const authData = getAuthData();
         if (!authData?.token || !authData?.userId) return;
 
-        setSimilarMatchesLoading(true);
         try {
             const targetUserId = userId || authData.userId;
             const response = await getOppositeGenderProfiles(authData.token, targetUserId);
@@ -46,8 +44,6 @@ const ProfileDetail = () => {
             }
         } catch (err: any) {
             console.error('Error fetching similar matches:', err);
-        } finally {
-            setSimilarMatchesLoading(false);
         }
     };
 
@@ -384,20 +380,6 @@ const ProfileDetail = () => {
         }
     };
 
-    // Format similar match data
-    const formatSimilarMatch = (match: UserProfile) => {
-        const age = calculateAge(match.basicDetail?.dateOfBirth);
-        const height = match.basicDetail?.height || 'Not specified';
-        const location = formatLocation(match);
-        return {
-            id: match.accountId,
-            name: match.name || 'User',
-            age: age?.years || 0,
-            height,
-            location,
-            avatar: match.name?.charAt(0) || '👤',
-        };
-    };
 
     if (profileLoading) {
         return (

@@ -5,7 +5,6 @@ import Loading from '../../components/common/Loading';
 import { getOppositeGenderProfiles, type UserProfile } from '../../services/api/user.api';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { getAuthData } from '../../utils/auth';
-import verifiedBadge from '../../assets/images/verified-badge.png';
 import MatchCard from '../HomePage/components/MatchCard';
 
 interface MatchProfile extends UserProfile {
