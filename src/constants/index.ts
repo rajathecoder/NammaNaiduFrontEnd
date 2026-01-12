@@ -1,6 +1,6 @@
 // Application constants
-
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+// Note: API_BASE_URL is defined in config/api.config.ts
+// Use getApiUrl() from config/api.config.ts for API calls
 
 export const APP_NAME = 'Namma Naidu';
 

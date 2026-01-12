@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../services/api/admin.api';
 
-const API_BASE_URL = 'http://localhost:5000';
-
 interface User {
   id: number;
   accountId?: string;
@@ -114,8 +112,13 @@ const AllUsers: React.FC = () => {
         }
       } catch (error: any) {
         console.error('Error fetching users:', error);
+        
+        // Check if it's a network error
+        if (error.message && error.message.includes('Failed to fetch')) {
+          setError('Unable to connect to server. Please check your internet connection and ensure the backend server is running.');
+        } 
         // Check if it's an authentication error
-        if (error.message && (error.message.includes('Token is not valid') || error.message.includes('authorization denied'))) {
+        else if (error.message && (error.message.includes('Token is not valid') || error.message.includes('authorization denied') || error.message.includes('401'))) {
           setError('Your session has expired. Please login again.');
           localStorage.removeItem('adminToken');
           localStorage.removeItem('isAdmin');
@@ -124,8 +127,10 @@ const AllUsers: React.FC = () => {
           setTimeout(() => {
             window.location.href = '/login';
           }, 2000);
-        } else {
-          setError(error.message || 'Error loading users');
+        } 
+        // Other errors
+        else {
+          setError(error.message || 'Error loading users. Please try again.');
         }
       } finally {
         setLoading(false);
