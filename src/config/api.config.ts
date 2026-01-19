@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
     REGISTER: '/api/auth/register',
     SEND_OTP: '/api/auth/send-otp',
     VERIFY_OTP: '/api/auth/verify-otp',
+    FIREBASE_LOGIN: '/api/auth/firebase-login',
   },
   // User endpoints
   USERS: {

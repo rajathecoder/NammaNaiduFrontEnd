@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logoOnly from '../../assets/images/logoonly.png';
+import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 
 const BasicDetails = () => {
     const [day, setDay] = useState('');
@@ -8,10 +9,189 @@ const BasicDetails = () => {
     const [year, setYear] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [otp, setOtp] = useState(['', '', '', '', '', '']);
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [isSendingOtp, setIsSendingOtp] = useState(false);
+    const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+    const [showOtpFields, setShowOtpFields] = useState(false);
     const navigate = useNavigate();
+    const otpInputRefs = [
+        useRef<HTMLInputElement>(null),
+        useRef<HTMLInputElement>(null),
+        useRef<HTMLInputElement>(null),
+        useRef<HTMLInputElement>(null),
+        useRef<HTMLInputElement>(null),
+        useRef<HTMLInputElement>(null)
+    ];
+
+    useEffect(() => {
+        // Focus first OTP input when OTP fields are shown
+        if (showOtpFields) {
+            otpInputRefs[0].current?.focus();
+        }
+    }, [showOtpFields]);
+
+    const handleSendOtp = async () => {
+        if (!email.trim()) {
+            alert('Please enter your email address');
+            return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('Please enter a valid email address');
+            return;
+        }
+
+        setIsSendingOtp(true);
+
+        try {
+            const payload = {
+                mailid: email.trim(),
+                isemailid: true
+            };
+
+            console.log('📤 BasicDetails - Sending OTP Payload:', JSON.stringify(payload, null, 2));
+
+            const response = await fetch(getApiUrl('/api/auth/otp/send'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await response.json();
+
+            console.log('📥 BasicDetails - OTP Response:', JSON.stringify(data, null, 2));
+
+            if (data.status && data.otp) {
+                alert(`OTP sent successfully! Your OTP is: ${data.otp}`);
+                setShowOtpFields(true);
+            } else {
+                alert(data.message || 'Failed to send OTP. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error sending OTP:', error);
+            alert('An error occurred. Please try again.');
+        } finally {
+            setIsSendingOtp(false);
+        }
+    };
+
+    const handleOtpChange = (index: number, value: string) => {
+        // Only allow numeric input
+        if (value && !/^\d$/.test(value)) {
+            return;
+        }
+
+        // Only allow single digit
+        if (value.length > 1) return;
+
+        const newOtp = [...otp];
+        newOtp[index] = value;
+        setOtp(newOtp);
+
+        // Auto-focus next input when a digit is entered
+        if (value && index < 5) {
+            otpInputRefs[index + 1].current?.focus();
+        }
+
+        // Auto-verify when all 6 digits are entered
+        const otpValue = newOtp.join('');
+        if (otpValue.length === 6 && !isEmailVerified && !isVerifyingOtp) {
+            // Small delay to ensure the last digit is set in state, then verify
+            setTimeout(() => {
+                handleVerifyOtp(otpValue);
+            }, 200);
+        }
+    };
+
+    const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Backspace' && !otp[index] && index > 0) {
+            otpInputRefs[index - 1].current?.focus();
+        }
+    };
+
+    const handleVerifyOtp = async (otpValueOverride?: string) => {
+        // Use override if provided (for auto-verify), otherwise use state
+        const otpValue = (otpValueOverride || otp.join('')).trim();
+
+        // Validate 6-digit OTP
+        if (otpValue.length !== 6) {
+            alert('Please enter all 6 digits of the OTP');
+            return;
+        }
+
+        // Validate that all are digits
+        if (!/^\d{6}$/.test(otpValue)) {
+            alert('OTP must contain only numbers (0-9)');
+            return;
+        }
+
+        // Prevent duplicate verification
+        if (isVerifyingOtp || isEmailVerified) {
+            return;
+        }
+
+        setIsVerifyingOtp(true);
+
+        try {
+            const payload = {
+                mailid: email.trim(),
+                otp: otpValue,
+                isemailid: true
+            };
+
+            console.log('📤 BasicDetails - Verifying OTP Payload:', JSON.stringify(payload, null, 2));
+
+            const response = await fetch(getApiUrl('/api/auth/otp/verify'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await response.json();
+
+            console.log('📥 BasicDetails - Verify OTP Response:', JSON.stringify(data, null, 2));
+
+            if (data.status && data.response === 'Verified Successfully') {
+                setIsEmailVerified(true);
+                setShowOtpFields(false);
+                // Clear OTP fields after successful verification
+                setOtp(['', '', '', '', '', '']);
+                // Show success message without blocking
+                const successMsg = document.createElement('div');
+                successMsg.textContent = '✓ Email verified successfully!';
+                successMsg.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 12px 20px; border-radius: 8px; z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.1);';
+                document.body.appendChild(successMsg);
+                setTimeout(() => {
+                    successMsg.remove();
+                }, 3000);
+            } else {
+                // Clear OTP on error for retry
+                setOtp(['', '', '', '', '', '']);
+                otpInputRefs[0].current?.focus();
+                alert(data.response || 'Invalid OTP. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error verifying OTP:', error);
+            alert('An error occurred. Please try again.');
+        } finally {
+            setIsVerifyingOtp(false);
+        }
+    };
 
     const handleNext = (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!isEmailVerified) {
+            alert('Please verify your email address before continuing');
+            return;
+        }
 
         // Save to localStorage
         localStorage.setItem('basicDetails', JSON.stringify({
@@ -134,17 +314,98 @@ const BasicDetails = () => {
                                 </div>
                             </div>
 
-                            {/* Email */}
+                            {/* Email Verification */}
                             <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-3">Email</label>
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#FB34AA] focus:ring-2 focus:ring-[#FB34AA]/20 placeholder:text-gray-500"
-                                    required
-                                />
+                                <label className="block text-sm font-semibold text-gray-800 mb-3">
+                                    Email {isEmailVerified && <span className="text-green-600">✓ Verified</span>}
+                                </label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        value={email}
+                                        onChange={(e) => {
+                                            setEmail(e.target.value);
+                                            setIsEmailVerified(false);
+                                            setShowOtpFields(false);
+                                            setOtp(['', '', '', '', '', '']);
+                                        }}
+                                        disabled={isEmailVerified}
+                                        className="flex-1 py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#FB34AA] focus:ring-2 focus:ring-[#FB34AA]/20 placeholder:text-gray-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleSendOtp}
+                                        disabled={isEmailVerified || isSendingOtp || !email.trim()}
+                                        className="px-6 py-3 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {isSendingOtp ? 'Sending...' : 'Verify'}
+                                    </button>
+                                </div>
+
+                                {/* OTP Input Fields - Always show when OTP is sent */}
+                                {showOtpFields && (
+                                    <div className={`mt-4 p-4 rounded-lg border-2 transition-all duration-200 ${
+                                        isEmailVerified 
+                                            ? 'bg-green-50 border-green-300' 
+                                            : 'bg-gray-50 border-gray-300'
+                                    }`}>
+                                        <div className="flex items-center justify-center gap-2 mb-3">
+                                            {isEmailVerified && (
+                                                <span className="text-green-600 text-xl">✓</span>
+                                            )}
+                                            <label className={`block text-sm font-semibold ${
+                                                isEmailVerified ? 'text-green-700' : 'text-gray-800'
+                                            }`}>
+                                                {isEmailVerified 
+                                                    ? 'Email verified successfully!' 
+                                                    : `Enter OTP sent to ${email}`}
+                                            </label>
+                                        </div>
+                                        {!isEmailVerified && (
+                                            <>
+                                                <div className="flex justify-center gap-3 mb-4">
+                                                    {otp.map((digit, index) => (
+                                                        <input
+                                                            key={index}
+                                                            ref={otpInputRefs[index]}
+                                                            type="text"
+                                                            inputMode="numeric"
+                                                            pattern="[0-9]*"
+                                                            maxLength={1}
+                                                            value={digit}
+                                                            onChange={(e) => handleOtpChange(index, e.target.value.replace(/\D/g, ''))}
+                                                            onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                                                            onPaste={(e) => {
+                                                                e.preventDefault();
+                                                                const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+                                                                if (pastedData.length === 6) {
+                                                                    const newOtp = pastedData.split('');
+                                                                    setOtp(newOtp);
+                                                                    otpInputRefs[5].current?.focus();
+                                                                }
+                                                            }}
+                                                            className="w-12 h-12 border-2 border-gray-300 rounded-lg text-center text-xl font-semibold text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#FB34AA] focus:ring-2 focus:ring-[#FB34AA]/20"
+                                                            placeholder="0"
+                                                        />
+                                                    ))}
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={handleVerifyOtp}
+                                                    disabled={isVerifyingOtp || otp.join('').length !== 6}
+                                                    className="w-full py-3 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                                >
+                                                    {isVerifyingOtp ? 'Verifying...' : 'Verify OTP'}
+                                                </button>
+                                                <p className="text-xs text-gray-500 text-center mt-2">
+                                                    OTP will be verified automatically when all 6 digits are entered
+                                                </p>
+                                            </>
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             {/* Password */}

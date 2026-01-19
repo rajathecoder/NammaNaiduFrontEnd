@@ -30,6 +30,9 @@ interface UserProfileData {
   };
   familyInfo: {
     familyStatus: string;
+    familyType: string;
+    familyValues: string;
+    aboutFamily: string;
     fatherName: string;
     motherName: string;
     siblings: string;
@@ -165,7 +168,10 @@ const UserProfile: React.FC = () => {
               annualIncome: basicDetail.annualIncome || 'Not provided',
             },
             familyInfo: {
-              familyStatus: basicDetail.familyStatus || 'Not provided',
+              familyStatus: basicDetail.familyStatus || '-',
+              familyType: basicDetail.familyType || '-',
+              familyValues: basicDetail.familyValues || '-',
+              aboutFamily: basicDetail.aboutFamily || '-',
               fatherName: 'Not available', // This field might not be in the model
               motherName: 'Not available', // This field might not be in the model
               siblings: 'Not available', // This field might not be in the model
@@ -629,6 +635,30 @@ const UserProfile: React.FC = () => {
           {activeTab === 'family' && (
             <div>
               <h2 className="text-xl font-bold text-gray-900 mb-6">Family Information</h2>
+              
+              {/* Basic Details Family Information */}
+              <div className="mb-8 pb-8 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Family Details (Basic Info)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Family Status</label>
+                    <p className="text-gray-900">{user.familyInfo.familyStatus}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Family Type</label>
+                    <p className="text-gray-900">{user.familyInfo.familyType}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Family Values</label>
+                    <p className="text-gray-900">{user.familyInfo.familyValues}</p>
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">About My Family</label>
+                    <p className="text-gray-900 whitespace-pre-wrap">{user.familyInfo.aboutFamily}</p>
+                  </div>
+                </div>
+              </div>
+
               {loadingFamily ? (
                 <div className="text-center py-12">
                   <div className="text-gray-600">Loading family data...</div>

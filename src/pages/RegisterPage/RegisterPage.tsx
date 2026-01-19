@@ -26,42 +26,58 @@ const RegisterPage = () => {
         setIsSubmitting(true);
 
         try {
-            // Call send-otp API
-            const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.SEND_OTP), {
+            const normalizedMobile = mobile.replace(/\D/g, '');
+            if (!normalizedMobile) {
+                alert('Please enter a valid mobile number');
+                setIsSubmitting(false);
+                return;
+            }
+
+            // Prepare payload for new OTP API
+            const mobileno = `${countryCode}${normalizedMobile}`;
+            const payload = {
+                mobileno: mobileno,
+                isemailid: false
+            };
+
+            console.log('📤 RegisterPage - Sending OTP Payload:', JSON.stringify(payload, null, 2));
+
+            const response = await fetch(getApiUrl('/api/auth/otp/send'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name,
-                    gender,
-                    mobile,
-                    countryCode,
-                    profileFor
-                })
+                body: JSON.stringify(payload),
             });
 
             const data = await response.json();
+            
+            console.log('📥 RegisterPage - OTP Response:', JSON.stringify(data, null, 2));
 
-            if (data.success) {
+            if (data.status && data.otp) {
                 // Store registration data in localStorage for OTP verification
+                localStorage.setItem('otpFlow', 'register');
                 localStorage.setItem('registrationData', JSON.stringify({
                     name,
                     gender,
-                    mobile,
+                    mobile: normalizedMobile,
                     countryCode,
-                    profileFor
+                    profileFor,
+                    mobileno: mobileno,
+                    otp: data.otp, // Store OTP for verification
                 }));
 
+                alert(`OTP sent successfully! Your OTP is: ${data.otp}`);
                 // Navigate to OTP verification page
                 navigate('/verify-otp');
             } else {
                 alert(data.message || 'Failed to send OTP. Please try again.');
-                setIsSubmitting(false);
             }
         } catch (error) {
             console.error('Error sending OTP:', error);
-            alert('An error occurred. Please try again.');
+            const message = error instanceof Error ? error.message : 'An error occurred. Please try again.';
+            alert(message);
+        } finally {
             setIsSubmitting(false);
         }
     };

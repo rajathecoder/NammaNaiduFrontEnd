@@ -7,6 +7,9 @@ import { DeviceInfo } from '../../utils/deviceInfo';
 
 const AdditionalDetails = () => {
     const [familyStatus, setFamilyStatus] = useState('');
+    const [familyType, setFamilyType] = useState('');
+    const [familyValues, setFamilyValues] = useState('');
+    const [aboutFamily, setAboutFamily] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
@@ -16,6 +19,14 @@ const AdditionalDetails = () => {
         // Validation
         if (!familyStatus) {
             alert('Please select family status');
+            return;
+        }
+        if (!familyType) {
+            alert('Please select family type');
+            return;
+        }
+        if (!familyValues) {
+            alert('Please select family values');
             return;
         }
 
@@ -52,7 +63,10 @@ const AdditionalDetails = () => {
                 occupation: professionalDetails.occupation,
                 currency: professionalDetails.currency,
                 annualIncome: professionalDetails.income,
-                familyStatus: familyStatus
+                familyStatus: familyStatus,
+                familyType: familyType,
+                familyValues: familyValues,
+                aboutFamily: aboutFamily
             };
 
             // Get token from localStorage
@@ -182,30 +196,98 @@ const AdditionalDetails = () => {
 
                             {/* Family Status */}
                             <div className="text-center">
-                                <label className="block text-sm font-semibold text-gray-800 mb-4">Select family status <span className="text-[#FB34AA] font-semibold">*</span></label>
+                                <label className="block text-sm font-semibold text-gray-800 mb-4">Select family status <span className="text-red-500 font-semibold">*</span></label>
                                 <div className="flex flex-wrap justify-center gap-3">
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Middle class' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
-                                        onClick={() => setFamilyStatus('Middle class')}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Middle Class' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        onClick={() => setFamilyStatus('Middle Class')}
                                     >
-                                        Middle class
+                                        Middle Class
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Upper middle class' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
-                                        onClick={() => setFamilyStatus('Upper middle class')}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Upper Middle Class' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        onClick={() => setFamilyStatus('Upper Middle Class')}
                                     >
-                                        Upper middle class
+                                        Upper Middle Class
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Rich / Affluent (Elite)' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
-                                        onClick={() => setFamilyStatus('Rich / Affluent (Elite)')}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Rich / Affluent' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        onClick={() => setFamilyStatus('Rich / Affluent')}
                                     >
-                                        Rich / Affluent (Elite)
+                                        Rich / Affluent
                                     </button>
                                 </div>
+                            </div>
+
+                            {/* Family Type */}
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-800 mb-4">Family Type <span className="text-red-500 font-semibold">*</span></label>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button
+                                        type="button"
+                                        className={`py-3 px-6 border-2 rounded-lg text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyType === 'Joint' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        onClick={() => setFamilyType('Joint')}
+                                    >
+                                        Joint
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`py-3 px-6 border-2 rounded-lg text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyType === 'Nuclear' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        onClick={() => setFamilyType('Nuclear')}
+                                    >
+                                        Nuclear
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Family Values */}
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-800 mb-4">Family Values <span className="text-red-500 font-semibold">*</span></label>
+                                <div className="flex flex-wrap gap-3">
+                                    <button
+                                        type="button"
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Orthodox' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        onClick={() => setFamilyValues('Orthodox')}
+                                    >
+                                        Orthodox
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Traditional' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        onClick={() => setFamilyValues('Traditional')}
+                                    >
+                                        Traditional
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Moderate' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        onClick={() => setFamilyValues('Moderate')}
+                                    >
+                                        Moderate
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Liberal' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        onClick={() => setFamilyValues('Liberal')}
+                                    >
+                                        Liberal
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* About My Family */}
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-800 mb-3">About My Family</label>
+                                <textarea
+                                    value={aboutFamily}
+                                    onChange={(e) => setAboutFamily(e.target.value)}
+                                    placeholder="Tell us about your family..."
+                                    rows={4}
+                                    className="w-full py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#FB34AA] focus:ring-2 focus:ring-[#FB34AA]/20 placeholder:text-gray-500 resize-none"
+                                />
                             </div>
 
                             {/* Submit Button */}

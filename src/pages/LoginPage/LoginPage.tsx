@@ -206,7 +206,17 @@ const LoginPage = () => {
                             <div className="mt-6 text-center">
                                 <p className="text-xs text-gray-600 mb-2 font-semibold">Trouble logging in?</p>
                                 <div className="flex items-center justify-center gap-2">
-                                    <a href="#" className="text-[#FB34AA] no-underline text-xs transition-colors duration-300 hover:text-[#C204E7] hover:underline">Login with OTP</a>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            localStorage.removeItem('registrationData');
+                                            localStorage.setItem('otpFlow', 'login');
+                                            navigate('/verify-otp');
+                                        }}
+                                        className="text-[#FB34AA] no-underline text-xs transition-colors duration-300 hover:text-[#C204E7] hover:underline"
+                                    >
+                                        Login with OTP
+                                    </button>
                                     <span className="text-gray-300">|</span>
                                     <a href="#" className="text-[#FB34AA] no-underline text-xs transition-colors duration-300 hover:text-[#C204E7] hover:underline">Forgot Password?</a>
                                 </div>

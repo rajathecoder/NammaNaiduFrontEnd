@@ -53,6 +53,9 @@ interface BasicDetail {
     currency?: string;
     annualIncome?: string;
     familyStatus?: string;
+    familyType?: string;
+    familyValues?: string;
+    aboutFamily?: string;
     pincode?: string;
     district?: string;
 }
@@ -1128,6 +1131,9 @@ const MyProfile = () => {
                         currency: editData.basicDetail.currency,
                         annualIncome: editData.basicDetail.annualIncome,
                         familyStatus: editData.basicDetail.familyStatus,
+                        familyType: editData.basicDetail.familyType,
+                        familyValues: editData.basicDetail.familyValues,
+                        aboutFamily: editData.basicDetail.aboutFamily,
                         pincode: editData.basicDetail.pincode,
                         district: editData.basicDetail.district
                     })
@@ -1766,9 +1772,9 @@ const MyProfile = () => {
                                 </div>
                             </div>
 
-                            {/* Family Status (from Basic Details) */}
+                            {/* Family Details (from Basic Details) */}
                             <div className="mb-8">
-                                <h3 className="text-lg font-semibold text-gray-800 mb-4">Family Status</h3>
+                                <h3 className="text-lg font-semibold text-gray-800 mb-4">Family Details</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">Family Status</label>
@@ -1780,7 +1786,46 @@ const MyProfile = () => {
                                                 onChange={(e) => handleInputChange('familyStatus', e.target.value, true)}
                                             />
                                         ) : (
-                                            <p className="text-gray-800 py-2.5">{profile.basicDetail.familyStatus || 'Not provided'}</p>
+                                            <p className="text-gray-800 py-2.5">{profile.basicDetail?.familyStatus || '-'}</p>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Family Type</label>
+                                        {isEditing ? (
+                                            <input
+                                                type="text"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                value={editData?.basicDetail?.familyType || ''}
+                                                onChange={(e) => handleInputChange('familyType', e.target.value, true)}
+                                            />
+                                        ) : (
+                                            <p className="text-gray-800 py-2.5">{profile.basicDetail?.familyType || '-'}</p>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Family Values</label>
+                                        {isEditing ? (
+                                            <input
+                                                type="text"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                value={editData?.basicDetail?.familyValues || ''}
+                                                onChange={(e) => handleInputChange('familyValues', e.target.value, true)}
+                                            />
+                                        ) : (
+                                            <p className="text-gray-800 py-2.5">{profile.basicDetail?.familyValues || '-'}</p>
+                                        )}
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">About My Family</label>
+                                        {isEditing ? (
+                                            <textarea
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent resize-none"
+                                                rows={4}
+                                                value={editData?.basicDetail?.aboutFamily || ''}
+                                                onChange={(e) => handleInputChange('aboutFamily', e.target.value, true)}
+                                            />
+                                        ) : (
+                                            <p className="text-gray-800 py-2.5 whitespace-pre-wrap">{profile.basicDetail?.aboutFamily || '-'}</p>
                                         )}
                                     </div>
                                 </div>
