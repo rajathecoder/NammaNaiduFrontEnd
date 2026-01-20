@@ -1,6 +1,26 @@
 // API Configuration
-// Use environment variable if available, otherwise fallback to localhost for development
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+// Priority:
+// 1. Use VITE_API_BASE_URL environment variable if set
+// 2. In production: use relative URL (same origin) - works if frontend/backend on same server
+// 3. In development: fallback to localhost:5000
+const getApiBaseUrl = () => {
+  // If environment variable is set, use it (highest priority)
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  
+  // In production build, use relative URL (empty string = same origin)
+  // This works when frontend and backend are served from the same domain
+  if (import.meta.env.PROD) {
+    // Use relative URL - browser will use same protocol/hostname/port as the page
+    return '';
+  }
+  
+  // Development fallback to localhost
+  return 'http://localhost:5000';
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 // API Endpoints
 export const API_ENDPOINTS = {

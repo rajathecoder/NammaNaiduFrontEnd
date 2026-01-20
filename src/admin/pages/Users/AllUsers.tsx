@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../services/api/admin.api';
+import { getApiUrl } from '../../../config/api.config';
 
 interface User {
   id: number;
@@ -243,7 +244,7 @@ const AllUsers: React.FC = () => {
           return;
         }
 
-        const response = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
+        const response = await fetch(getApiUrl(`/api/admin/users/${userId}`), {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

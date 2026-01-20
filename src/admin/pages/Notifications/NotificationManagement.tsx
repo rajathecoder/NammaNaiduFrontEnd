@@ -44,7 +44,15 @@ const NotificationManagement: React.FC = () => {
         return;
       }
 
-      const response = await fetch(getApiUrl(API_ENDPOINTS.ADMIN.SEND_PUSH_NOTIFICATION), {
+      const apiUrl = getApiUrl(API_ENDPOINTS.ADMIN.SEND_PUSH_NOTIFICATION);
+      console.log('Sending notification to:', apiUrl);
+      console.log('Payload:', {
+        title: formData.title,
+        message: formData.message,
+        target: formData.target,
+      });
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +65,23 @@ const NotificationManagement: React.FC = () => {
         }),
       });
 
-      const data = await response.json();
+      console.log('Response status:', response.status, response.statusText);
+
+      let data;
+      try {
+        data = await response.json();
+        console.log('Response data:', data);
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        const text = await response.text();
+        console.error('Response text:', text);
+        setSubmitMessage({
+          type: 'error',
+          text: `Server error: ${response.status} ${response.statusText}`,
+        });
+        setIsSubmitting(false);
+        return;
+      }
 
       if (response.ok && data.success) {
         setSubmitMessage({
@@ -71,14 +95,14 @@ const NotificationManagement: React.FC = () => {
       } else {
         setSubmitMessage({
           type: 'error',
-          text: data.message || 'Failed to send notification. Please try again.',
+          text: data.message || `Failed to send notification (${response.status}). Please try again.`,
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending push notification:', error);
       setSubmitMessage({
         type: 'error',
-        text: 'An error occurred while sending the notification. Please try again.',
+        text: error.message || 'An error occurred while sending the notification. Please check console for details.',
       });
     } finally {
       setIsSubmitting(false);
