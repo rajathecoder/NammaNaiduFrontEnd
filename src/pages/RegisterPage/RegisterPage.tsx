@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import marriageCoupleAnimation from '../../assets/images/MarriageCouplehugging.json';
 import logoOnly from '../../assets/images/logoonly.png';
-import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
+import { getApiUrl } from '../../config/api.config';
 
 const RegisterPage = () => {
     const [profileFor, setProfileFor] = useState('Myself');

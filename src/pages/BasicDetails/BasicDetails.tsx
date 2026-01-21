@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logoOnly from '../../assets/images/logoonly.png';
-import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
+import { getApiUrl } from '../../config/api.config';
 
 const BasicDetails = () => {
     const [day, setDay] = useState('');
@@ -393,7 +393,7 @@ const BasicDetails = () => {
                                                 </div>
                                                 <button
                                                     type="button"
-                                                    onClick={handleVerifyOtp}
+                                                    onClick={() => handleVerifyOtp()}
                                                     disabled={isVerifyingOtp || otp.join('').length !== 6}
                                                     className="w-full py-3 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                                 >
