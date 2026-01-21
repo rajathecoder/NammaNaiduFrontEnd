@@ -50,6 +50,7 @@ export const API_ENDPOINTS = {
     FAMILY: '/api/users/family',
     HOBBIES: '/api/users/hobbies',
     SEARCH: '/api/users/search',
+    VIEW_PROFILE_DETAILS: '/api/users/profile/view-details',
     NOTIFICATIONS: {
       GET: '/api/notifications',
       READ: (id: string | number) => `/api/notifications/${id}/read`,

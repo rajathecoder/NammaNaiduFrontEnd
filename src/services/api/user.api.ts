@@ -109,7 +109,7 @@ export const getUserProfile = async (
 export const getUserProfileByAccountId = async (
   token: string,
   accountId: string
-): Promise<{ success: boolean; data: UserProfile }> => {
+): Promise<{ success: boolean; data: UserProfile; hasViewedDetails?: boolean; isOwnProfile?: boolean }> => {
   const url = getApiUrl(API_ENDPOINTS.USERS.PROFILE_BY_ACCOUNT_ID(accountId));
   const response = await fetch(url, {
     method: 'GET',
@@ -125,5 +125,29 @@ export const getUserProfileByAccountId = async (
   }
 
   return response.json();
+};
+
+// View profile details (deducts token and returns full details)
+export const viewProfileDetails = async (
+  token: string,
+  accountId: string
+): Promise<{ success: boolean; data: UserProfile; code?: string; message?: string; tokenDeducted?: boolean; tokensRemaining?: number }> => {
+  const url = getApiUrl(API_ENDPOINTS.USERS.VIEW_PROFILE_DETAILS);
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ accountId })
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Failed to view profile details');
+  }
+
+  return data;
 };
 

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { getAuthData } from '../../utils/auth';
-import { getUserProfileByAccountId, getOppositeGenderProfiles, type UserProfile } from '../../services/api/user.api';
+import { getUserProfileByAccountId, getOppositeGenderProfiles, viewProfileDetails, type UserProfile } from '../../services/api/user.api';
 import verifiedBadge from '../../assets/images/verified-badge.png';
 
 const ProfileDetail = () => {
@@ -24,6 +24,11 @@ const ProfileDetail = () => {
     const [horoscopeData, setHoroscopeData] = useState<{ rasi?: string; natchathiram?: string; birthPlace?: string; birthTime?: string } | null>(null);
     const [familyData, setFamilyData] = useState<{ fatherName?: string; fatherOccupation?: string; fatherStatus?: string; motherName?: string; motherOccupation?: string; motherStatus?: string; siblings?: any[] } | null>(null);
     const [hobbiesData, setHobbiesData] = useState<{ hobbies?: string[]; musicGenres?: string[]; bookTypes?: string[]; movieTypes?: string[]; sports?: string[]; cuisines?: string[]; languages?: string[] } | null>(null);
+    const [hasViewedDetails, setHasViewedDetails] = useState(false);
+    const [isOwnProfile, setIsOwnProfile] = useState(false);
+    const [isViewingDetails, setIsViewingDetails] = useState(false);
+    const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
     // Fetch opposite gender profiles
     const fetchSimilarMatches = async (userId?: number) => {
@@ -72,6 +77,9 @@ const ProfileDetail = () => {
                 if (response.success && response.data) {
                     setProfile(response.data);
                     setTargetUserId(response.data.accountId);
+                    // Extract view status flags from API response
+                    setHasViewedDetails(response.hasViewedDetails ?? false);
+                    setIsOwnProfile(response.isOwnProfile ?? false);
                     // Fetch profile actions after profile is loaded
                     fetchProfileActions(response.data.accountId);
                     // Fetch similar matches using the current user's ID
@@ -356,12 +364,65 @@ const ProfileDetail = () => {
     // Format location - this will be called after profile is loaded
     const formatLocation = (profileData: UserProfile | null) => {
         if (!profileData?.basicDetail) return 'Not specified';
+        // Hide location if details not viewed and not own profile
+        if (!hasViewedDetails && !isOwnProfile) {
+            return '';
+        }
         const parts = [
             profileData.basicDetail.city,
             profileData.basicDetail.state,
             profileData.basicDetail.country
         ].filter(Boolean);
         return parts.length > 0 ? parts.join(', ') : 'Not specified';
+    };
+
+    // Handle view details button click
+    const handleViewDetails = async () => {
+        if (!id || isOwnProfile || hasViewedDetails) return;
+
+        setShowConfirmDialog(true);
+    };
+
+    // Confirm view details
+    const confirmViewDetails = async () => {
+        setShowConfirmDialog(false);
+        if (!id) return;
+
+        const authData = getAuthData();
+        if (!authData?.token) {
+            navigate('/login');
+            return;
+        }
+
+        setIsViewingDetails(true);
+        try {
+            const response = await viewProfileDetails(authData.token, id);
+            
+            if (response.success && response.data) {
+                setProfile(response.data);
+                setHasViewedDetails(true);
+                // Reload additional details with full information
+                fetchHoroscopeData(id);
+                fetchFamilyData(id);
+                fetchHobbiesData(id);
+            } else {
+                // Check for NO_TOKENS error
+                if (response.code === 'NO_TOKENS') {
+                    setShowUpgradeDialog(true);
+                } else {
+                    alert(response.message || 'Failed to view profile details');
+                }
+            }
+        } catch (err: any) {
+            console.error('Error viewing profile details:', err);
+            if (err.message?.includes('token') || err.message?.includes('NO_TOKENS')) {
+                setShowUpgradeDialog(true);
+            } else {
+                alert(err.message || 'Failed to view profile details');
+            }
+        } finally {
+            setIsViewingDetails(false);
+        }
     };
 
     // Navigate to previous profile
@@ -410,7 +471,8 @@ const ProfileDetail = () => {
         );
     }
 
-    const age = calculateAge(profile.basicDetail?.dateOfBirth);
+    // Hide age if details not viewed
+    const age = (hasViewedDetails || isOwnProfile) ? calculateAge(profile.basicDetail?.dateOfBirth) : null;
     const height = profile.basicDetail?.height || 'Not specified';
     const maritalStatus = profile.basicDetail?.maritalStatus || 'Not specified';
     const education = profile.basicDetail?.education || 'Not specified';
@@ -500,8 +562,12 @@ const ProfileDetail = () => {
 
                                         <div className="flex items-center gap-2 text-gray-600 font-bold text-xs bg-gray-50/50 p-3 rounded-xl border border-gray-100/50">
                                             <span>{maritalStatus}</span>
-                                            <span className="opacity-20 text-gray-300">|</span>
-                                            <span>{age ? `${age.years} Yrs` : ''}</span>
+                                            {(hasViewedDetails || isOwnProfile) && age && (
+                                                <>
+                                                    <span className="opacity-20 text-gray-300">|</span>
+                                                    <span>{age.years} Yrs</span>
+                                                </>
+                                            )}
                                             <span className="opacity-20 text-gray-300">|</span>
                                             <span>{height}</span>
                                             <span className="opacity-20 text-gray-300">|</span>
@@ -511,32 +577,57 @@ const ProfileDetail = () => {
                                 </div>
                             </div>
 
+                            {/* View Details Button - Only show if not own profile and details not viewed */}
+                            {!isOwnProfile && !hasViewedDetails && (
+                                <div className="p-4 bg-gradient-to-r from-[#FB34AA10] to-[#C204E710] border-b border-gray-100/50">
+                                    <button
+                                        className="w-full h-12 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2"
+                                        onClick={handleViewDetails}
+                                        disabled={isViewingDetails}
+                                    >
+                                        {isViewingDetails ? (
+                                            <>
+                                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                                <span>Loading...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>👁</span>
+                                                <span>View Details</span>
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            )}
+
                             {/* Action Buttons Row */}
-                            <div className="p-4 bg-gray-50/20 flex gap-3 flex-wrap border-b border-gray-100/50">
-                                <button
-                                    className={`flex-1 min-w-[140px] h-11 flex items-center justify-center gap-2 rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg disabled:opacity-50 ${profileActions.has('interest') ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white shadow-[#FB34AA30]' : 'bg-white text-gray-600 hover:shadow-xl hover:-translate-y-0.5 border border-gray-100'}`}
-                                    onClick={() => handleActionClick('interest')}
-                                    disabled={loading}
-                                >
-                                    <span className="text-lg">{profileActions.has('interest') ? '❤' : '♡'}</span>
-                                    {profileActions.has('interest') ? 'Sent' : 'Interest'}
-                                </button>
-                                <button
-                                    className={`flex-1 min-w-[140px] h-11 flex items-center justify-center gap-2 rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg disabled:opacity-50 ${profileActions.has('shortlist') ? 'bg-[#1a1a1a] text-white shadow-gray-400/30' : 'bg-white text-gray-600 hover:shadow-xl hover:-translate-y-0.5 border border-gray-100'}`}
-                                    onClick={() => handleActionClick('shortlist')}
-                                    disabled={loading}
-                                >
-                                    <span className="text-lg">★</span>
-                                    {profileActions.has('shortlist') ? 'Starred' : 'Shortlist'}
-                                </button>
-                                <button
-                                    className="w-11 h-11 bg-white rounded-xl flex items-center justify-center text-lg text-gray-400 transition-all hover:bg-red-50 hover:text-red-500 hover:shadow-lg border border-gray-100 group"
-                                    onClick={() => handleActionClick('reject')}
-                                    disabled={loading}
-                                >
-                                    <span className="group-hover:rotate-90 transition-transform">✕</span>
-                                </button>
-                            </div>
+                            {!isOwnProfile && (
+                                <div className="p-4 bg-gray-50/20 flex gap-3 flex-wrap border-b border-gray-100/50">
+                                    <button
+                                        className={`flex-1 min-w-[140px] h-11 flex items-center justify-center gap-2 rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg disabled:opacity-50 ${profileActions.has('interest') ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white shadow-[#FB34AA30]' : 'bg-white text-gray-600 hover:shadow-xl hover:-translate-y-0.5 border border-gray-100'}`}
+                                        onClick={() => handleActionClick('interest')}
+                                        disabled={loading}
+                                    >
+                                        <span className="text-lg">{profileActions.has('interest') ? '❤' : '♡'}</span>
+                                        {profileActions.has('interest') ? 'Sent' : 'Interest'}
+                                    </button>
+                                    <button
+                                        className={`flex-1 min-w-[140px] h-11 flex items-center justify-center gap-2 rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg disabled:opacity-50 ${profileActions.has('shortlist') ? 'bg-[#1a1a1a] text-white shadow-gray-400/30' : 'bg-white text-gray-600 hover:shadow-xl hover:-translate-y-0.5 border border-gray-100'}`}
+                                        onClick={() => handleActionClick('shortlist')}
+                                        disabled={loading}
+                                    >
+                                        <span className="text-lg">★</span>
+                                        {profileActions.has('shortlist') ? 'Starred' : 'Shortlist'}
+                                    </button>
+                                    <button
+                                        className="w-11 h-11 bg-white rounded-xl flex items-center justify-center text-lg text-gray-400 transition-all hover:bg-red-50 hover:text-red-500 hover:shadow-lg border border-gray-100 group"
+                                        onClick={() => handleActionClick('reject')}
+                                        disabled={loading}
+                                    >
+                                        <span className="group-hover:rotate-90 transition-transform">✕</span>
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
                         {/* Tabs Navigation */}
@@ -570,11 +661,15 @@ const ProfileDetail = () => {
                                         <h3 className="text-lg font-black text-[#1a1a1a]">Personal Details</h3>
                                     </div>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4">
-                                        <DetailRow label="Age" value={age ? `${age.years} Yrs ${age.months > 0 ? `& ${age.months} Mos` : ''}` : 'N/A'} />
+                                        {(hasViewedDetails || isOwnProfile) && age && (
+                                            <DetailRow label="Age" value={`${age.years} Yrs ${age.months > 0 ? `& ${age.months} Mos` : ''}`} />
+                                        )}
                                         <DetailRow label="Height" value={height} />
                                         <DetailRow label="Status" value={maritalStatus} />
                                         <DetailRow label="Physical" value={profile.basicDetail?.physicalStatus || 'Normal'} />
-                                        <DetailRow label="Location" value={location} />
+                                        {(hasViewedDetails || isOwnProfile) && location && (
+                                            <DetailRow label="Location" value={location} />
+                                        )}
                                         <DetailRow label="Religion" value={religion} />
                                         <DetailRow label="Caste" value={caste} />
                                         <DetailRow label="Subcaste" value={subcaste} />
@@ -582,6 +677,13 @@ const ProfileDetail = () => {
                                         <DetailRow label="Occupation" value={occupation} />
                                         <DetailRow label="Income" value={profile.basicDetail?.annualIncome ? `${profile.basicDetail.currency || '₹'} ${profile.basicDetail.annualIncome}` : 'Privacy Protected'} />
                                     </div>
+                                    {!hasViewedDetails && !isOwnProfile && (
+                                        <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+                                            <p className="text-sm text-yellow-800 font-bold">
+                                                Contact information and address details are hidden. Click "View Details" above to unlock.
+                                            </p>
+                                        </div>
+                                    )}
                                 </section>
                             )}
 
@@ -792,6 +894,61 @@ const ProfileDetail = () => {
                             {getAllPhotos().map((_, idx) => (
                                 <div key={idx} className={`w-2 h-2 rounded-full transition-all ${idx === selectedImageIndex ? 'w-8 bg-[#FB34AA]' : 'bg-white/20'}`}></div>
                             ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Confirmation Dialog */}
+            {showConfirmDialog && (
+                <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4 animate-in fade-in duration-300">
+                    <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
+                        <h3 className="text-xl font-black text-[#1a1a1a] mb-4">Confirm View Details</h3>
+                        <p className="text-gray-600 mb-6 font-medium">
+                            Did you conform view this account?
+                        </p>
+                        <div className="flex gap-3">
+                            <button
+                                className="flex-1 h-11 bg-gray-100 text-gray-700 rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:bg-gray-200"
+                                onClick={() => setShowConfirmDialog(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="flex-1 h-11 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:shadow-lg"
+                                onClick={confirmViewDetails}
+                            >
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Upgrade Dialog */}
+            {showUpgradeDialog && (
+                <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4 animate-in fade-in duration-300">
+                    <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
+                        <h3 className="text-xl font-black text-[#1a1a1a] mb-4">Upgrade Required</h3>
+                        <p className="text-gray-600 mb-6 font-medium">
+                            You have used all your profile view tokens. Please upgrade your subscription to view more profiles.
+                        </p>
+                        <div className="flex gap-3">
+                            <button
+                                className="flex-1 h-11 bg-gray-100 text-gray-700 rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:bg-gray-200"
+                                onClick={() => setShowUpgradeDialog(false)}
+                            >
+                                Close
+                            </button>
+                            <button
+                                className="flex-1 h-11 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:shadow-lg"
+                                onClick={() => {
+                                    setShowUpgradeDialog(false);
+                                    navigate('/subscription');
+                                }}
+                            >
+                                Upgrade Plan
+                            </button>
                         </div>
                     </div>
                 </div>
