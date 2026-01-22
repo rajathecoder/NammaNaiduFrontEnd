@@ -67,7 +67,17 @@ const RegisterPage = () => {
                     otp: data.otp, // Store OTP for verification
                 }));
 
-                alert(`OTP sent successfully! Your OTP is: ${data.otp}`);
+                // Show appropriate message based on SMS status
+                let message = '';
+                if (data.smsSent === true) {
+                    message = data.message || 'OTP sent successfully to your mobile number via SMS!';
+                } else if (data.smsSent === false) {
+                    message = `OTP generated. SMS sending failed. OTP: ${data.otp} (for testing)`;
+                } else {
+                    message = data.message || `OTP sent successfully! Your OTP is: ${data.otp}`;
+                }
+
+                alert(message);
                 // Navigate to OTP verification page
                 navigate('/verify-otp');
             } else {

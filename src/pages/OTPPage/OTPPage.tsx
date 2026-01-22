@@ -217,27 +217,34 @@ const OTPPage = () => {
 
         setIsSendingOtp(true);
         try {
-            // Auto-generate email based on phone number
-            const tempEmail = `user_${normalizedMobile}@nammamatrimony.app`;
+            // Use new OTP API endpoint with MSG91 integration
+            const mobileno = `${countryCode}${normalizedMobile}`;
+            const payload = {
+                mobileno: mobileno,
+                isemailid: false
+            };
 
-            const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.SEND_OTP), {
+            const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.SEND_OTP_NEW), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name: 'User', // Default name for login
-                    gender: 'Male', // Default gender for login
-                    mobile: normalizedMobile,
-                    email: tempEmail,
-                    countryCode,
-                }),
+                body: JSON.stringify(payload),
             });
 
             const data = await response.json();
 
-            if (data.success && data.data) {
-                alert(`OTP sent successfully! Your OTP is: ${data.data.otp}`);
+            if (data.status && data.otp) {
+                // Show appropriate message based on SMS status
+                let message = '';
+                if (data.smsSent === true) {
+                    message = data.message || 'OTP sent successfully to your mobile number via SMS!';
+                } else if (data.smsSent === false) {
+                    message = `OTP generated. SMS sending failed. OTP: ${data.otp} (for testing)`;
+                } else {
+                    message = data.message || `OTP sent successfully! Your OTP is: ${data.otp}`;
+                }
+                alert(message);
                 setMobileNumber(normalizedMobile);
                 setTimer(28);
                 setCanResend(false);
@@ -271,28 +278,34 @@ const OTPPage = () => {
                 return;
             }
 
-            // Auto-generate email if not found in registration data
-            const tempEmail = registrationData.email || `user_${normalizedMobile}@nammamatrimony.app`;
+            // Use new OTP API endpoint with MSG91 integration
+            const mobileno = `${code}${normalizedMobile}`;
+            const payload = {
+                mobileno: mobileno,
+                isemailid: false
+            };
 
-            const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.SEND_OTP), {
+            const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.SEND_OTP_NEW), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name: registrationData.name || 'User',
-                    gender: registrationData.gender || 'Male',
-                    mobile: normalizedMobile,
-                    email: tempEmail,
-                    countryCode: code,
-                    profileFor: registrationData.profileFor,
-                }),
+                body: JSON.stringify(payload),
             });
 
             const data = await response.json();
 
-            if (data.success && data.data) {
-                alert(`OTP resent successfully! Your OTP is: ${data.data.otp}`);
+            if (data.status && data.otp) {
+                // Show appropriate message based on SMS status
+                let message = '';
+                if (data.smsSent === true) {
+                    message = data.message || 'OTP resent successfully to your mobile number via SMS!';
+                } else if (data.smsSent === false) {
+                    message = `OTP generated. SMS sending failed. OTP: ${data.otp} (for testing)`;
+                } else {
+                    message = data.message || `OTP resent successfully! Your OTP is: ${data.otp}`;
+                }
+                alert(message);
                 setMobileNumber(normalizedMobile);
                 setTimer(28);
                 setCanResend(false);

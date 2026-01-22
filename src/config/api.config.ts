@@ -28,8 +28,10 @@ export const API_ENDPOINTS = {
   AUTH: {
     LOGIN: '/api/auth/login',
     REGISTER: '/api/auth/register',
-    SEND_OTP: '/api/auth/send-otp',
+    SEND_OTP: '/api/auth/send-otp', // Old endpoint for registration
+    SEND_OTP_NEW: '/api/auth/otp/send', // New endpoint with MSG91 integration
     VERIFY_OTP: '/api/auth/verify-otp',
+    VERIFY_OTP_NEW: '/api/auth/otp/verify', // New endpoint with MSG91 support
     FIREBASE_LOGIN: '/api/auth/firebase-login',
   },
   // User endpoints

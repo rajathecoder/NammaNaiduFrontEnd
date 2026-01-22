@@ -67,7 +67,16 @@ const BasicDetails = () => {
             console.log('📥 BasicDetails - OTP Response:', JSON.stringify(data, null, 2));
 
             if (data.status && data.otp) {
-                alert(`OTP sent successfully! Your OTP is: ${data.otp}`);
+                // Show appropriate message based on email status
+                let message = '';
+                if (data.emailSent === true) {
+                    message = data.message || 'OTP sent successfully to your email!';
+                } else if (data.emailSent === false) {
+                    message = `OTP generated. Email sending failed. OTP: ${data.otp} (for testing)`;
+                } else {
+                    message = data.message || `OTP sent successfully! Your OTP is: ${data.otp}`;
+                }
+                alert(message);
                 setShowOtpFields(true);
             } else {
                 alert(data.message || 'Failed to send OTP. Please try again.');
