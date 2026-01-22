@@ -98,3 +98,4 @@ export const canAccess = (path: string): boolean => {
   return hasAccess(role, path);
 };
 
+

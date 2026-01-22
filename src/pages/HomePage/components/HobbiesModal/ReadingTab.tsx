@@ -56,3 +56,4 @@ const ReadingTab: React.FC<ReadingTabProps> = ({
 };
 
 export default ReadingTab;
+

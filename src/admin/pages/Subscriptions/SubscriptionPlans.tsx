@@ -619,3 +619,4 @@ const SubscriptionPlans: React.FC = () => {
 
 export default SubscriptionPlans;
 
+

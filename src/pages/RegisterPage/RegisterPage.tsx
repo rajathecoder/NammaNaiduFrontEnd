@@ -114,7 +114,7 @@ const RegisterPage = () => {
                 {/* Right Side - Registration Form */}
                 <div className="flex-1 flex items-center justify-center">
                     <div className="w-full max-w-[450px] bg-white rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden">
-                        <div className="bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white py-5 px-5 text-center">
+                        <div className="bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white py-5 px-5 text-center">
                             <h2 className="m-0 text-xl font-semibold">Create a Matrimony Profile</h2>
                         </div>
 
@@ -128,7 +128,7 @@ const RegisterPage = () => {
                                     <select
                                         value={profileFor}
                                         onChange={(e) => setProfileFor(e.target.value)}
-                                        className="flex-1 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#FB34AA] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                        className="flex-1 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
                                     >
                                         <option>Myself</option>
                                         <option>Son</option>
@@ -141,7 +141,7 @@ const RegisterPage = () => {
                                     <select
                                         value={gender}
                                         onChange={(e) => setGender(e.target.value)}
-                                        className="flex-1 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#FB34AA] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                        className="flex-1 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
                                     >
                                         <option>Male</option>
                                         <option>Female</option>
@@ -157,7 +157,7 @@ const RegisterPage = () => {
                                     placeholder="Raja"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="w-full py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#FB34AA] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                    className="w-full py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
                                     required
                                 />
                             </div>
@@ -168,7 +168,7 @@ const RegisterPage = () => {
                                     <select
                                         value={countryCode}
                                         onChange={(e) => setCountryCode(e.target.value)}
-                                        className="w-20 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#FB34AA] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                        className="w-20 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
                                     >
                                         <option>+91</option>
                                         <option>+1</option>
@@ -180,7 +180,7 @@ const RegisterPage = () => {
                                         placeholder="9865614558"
                                         value={mobile}
                                         onChange={(e) => setMobile(e.target.value)}
-                                        className="flex-1 min-w-[200px] text-base py-3.5 px-4 border border-gray-300 rounded transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#FB34AA] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                        className="flex-1 min-w-[200px] text-base py-3.5 px-4 border border-gray-300 rounded transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
                                         required
                                     />
                                 </div>
@@ -203,8 +203,8 @@ const RegisterPage = () => {
                                     />
                                     <span>
                                         *By clicking register free, I agree to the{' '}
-                                        <a href="#" className="text-[#FB34AA] no-underline hover:underline">T&C</a> and{' '}
-                                        <a href="#" className="text-[#FB34AA] no-underline hover:underline">Privacy Policy</a>
+                                        <a href="#" className="text-[#a413ed] no-underline hover:underline">T&C</a> and{' '}
+                                        <a href="#" className="text-[#a413ed] no-underline hover:underline">Privacy Policy</a>
                                     </span>
                                 </label>
                             </div>
@@ -217,4 +217,5 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+
 

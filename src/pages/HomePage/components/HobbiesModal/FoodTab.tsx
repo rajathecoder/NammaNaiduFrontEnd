@@ -55,3 +55,4 @@ const FoodTab: React.FC<FoodTabProps> = ({
 };
 
 export default FoodTab;
+

@@ -58,3 +58,4 @@ const HobbiesTab: React.FC<HobbiesTabProps> = ({
 };
 
 export default HobbiesTab;
+

@@ -121,7 +121,7 @@ const LoginPage = () => {
                     <h2 className="text-3xl font-semibold text-gray-800 mb-6 leading-snug">
                         To speed up your partner search,
                         <br />
-                        download <span className="font-bold bg-gradient-to-r from-[#FB34AA] to-[#C204E7] bg-clip-text text-transparent">Namma Naidu App</span>
+                        download <span className="font-bold bg-gradient-to-r from-[#a413ed] to-[#8b10c9] bg-clip-text text-transparent">Namma Naidu App</span>
                     </h2>
 
                     <div className="w-full max-w-[400px] mb-6">
@@ -153,7 +153,7 @@ const LoginPage = () => {
                 {/* Right Side - Login Form */}
                 <div className="flex-1 flex items-center justify-center">
                     <div className="w-full max-w-[450px] bg-white rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden">
-                        <div className="bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white py-5 px-5 text-center">
+                        <div className="bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white py-5 px-5 text-center">
                             <h2 className="m-0 text-xl font-semibold">Member Login</h2>
                         </div>
 
@@ -164,7 +164,7 @@ const LoginPage = () => {
                                     placeholder="E-mail or Mobile Number"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full py-3 px-3.5 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-[#FB34AA] box-border"
+                                    className="w-full py-3 px-3.5 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-[#a413ed] box-border"
                                     required
                                 />
                             </div>
@@ -175,7 +175,7 @@ const LoginPage = () => {
                                     placeholder="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full py-3 px-3.5 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-[#FB34AA] box-border"
+                                    className="w-full py-3 px-3.5 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-[#a413ed] box-border"
                                     required
                                 />
                                 <button
@@ -213,12 +213,12 @@ const LoginPage = () => {
                                             localStorage.setItem('otpFlow', 'login');
                                             navigate('/verify-otp');
                                         }}
-                                        className="text-[#FB34AA] no-underline text-xs transition-colors duration-300 hover:text-[#C204E7] hover:underline"
+                                        className="text-[#a413ed] no-underline text-xs transition-colors duration-300 hover:text-[#8b10c9] hover:underline"
                                     >
                                         Login with OTP
                                     </button>
                                     <span className="text-gray-300">|</span>
-                                    <a href="#" className="text-[#FB34AA] no-underline text-xs transition-colors duration-300 hover:text-[#C204E7] hover:underline">Forgot Password?</a>
+                                    <a href="#" className="text-[#a413ed] no-underline text-xs transition-colors duration-300 hover:text-[#8b10c9] hover:underline">Forgot Password?</a>
                                 </div>
                             </div>
                         </form>
@@ -230,4 +230,5 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
 

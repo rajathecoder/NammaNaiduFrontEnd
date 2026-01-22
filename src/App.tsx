@@ -16,6 +16,7 @@ import MessagesList from './pages/Messages/MessagesList';
 import Search from './pages/Search/Search';
 import Matches from './pages/Matches/Matches';
 import Notifications from './pages/Notifications/Notifications';
+import LandingPage from './pages/LandingPage/LandingPage';
 import AdminLayout from './admin/components/layout/AdminLayout';
 import ProtectedRoute from './admin/components/common/ProtectedRoute';
 import Dashboard from './admin/pages/Dashboard/Dashboard';
@@ -41,7 +42,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<RegisterPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-otp" element={<OTPPage />} />
         <Route path="/basic-details" element={<BasicDetails />} />
@@ -116,3 +118,4 @@ function App() {
 }
 
 export default App;
+

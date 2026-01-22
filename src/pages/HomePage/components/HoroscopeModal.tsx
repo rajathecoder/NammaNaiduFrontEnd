@@ -212,7 +212,7 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white rounded-lg hover:shadow-lg transition-all font-medium"
+                            className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-lg hover:shadow-lg transition-all font-medium"
                         >
                             Save
                         </button>
@@ -224,3 +224,4 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
 };
 
 export default HoroscopeModal;
+

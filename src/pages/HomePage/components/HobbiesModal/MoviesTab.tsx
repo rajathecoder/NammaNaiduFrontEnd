@@ -55,3 +55,4 @@ const MoviesTab: React.FC<MoviesTabProps> = ({
 };
 
 export default MoviesTab;
+

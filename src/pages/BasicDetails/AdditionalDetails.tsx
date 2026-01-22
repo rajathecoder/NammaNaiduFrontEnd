@@ -154,7 +154,7 @@ const AdditionalDetails = () => {
                         <span className="text-gray-600">Need help?</span>
                         <a
                             href="tel:8144998877"
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
                         >
                             <span className="text-base">📞</span>
                             8144-99-88-77
@@ -176,7 +176,7 @@ const AdditionalDetails = () => {
                         <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold">3</span>
                         <span className="text-gray-500">Professional</span>
                         <span className="h-px flex-1 bg-gray-200 mx-2" />
-                        <span className="w-8 h-8 rounded-full bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white flex items-center justify-center font-semibold">4</span>
+                        <span className="w-8 h-8 rounded-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white flex items-center justify-center font-semibold">4</span>
                         <span className="font-semibold text-gray-800">Additional</span>
                     </div>
                 </div>
@@ -200,21 +200,21 @@ const AdditionalDetails = () => {
                                 <div className="flex flex-wrap justify-center gap-3">
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Middle Class' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Middle Class' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
                                         onClick={() => setFamilyStatus('Middle Class')}
                                     >
                                         Middle Class
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Upper Middle Class' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Upper Middle Class' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
                                         onClick={() => setFamilyStatus('Upper Middle Class')}
                                     >
                                         Upper Middle Class
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Rich / Affluent' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyStatus === 'Rich / Affluent' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
                                         onClick={() => setFamilyStatus('Rich / Affluent')}
                                     >
                                         Rich / Affluent
@@ -228,14 +228,14 @@ const AdditionalDetails = () => {
                                 <div className="grid grid-cols-2 gap-3">
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-lg text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyType === 'Joint' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        className={`py-3 px-6 border-2 rounded-lg text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyType === 'Joint' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
                                         onClick={() => setFamilyType('Joint')}
                                     >
                                         Joint
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-lg text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyType === 'Nuclear' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        className={`py-3 px-6 border-2 rounded-lg text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyType === 'Nuclear' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
                                         onClick={() => setFamilyType('Nuclear')}
                                     >
                                         Nuclear
@@ -249,28 +249,28 @@ const AdditionalDetails = () => {
                                 <div className="flex flex-wrap gap-3">
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Orthodox' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Orthodox' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
                                         onClick={() => setFamilyValues('Orthodox')}
                                     >
                                         Orthodox
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Traditional' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Traditional' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
                                         onClick={() => setFamilyValues('Traditional')}
                                     >
                                         Traditional
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Moderate' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Moderate' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
                                         onClick={() => setFamilyValues('Moderate')}
                                     >
                                         Moderate
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Liberal' ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] border-[#FB34AA] text-white' : 'border-gray-200 bg-white hover:border-[#FB34AA]'}`}
+                                        className={`py-3 px-6 border-2 rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-300 font-medium ${familyValues === 'Liberal' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
                                         onClick={() => setFamilyValues('Liberal')}
                                     >
                                         Liberal
@@ -286,12 +286,12 @@ const AdditionalDetails = () => {
                                     onChange={(e) => setAboutFamily(e.target.value)}
                                     placeholder="Tell us about your family..."
                                     rows={4}
-                                    className="w-full py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#FB34AA] focus:ring-2 focus:ring-[#FB34AA]/20 placeholder:text-gray-500 resize-none"
+                                    className="w-full py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20 placeholder:text-gray-500 resize-none"
                                 />
                             </div>
 
                             {/* Submit Button */}
-                            <button type="submit" className="w-full py-4 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed" disabled={isSubmitting}>
+                            <button type="submit" className="w-full py-4 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed" disabled={isSubmitting}>
                                 {isSubmitting ? 'Submitting...' : 'Submit'}
                             </button>
                         </form>
@@ -303,3 +303,4 @@ const AdditionalDetails = () => {
 };
 
 export default AdditionalDetails;
+

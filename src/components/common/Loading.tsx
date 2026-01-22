@@ -18,7 +18,7 @@ const Loading: React.FC<LoadingProps> = ({
 }) => {
     // Use a simple spinner for small size (buttons, inline)
     if (size === 'small') {
-        const spinnerColor = color === 'white' ? 'border-white' : 'border-[#FB34AA]';
+        const spinnerColor = color === 'white' ? 'border-white' : 'border-[#a413ed]';
         const textColor = color === 'white' ? 'text-white' : 'text-gray-600';
 
         return (
@@ -61,4 +61,5 @@ const Loading: React.FC<LoadingProps> = ({
 };
 
 export default Loading;
+
 

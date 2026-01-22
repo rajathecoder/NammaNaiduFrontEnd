@@ -106,17 +106,17 @@ const SubscriptionPlans = () => {
 
             <div className="max-w-[1200px] mx-auto bg-white rounded-2xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.1)] relative md:p-6">
                 <button
-                    className="absolute top-4 right-4 w-10 h-10 border-none bg-gray-100 rounded-full text-2xl font-light text-gray-600 cursor-pointer flex items-center justify-center transition-all duration-300 z-10 hover:bg-[#FB34AA] hover:text-white hover:rotate-90"
+                    className="absolute top-4 right-4 w-10 h-10 border-none bg-gray-100 rounded-full text-2xl font-light text-gray-600 cursor-pointer flex items-center justify-center transition-all duration-300 z-10 hover:bg-[#a413ed] hover:text-white hover:rotate-90"
                     onClick={() => navigate('/home')}
                     aria-label="Close"
                 >
                     ×
                 </button>
                 <div className="flex justify-center mb-8">
-                    <div className="inline-flex rounded-full border-2 border-[#FB34AA] p-1 bg-white shadow-sm">
+                    <div className="inline-flex rounded-full border-2 border-[#a413ed] p-1 bg-white shadow-sm">
                         <button
                             className={`px-8 py-2 rounded-full text-sm font-semibold transition-colors ${planType === 'months'
-                                ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white'
+                                ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white'
                                 : 'text-gray-700 hover:text-gray-900'}`}
                             onClick={() => setPlanType('months')}
                         >
@@ -124,7 +124,7 @@ const SubscriptionPlans = () => {
                         </button>
                         <button
                             className={`px-8 py-2 rounded-full text-sm font-semibold transition-colors ${planType === 'year'
-                                ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white'
+                                ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white'
                                 : 'text-gray-700 hover:text-gray-900'}`}
                             onClick={() => setPlanType('year')}
                         >
@@ -148,7 +148,7 @@ const SubscriptionPlans = () => {
                                 {monthlyPlans.map((plan) => (
                                     <div
                                         key={plan.id}
-                                        className="bg-white border-2 border-gray-200 rounded-2xl p-8 text-center transition-all duration-200 hover:border-[#FB34AA] hover:shadow-[0_6px_16px_rgba(251,52,170,0.18)]"
+                                        className="bg-white border-2 border-gray-200 rounded-2xl p-8 text-center transition-all duration-200 hover:border-[#a413ed] hover:shadow-[0_6px_16px_rgba(251,52,170,0.18)]"
                                     >
                                         <h3 className="text-lg font-semibold text-gray-800 mb-4">{plan.planName}</h3>
                                         <div className="text-3xl font-bold text-gray-900 mb-2">₹{plan.offerAmount || plan.amount}/-</div>
@@ -156,7 +156,7 @@ const SubscriptionPlans = () => {
                                             For {plan.maxProfile} {plan.maxProfile === 1 ? 'profile' : 'profiles'}
                                         </div>
                                         <button
-                                            className="w-full bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white font-semibold py-3 px-6 rounded-full transition-all duration-200 hover:shadow-[0_6px_16px_rgba(251,52,170,0.35)] hover:-translate-y-0.5"
+                                            className="w-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white font-semibold py-3 px-6 rounded-full transition-all duration-200 hover:shadow-[0_6px_16px_rgba(251,52,170,0.35)] hover:-translate-y-0.5"
                                             onClick={() => handlePayNow(plan)}
                                         >
                                             Pay Now
@@ -169,15 +169,15 @@ const SubscriptionPlans = () => {
                         {planType === 'year' && yearlyPlans.length > 0 && (
                             <div className="mb-8">
                                 {yearlyPlans.map((plan) => (
-                                    <div key={plan.id} className="bg-white border-2 border-gray-200 border-t-4 border-t-[#FB34AA] rounded-xl p-10 text-center relative max-w-[600px] mx-auto transition-all duration-300 hover:shadow-[0_4px_20px_rgba(251,52,170,0.3)]">
-                                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white py-2 px-6 rounded-full text-sm font-semibold">Best Price</div>
+                                    <div key={plan.id} className="bg-white border-2 border-gray-200 border-t-4 border-t-[#a413ed] rounded-xl p-10 text-center relative max-w-[600px] mx-auto transition-all duration-300 hover:shadow-[0_4px_20px_rgba(251,52,170,0.3)]">
+                                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white py-2 px-6 rounded-full text-sm font-semibold">Best Price</div>
                                         <h3 className="text-xl font-semibold text-gray-800 mb-4 mt-6">{plan.planName}</h3>
                                         <div className="text-4xl font-bold text-gray-900 my-4">₹{plan.offerAmount || plan.amount}/-</div>
                                         <div className="text-lg text-gray-600 mb-6">
                                             For {plan.validMonth} year{plan.validMonth > 1 ? 's' : ''} unlimited profiles
                                         </div>
                                         <button
-                                            className="w-full bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white font-semibold py-3 px-6 rounded-full transition-all duration-200 hover:shadow-[0_6px_16px_rgba(251,52,170,0.35)] hover:-translate-y-0.5"
+                                            className="w-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white font-semibold py-3 px-6 rounded-full transition-all duration-200 hover:shadow-[0_6px_16px_rgba(251,52,170,0.35)] hover:-translate-y-0.5"
                                             onClick={() => handlePayNow(plan)}
                                         >
                                             Pay Now
@@ -223,7 +223,7 @@ const SubscriptionPlans = () => {
                                 Cancel
                             </button>
                             <button
-                                className="flex-1 py-3 px-4 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white font-semibold rounded-lg shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed"
+                                className="flex-1 py-3 px-4 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white font-semibold rounded-lg shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed"
                                 onClick={confirmPayment}
                                 disabled={processingPayment}
                             >
@@ -238,4 +238,5 @@ const SubscriptionPlans = () => {
 };
 
 export default SubscriptionPlans;
+
 

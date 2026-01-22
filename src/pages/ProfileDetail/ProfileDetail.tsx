@@ -490,21 +490,21 @@ const ProfileDetail = () => {
                 {/* Top Navigation */}
                 <div className="flex justify-between items-center mb-10 bg-white p-6 rounded-[32px] shadow-sm border border-gray-100/50">
                     <button
-                        className="h-12 px-8 bg-gray-50 text-gray-700 rounded-full font-bold text-sm flex items-center gap-2 transition-all hover:bg-white hover:shadow-md hover:text-[#C204E7]"
+                        className="h-12 px-8 bg-gray-50 text-gray-700 rounded-full font-bold text-sm flex items-center gap-2 transition-all hover:bg-white hover:shadow-md hover:text-[#8b10c9]"
                         onClick={() => navigate('/home')}
                     >
                         <span>←</span> All Matches
                     </button>
                     <div className="flex gap-4">
                         <button
-                            className="w-12 h-12 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-600 font-bold transition-all hover:shadow-lg hover:border-[#FB34AA40] hover:text-[#FB34AA] disabled:opacity-30"
+                            className="w-12 h-12 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-600 font-bold transition-all hover:shadow-lg hover:border-[#a413ed40] hover:text-[#a413ed] disabled:opacity-30"
                             onClick={navigateToPreviousProfile}
                             disabled={currentProfileIndex <= 0 || similarMatches.length === 0}
                         >
                             ←
                         </button>
                         <button
-                            className="w-12 h-12 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-600 font-bold transition-all hover:shadow-lg hover:border-[#C204E740] hover:text-[#C204E7] disabled:opacity-30"
+                            className="w-12 h-12 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-600 font-bold transition-all hover:shadow-lg hover:border-[#8b10c940] hover:text-[#8b10c9] disabled:opacity-30"
                             onClick={navigateToNextProfile}
                             disabled={currentProfileIndex >= similarMatches.length - 1 || similarMatches.length === 0}
                         >
@@ -522,7 +522,7 @@ const ProfileDetail = () => {
                                 <div className="flex gap-6 items-start md:flex-col">
                                     <div className="relative shrink-0">
                                         <div
-                                            className={`w-[160px] h-[160px] rounded-[32px] bg-gradient-to-br from-[#FB34AA] to-[#C204E7] flex items-center justify-center text-white text-5xl font-black overflow-hidden shadow-xl shadow-[#FB34AA20] relative ${getAllPhotos().length > 0 ? 'cursor-pointer group' : ''}`}
+                                            className={`w-[160px] h-[160px] rounded-[32px] bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-white text-5xl font-black overflow-hidden shadow-xl shadow-[#a413ed20] relative ${getAllPhotos().length > 0 ? 'cursor-pointer group' : ''}`}
                                             onClick={() => getAllPhotos().length > 0 && handleImageClick(0)}
                                         >
                                             {profilePhotos?.photo1link && profilePhotos.photo1link.trim() !== '' && profilePhotos.photo1link !== 'null' ? (
@@ -556,7 +556,7 @@ const ProfileDetail = () => {
                                                 </div>
                                             )}
                                         </div>
-                                        <p className="text-[#C204E7] font-bold text-sm mb-4 flex items-center gap-1">
+                                        <p className="text-[#8b10c9] font-bold text-sm mb-4 flex items-center gap-1">
                                             <span className="opacity-50 text-gray-400">#</span>{profile.userCode || 'N/A'}
                                         </p>
 
@@ -571,7 +571,7 @@ const ProfileDetail = () => {
                                             <span className="opacity-20 text-gray-300">|</span>
                                             <span>{height}</span>
                                             <span className="opacity-20 text-gray-300">|</span>
-                                            <span className="text-[#C204E7]">{caste}</span>
+                                            <span className="text-[#8b10c9]">{caste}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -579,9 +579,9 @@ const ProfileDetail = () => {
 
                             {/* View Details Button - Only show if not own profile and details not viewed */}
                             {!isOwnProfile && !hasViewedDetails && (
-                                <div className="p-4 bg-gradient-to-r from-[#FB34AA10] to-[#C204E710] border-b border-gray-100/50">
+                                <div className="p-4 bg-gradient-to-r from-[#a413ed10] to-[#8b10c910] border-b border-gray-100/50">
                                     <button
-                                        className="w-full h-12 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2"
+                                        className="w-full h-12 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 flex items-center justify-center gap-2"
                                         onClick={handleViewDetails}
                                         disabled={isViewingDetails}
                                     >
@@ -604,7 +604,7 @@ const ProfileDetail = () => {
                             {!isOwnProfile && (
                                 <div className="p-4 bg-gray-50/20 flex gap-3 flex-wrap border-b border-gray-100/50">
                                     <button
-                                        className={`flex-1 min-w-[140px] h-11 flex items-center justify-center gap-2 rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg disabled:opacity-50 ${profileActions.has('interest') ? 'bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white shadow-[#FB34AA30]' : 'bg-white text-gray-600 hover:shadow-xl hover:-translate-y-0.5 border border-gray-100'}`}
+                                        className={`flex-1 min-w-[140px] h-11 flex items-center justify-center gap-2 rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-lg disabled:opacity-50 ${profileActions.has('interest') ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white shadow-[#a413ed30]' : 'bg-white text-gray-600 hover:shadow-xl hover:-translate-y-0.5 border border-gray-100'}`}
                                         onClick={() => handleActionClick('interest')}
                                         disabled={loading}
                                     >
@@ -642,11 +642,11 @@ const ProfileDetail = () => {
                                 ].map((tab) => (
                                     <button
                                         key={tab.id}
-                                        className={`py-4 text-xs font-black uppercase tracking-widest transition-all relative ${activeTab === tab.id ? 'text-[#FB34AA]' : 'text-gray-400 hover:text-gray-600'}`}
+                                        className={`py-4 text-xs font-black uppercase tracking-widest transition-all relative ${activeTab === tab.id ? 'text-[#a413ed]' : 'text-gray-400 hover:text-gray-600'}`}
                                         onClick={() => setActiveTab(tab.id as any)}
                                     >
                                         {tab.label}
-                                        {activeTab === tab.id && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] rounded-t-full"></div>}
+                                        {activeTab === tab.id && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] rounded-t-full"></div>}
                                     </button>
                                 ))}
                             </div>
@@ -849,16 +849,16 @@ const ProfileDetail = () => {
                                         className="flex gap-4 items-center group cursor-pointer"
                                         onClick={() => navigate(`/profile/${match.accountId}`)}
                                     >
-                                        <div className="w-16 h-16 rounded-2xl bg-[#FB34AA10] flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform">{match.name?.charAt(0) || '👤'}</div>
+                                        <div className="w-16 h-16 rounded-2xl bg-[#a413ed10] flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform">{match.name?.charAt(0) || '👤'}</div>
                                         <div className="flex-1 min-w-0">
-                                            <div className="font-black text-[#1a1a1a] truncate group-hover:text-[#FB34AA] transition-colors">{match.name}</div>
+                                            <div className="font-black text-[#1a1a1a] truncate group-hover:text-[#a413ed] transition-colors">{match.name}</div>
                                             <div className="text-xs text-gray-400 font-bold">{match.age || '?'} Yrs • {match.basicDetail?.city || 'Not Specified'}</div>
                                         </div>
-                                        <div className="text-gray-300 group-hover:text-[#FB34AA] transition-colors">›</div>
+                                        <div className="text-gray-300 group-hover:text-[#a413ed] transition-colors">›</div>
                                     </div>
                                 ))}
                             </div>
-                            <button className="w-full mt-8 py-4 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-[#C204E7] transition-colors border-t border-gray-50 pt-6" onClick={() => navigate('/home')}>View All Recommendations</button>
+                            <button className="w-full mt-8 py-4 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-[#8b10c9] transition-colors border-t border-gray-50 pt-6" onClick={() => navigate('/home')}>View All Recommendations</button>
                         </div>
                     </div>
                 </div>
@@ -892,7 +892,7 @@ const ProfileDetail = () => {
 
                         <div className="absolute bottom-4 flex gap-3">
                             {getAllPhotos().map((_, idx) => (
-                                <div key={idx} className={`w-2 h-2 rounded-full transition-all ${idx === selectedImageIndex ? 'w-8 bg-[#FB34AA]' : 'bg-white/20'}`}></div>
+                                <div key={idx} className={`w-2 h-2 rounded-full transition-all ${idx === selectedImageIndex ? 'w-8 bg-[#a413ed]' : 'bg-white/20'}`}></div>
                             ))}
                         </div>
                     </div>
@@ -915,7 +915,7 @@ const ProfileDetail = () => {
                                 Cancel
                             </button>
                             <button
-                                className="flex-1 h-11 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:shadow-lg"
+                                className="flex-1 h-11 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:shadow-lg"
                                 onClick={confirmViewDetails}
                             >
                                 Yes
@@ -941,7 +941,7 @@ const ProfileDetail = () => {
                                 Close
                             </button>
                             <button
-                                className="flex-1 h-11 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:shadow-lg"
+                                className="flex-1 h-11 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all hover:shadow-lg"
                                 onClick={() => {
                                     setShowUpgradeDialog(false);
                                     navigate('/subscription');
@@ -961,12 +961,13 @@ const DetailRow = ({ label, value, isFullWidth = false }: { label: string; value
     if (!value && value !== 0) return null;
     return (
         <div className={`${isFullWidth ? 'col-span-2' : ''} group`}>
-            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 block group-hover:text-[#FB34AA] transition-colors">{label}</span>
+            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 block group-hover:text-[#a413ed] transition-colors">{label}</span>
             <div className="text-base font-bold text-gray-700 leading-snug">{value}</div>
         </div>
     );
 };
 
 export default ProfileDetail;
+
 
 

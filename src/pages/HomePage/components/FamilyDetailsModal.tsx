@@ -219,7 +219,7 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-6 py-3 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
+                            className="flex-1 px-6 py-3 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
                         >
                             Save
                         </button>
@@ -231,3 +231,4 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
 };
 
 export default FamilyDetailsModal;
+

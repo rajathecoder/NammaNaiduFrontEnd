@@ -370,7 +370,7 @@ const OTPPage = () => {
                                 <select
                                     value={countryCode}
                                     onChange={(e) => setCountryCode(e.target.value)}
-                                    className="w-24 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#FB34AA] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                    className="w-24 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
                                 >
                                     <option>+91</option>
                                     <option>+1</option>
@@ -382,7 +382,7 @@ const OTPPage = () => {
                                     placeholder="9865614558"
                                     value={phoneInput}
                                     onChange={(e) => setPhoneInput(e.target.value)}
-                                    className="flex-1 min-w-[200px] text-base py-3.5 px-4 border border-gray-300 rounded transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#FB34AA] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                    className="flex-1 min-w-[200px] text-base py-3.5 px-4 border border-gray-300 rounded transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
                                 />
                                 <button
                                     type="button"
@@ -418,7 +418,7 @@ const OTPPage = () => {
                                             inputRefs[5].current?.focus();
                                         }
                                     }}
-                                    className="w-[60px] h-[60px] border-2 border-gray-200 rounded-lg text-center text-2xl font-semibold text-gray-800 transition-all duration-300 focus:outline-none focus:border-[#FB34AA] focus:shadow-[0_0_0_3px_rgba(251,52,170,0.1)] md:w-[50px] md:h-[50px] md:text-xl sm:w-[45px] sm:h-[45px] sm:text-lg"
+                                    className="w-[60px] h-[60px] border-2 border-gray-200 rounded-lg text-center text-2xl font-semibold text-gray-800 transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_3px_rgba(251,52,170,0.1)] md:w-[50px] md:h-[50px] md:text-xl sm:w-[45px] sm:h-[45px] sm:text-lg"
                                     placeholder="0"
                                 />
                             ))}
@@ -459,4 +459,5 @@ const OTPPage = () => {
 };
 
 export default OTPPage;
+
 

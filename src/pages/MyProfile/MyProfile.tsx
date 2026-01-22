@@ -1260,7 +1260,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'basic'
-                                        ? 'border-[#FB34AA] text-[#FB34AA]'
+                                        ? 'border-[#a413ed] text-[#a413ed]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('basic')}
@@ -1270,7 +1270,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'horoscope'
-                                        ? 'border-[#FB34AA] text-[#FB34AA]'
+                                        ? 'border-[#a413ed] text-[#a413ed]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('horoscope')}
@@ -1280,7 +1280,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'family'
-                                        ? 'border-[#FB34AA] text-[#FB34AA]'
+                                        ? 'border-[#a413ed] text-[#a413ed]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('family')}
@@ -1290,7 +1290,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'images'
-                                        ? 'border-[#FB34AA] text-[#FB34AA]'
+                                        ? 'border-[#a413ed] text-[#a413ed]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('images')}
@@ -1300,7 +1300,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'hobbies'
-                                        ? 'border-[#FB34AA] text-[#FB34AA]'
+                                        ? 'border-[#a413ed] text-[#a413ed]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('hobbies')}
@@ -2368,7 +2368,7 @@ const MyProfile = () => {
                                     type="button"
                                     onClick={handlePhotoSave}
                                     disabled={editingPhotos.length === 0 || uploadingPhotos}
-                                    className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#FB34AA] to-[#C204E7] text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {uploadingPhotos ? 'Saving...' : 'Save Photos'}
                                 </button>
@@ -2434,4 +2434,5 @@ const MyProfile = () => {
 };
 
 export default MyProfile;
+
 

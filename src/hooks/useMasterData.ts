@@ -102,3 +102,4 @@ export const useMasterData = (types: MasterType[]): UseMasterDataResult => {
 
 export default useMasterData;
 
+

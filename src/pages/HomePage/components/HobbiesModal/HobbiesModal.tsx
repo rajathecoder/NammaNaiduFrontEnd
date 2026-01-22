@@ -154,3 +154,4 @@ const HobbiesModal: React.FC<HobbiesModalProps> = ({
 };
 
 export default HobbiesModal;
+
