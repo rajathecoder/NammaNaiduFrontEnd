@@ -4,6 +4,7 @@ import Lottie from 'lottie-react';
 import marriageCoupleAnimation from '../../assets/images/MarriageCouplehugging.json';
 import logoOnly from '../../assets/images/logoonly.png';
 import { getApiUrl } from '../../config/api.config';
+import { isValidMobile, isValidName, sanitizeInput } from '../../utils/validation';
 
 const RegisterPage = () => {
     const [profileFor, setProfileFor] = useState('Myself');
@@ -18,6 +19,12 @@ const RegisterPage = () => {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Security: Validate inputs
+        if (!isValidName(name)) {
+            alert('Please enter a valid name (2-50 characters, letters only).');
+            return;
+        }
+
         if (!agreedToTerms) {
             alert('Please agree to the Terms & Conditions and Privacy Policy');
             return;
@@ -26,12 +33,18 @@ const RegisterPage = () => {
         setIsSubmitting(true);
 
         try {
-            const normalizedMobile = mobile.replace(/\D/g, '');
-            if (!normalizedMobile) {
-                alert('Please enter a valid mobile number');
+            // Security: Sanitize inputs
+            const sanitizedName = sanitizeInput(name);
+            const sanitizedMobile = sanitizeInput(mobile);
+
+            // Security: Strict mobile validation
+            if (!isValidMobile(sanitizedMobile, countryCode)) {
+                alert(`Please enter a valid mobile number${countryCode === '+91' ? ' (10 digits)' : ''}. Do not include the country code.`);
                 setIsSubmitting(false);
                 return;
             }
+
+            const normalizedMobile = sanitizedMobile.replace(/\D/g, '');
 
             // Prepare payload for new OTP API
             const mobileno = `${countryCode}${normalizedMobile}`;
@@ -58,7 +71,7 @@ const RegisterPage = () => {
                 // Store registration data in localStorage for OTP verification
                 localStorage.setItem('otpFlow', 'register');
                 localStorage.setItem('registrationData', JSON.stringify({
-                    name,
+                    name: sanitizedName,
                     gender,
                     mobile: normalizedMobile,
                     countryCode,
