@@ -6,6 +6,7 @@ import logoOnly from '../../assets/images/logoonly.png';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { setAuthData } from '../../utils/auth';
 import { DeviceInfo } from '../../utils/deviceInfo';
+import { sanitizeInput, isValidEmail, isValidMobile } from '../../utils/validation';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -18,12 +19,26 @@ const LoginPage = () => {
         e.preventDefault();
 
         try {
+            // Security: Sanitize email/mobile input
+            const sanitizedEmail = sanitizeInput(email);
+
+            // Basic validation for Email or Mobile
+            const isEmail = sanitizedEmail.includes('@');
+            const isValid = isEmail
+                ? isValidEmail(sanitizedEmail)
+                : isValidMobile(sanitizedEmail, 'any'); // Use 'any' to trigger generic length check (7-15 digits)
+
+            if (!isValid) {
+                alert(isEmail ? 'Please enter a valid email address.' : 'Please enter a valid mobile number.');
+                return;
+            }
+
             const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.LOGIN), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email: sanitizedEmail, password }),
             });
 
             const data = await response.json();
