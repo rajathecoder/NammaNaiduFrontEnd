@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -25,7 +25,13 @@ const Matches = () => {
     const [loading, setLoading] = useState(true);
     const [sentInterests, setSentInterests] = useState<Set<string>>(new Set());
 
-    const handleConnect = async (accountId: string) => {
+    // Use ref to access latest sentInterests in stable callbacks without triggering re-renders
+    const sentInterestsRef = useRef(sentInterests);
+    useEffect(() => {
+        sentInterestsRef.current = sentInterests;
+    }, [sentInterests]);
+
+    const handleConnect = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
@@ -57,18 +63,17 @@ const Matches = () => {
             console.error('Error sending interest:', error);
             alert('An error occurred while sending interest');
         }
-    };
+    }, [navigate]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (profile: MatchProfile) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
 
-        // Check if currently shortlisted
-        const currentMatch = allMatches.find(m => m.accountId === accountId);
-        const isCurrentlyShortlisted = currentMatch?.shortlisted;
+        const accountId = profile.accountId;
+        const isCurrentlyShortlisted = profile.shortlisted;
 
         try {
             const method = isCurrentlyShortlisted ? 'DELETE' : 'POST';
@@ -100,7 +105,21 @@ const Matches = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    const handleCardAction = useCallback((e: React.MouseEvent, profile: any) => {
+        e.stopPropagation();
+        if (sentInterestsRef.current.has(profile.accountId)) {
+            navigate(`/profile/${profile.accountId}`);
+        } else {
+            handleConnect(profile.accountId);
+        }
+    }, [navigate, handleConnect]);
+
+    const handleCardFavorite = useCallback((e: React.MouseEvent, profile: any) => {
+        e.stopPropagation();
+        handleShortlist(profile);
+    }, [handleShortlist]);
 
     // Fetch matches from API
     useEffect(() => {
@@ -129,7 +148,7 @@ const Matches = () => {
                         }
                     );
 
-                    let shortlistedIds = new Set();
+                    const shortlistedIds = new Set();
                     if (shortlistResponse.ok) {
                         const dl = await shortlistResponse.json();
                         if (dl.success && dl.data) {
@@ -207,8 +226,8 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // Calculate pagination with filtering - Memoized to prevent recalculation on every render
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,9 +249,7 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
+    }, [selectedFilter, allMatches]);
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
@@ -409,18 +426,8 @@ const Matches = () => {
                                     profile={match}
                                     profilePhoto={match.photo1link}
                                     primaryButtonText={sentInterests.has(match.accountId) ? "View Profile" : "Connect"}
-                                    onPrimaryAction={(e) => {
-                                        e.stopPropagation();
-                                        if (sentInterests.has(match.accountId)) {
-                                            navigate(`/profile/${match.accountId}`);
-                                        } else {
-                                            handleConnect(match.accountId);
-                                        }
-                                    }}
-                                    onFavorite={(e) => {
-                                        e.stopPropagation();
-                                        handleShortlist(match.accountId);
-                                    }}
+                                    onPrimaryAction={handleCardAction}
+                                    onFavorite={handleCardFavorite}
                                     isFavorite={match.shortlisted}
                                 />
                             ))
