@@ -6,6 +6,7 @@ import logoOnly from '../../assets/images/logoonly.png';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { setAuthData } from '../../utils/auth';
 import { DeviceInfo } from '../../utils/deviceInfo';
+import { isValidEmail, isValidMobile, sanitizeInput } from '../../utils/validation';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -17,13 +18,20 @@ const LoginPage = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Input validation
+        const sanitizedEmail = sanitizeInput(email);
+        if (!isValidEmail(sanitizedEmail) && !isValidMobile(sanitizedEmail)) {
+            alert('Please enter a valid email address or 10-digit mobile number');
+            return;
+        }
+
         try {
             const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.LOGIN), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email: sanitizedEmail, password }),
             });
 
             const data = await response.json();

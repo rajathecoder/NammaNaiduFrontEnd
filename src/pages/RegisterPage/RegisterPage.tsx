@@ -4,6 +4,7 @@ import Lottie from 'lottie-react';
 import marriageCoupleAnimation from '../../assets/images/MarriageCouplehugging.json';
 import logoOnly from '../../assets/images/logoonly.png';
 import { getApiUrl } from '../../config/api.config';
+import { isValidName, isValidMobile, sanitizeInput } from '../../utils/validation';
 
 const RegisterPage = () => {
     const [profileFor, setProfileFor] = useState('Myself');
@@ -23,24 +24,28 @@ const RegisterPage = () => {
             return;
         }
 
+        // Input validation
+        const sanitizedName = sanitizeInput(name);
+        if (!isValidName(sanitizedName)) {
+            alert('Please enter a valid name (2-50 characters, letters and dots only)');
+            return;
+        }
+
+        const normalizedMobile = mobile.replace(/\D/g, '');
+        if (!isValidMobile(normalizedMobile)) {
+            alert('Please enter a valid 10-digit mobile number');
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
-            const normalizedMobile = mobile.replace(/\D/g, '');
-            if (!normalizedMobile) {
-                alert('Please enter a valid mobile number');
-                setIsSubmitting(false);
-                return;
-            }
-
             // Prepare payload for new OTP API
             const mobileno = `${countryCode}${normalizedMobile}`;
             const payload = {
                 mobileno: mobileno,
                 isemailid: false
             };
-
-            console.log('📤 RegisterPage - Sending OTP Payload:', JSON.stringify(payload, null, 2));
 
             const response = await fetch(getApiUrl('/api/auth/otp/send'), {
                 method: 'POST',
@@ -52,13 +57,11 @@ const RegisterPage = () => {
 
             const data = await response.json();
             
-            console.log('📥 RegisterPage - OTP Response:', JSON.stringify(data, null, 2));
-
             if (data.status && data.otp) {
                 // Store registration data in localStorage for OTP verification
                 localStorage.setItem('otpFlow', 'register');
                 localStorage.setItem('registrationData', JSON.stringify({
-                    name,
+                    name: sanitizedName,
                     gender,
                     mobile: normalizedMobile,
                     countryCode,
