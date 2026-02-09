@@ -58,6 +58,10 @@ export const API_ENDPOINTS = {
     HOBBIES: '/api/users/hobbies',
     SEARCH: '/api/users/search',
     VIEW_PROFILE_DETAILS: '/api/users/profile/view-details',
+    PARTNER_PREFERENCES: '/api/users/partner-preferences',
+    PROFILE_DRAFT: '/api/users/profile/draft',
+    PROFILE_VISIBILITY: '/api/users/profile/visibility',
+    DELETE_PROFILE: '/api/users/profile',
     NOTIFICATIONS: {
       GET: '/api/notifications',
       READ: (id: string | number) => `/api/notifications/${id}/read`,

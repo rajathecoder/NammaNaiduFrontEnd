@@ -16,6 +16,8 @@ import Interests from './pages/Interests/Interests';
 import ConversationsList from './pages/Messages/ConversationsList';
 import ChatWindow from './pages/Messages/ChatWindow';
 import Search from './pages/Search/Search';
+import PartnerPreferences from './pages/PartnerPreferences/PartnerPreferences';
+import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
 import Matches from './pages/Matches/Matches';
 import Notifications from './pages/Notifications/Notifications';
 import LandingPage from './pages/LandingPage/LandingPage';
@@ -68,6 +70,8 @@ function App() {
         <Route path="/search" element={<UserProtectedRoute><Search /></UserProtectedRoute>} />
         <Route path="/matches" element={<UserProtectedRoute><Matches /></UserProtectedRoute>} />
         <Route path="/notifications" element={<UserProtectedRoute><Notifications /></UserProtectedRoute>} />
+        <Route path="/partner-preferences" element={<UserProtectedRoute><PartnerPreferences /></UserProtectedRoute>} />
+        <Route path="/profile-settings" element={<UserProtectedRoute><ProfileSettings /></UserProtectedRoute>} />
 
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>

@@ -1202,21 +1202,37 @@ const MyProfile = () => {
                         <span>←</span>
                         <span>Back to Home</span>
                     </button>
-                    <button
-                        onClick={() => {
-                            fetchProfile();
-                            fetchHoroscopeDetails();
-                            fetchFamilyDetails();
-                            if (profile?.accountId) {
-                                fetchUserPhotosForAccount(profile.accountId);
-                            }
-                        }}
-                        className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors shadow-sm border border-gray-200"
-                        disabled={loading}
-                    >
-                        <span>🔄</span>
-                        <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/partner-preferences')}
+                            className="flex items-center gap-2 px-4 py-2 bg-white text-[#a413ed] rounded-lg font-medium hover:bg-purple-50 transition-colors shadow-sm border border-[#a413ed]/30"
+                        >
+                            <span>💑</span>
+                            <span>Partner Preferences</span>
+                        </button>
+                        <button
+                            onClick={() => navigate('/profile-settings')}
+                            className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors shadow-sm border border-gray-200"
+                        >
+                            <span>⚙️</span>
+                            <span>Settings</span>
+                        </button>
+                        <button
+                            onClick={() => {
+                                fetchProfile();
+                                fetchHoroscopeDetails();
+                                fetchFamilyDetails();
+                                if (profile?.accountId) {
+                                    fetchUserPhotosForAccount(profile.accountId);
+                                }
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors shadow-sm border border-gray-200"
+                            disabled={loading}
+                        >
+                            <span>🔄</span>
+                            <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div className="bg-white rounded-xl p-8 shadow-[0_2px_8px_rgba(0,0,0,0.1)]">
