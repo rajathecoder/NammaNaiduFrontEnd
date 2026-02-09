@@ -240,7 +240,7 @@ const OTPPage = () => {
             const data = await response.json();
 
             if (data.status) {
-                alert(data.message || 'OTP sent successfully. Please check your mobile.');
+                alert(data.data?.otp ? 'Your OTP is: ' + data.data.otp : (data.message || 'OTP sent successfully. Please check your mobile.'));
                 setMobileNumber(normalizedMobile);
                 setTimer(28);
                 setCanResend(false);
@@ -292,7 +292,7 @@ const OTPPage = () => {
             const data = await response.json();
 
             if (data.status) {
-                alert(data.message || 'OTP resent successfully. Please check your mobile.');
+                alert(data.data?.otp ? 'Your OTP is: ' + data.data.otp : (data.message || 'OTP resent successfully. Please check your mobile.'));
                 setMobileNumber(normalizedMobile);
                 setTimer(28);
                 setCanResend(false);

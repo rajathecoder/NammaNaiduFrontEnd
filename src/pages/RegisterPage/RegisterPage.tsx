@@ -65,7 +65,7 @@ const RegisterPage = () => {
                     mobileno: mobileno,
                 }));
 
-                alert(data.message || 'OTP sent successfully. Please check your mobile.');
+                alert(data.data?.otp ? 'Your OTP is: ' + data.data.otp : (data.message || 'OTP sent successfully. Please check your mobile.'));
                 navigate('/verify-otp');
             } else {
                 alert(data.message || 'Failed to send OTP. Please try again.');
