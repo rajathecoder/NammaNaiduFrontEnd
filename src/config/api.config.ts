@@ -62,6 +62,10 @@ export const API_ENDPOINTS = {
     PROFILE_DRAFT: '/api/users/profile/draft',
     PROFILE_VISIBILITY: '/api/users/profile/visibility',
     DELETE_PROFILE: '/api/users/profile',
+    RECOMMENDATIONS: '/api/users/recommendations',
+    RECOMMENDATION_ACTION: (id: number) => `/api/users/recommendations/${id}/action`,
+    COMPATIBILITY: (accountId: string) => `/api/users/compatibility/${accountId}`,
+    UNMATCH: (matchId: number) => `/api/users/matches/${matchId}/unmatch`,
     NOTIFICATIONS: {
       GET: '/api/notifications',
       READ: (id: string | number) => `/api/notifications/${id}/read`,
