@@ -13,7 +13,6 @@ import HomePage from './pages/HomePage/HomePage';
 import MyProfile from './pages/MyProfile/MyProfile';
 import ProfileDetail from './pages/ProfileDetail/ProfileDetail';
 import Interests from './pages/Interests/Interests';
-import MessagesList from './pages/Messages/MessagesList';
 import ConversationsList from './pages/Messages/ConversationsList';
 import ChatWindow from './pages/Messages/ChatWindow';
 import Search from './pages/Search/Search';

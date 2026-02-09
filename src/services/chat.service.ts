@@ -3,9 +3,9 @@ import {
   query,
   orderBy,
   onSnapshot,
-  Unsubscribe,
   Timestamp,
 } from 'firebase/firestore';
+import type { Unsubscribe } from 'firebase/firestore';
 import { getDb } from './firebase';
 
 export interface Message {
