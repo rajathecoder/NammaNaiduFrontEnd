@@ -2,6 +2,7 @@
 
 export interface AuthData {
   token: string;
+  refreshToken: string;
   userId: number;
   accountId: string;
   userInfo?: any;
@@ -13,6 +14,7 @@ export interface AuthData {
 export const getAuthData = (): AuthData | null => {
   try {
     const token = localStorage.getItem('token');
+    const refreshToken = localStorage.getItem('refreshToken');
     const userId = localStorage.getItem('userId');
     const accountId = localStorage.getItem('accountId');
     const userInfo = localStorage.getItem('userInfo');
@@ -23,6 +25,7 @@ export const getAuthData = (): AuthData | null => {
 
     return {
       token,
+      refreshToken: refreshToken || '',
       userId: userId ? parseInt(userId, 10) : 0,
       accountId: accountId || '',
       userInfo: userInfo ? JSON.parse(userInfo) : null,
@@ -36,11 +39,14 @@ export const getAuthData = (): AuthData | null => {
 /**
  * Set authentication data in localStorage
  */
-export const setAuthData = (token: string, userId: number, accountId: string, userInfo?: any): void => {
+export const setAuthData = (token: string, userId: number, accountId: string, userInfo?: any, refreshToken?: string): void => {
   try {
     localStorage.setItem('token', token);
     localStorage.setItem('userId', userId.toString());
     localStorage.setItem('accountId', accountId);
+    if (refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken);
+    }
     if (userInfo) {
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
     }
@@ -50,10 +56,23 @@ export const setAuthData = (token: string, userId: number, accountId: string, us
 };
 
 /**
+ * Update only the tokens (used after refresh)
+ */
+export const updateTokens = (token: string, refreshToken: string): void => {
+  try {
+    localStorage.setItem('token', token);
+    localStorage.setItem('refreshToken', refreshToken);
+  } catch (error) {
+    console.error('Error updating tokens:', error);
+  }
+};
+
+/**
  * Clear authentication data from localStorage
  */
 export const clearAuthData = (): void => {
   localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
   localStorage.removeItem('userId');
   localStorage.removeItem('accountId');
   localStorage.removeItem('userInfo');
@@ -74,7 +93,7 @@ export const isAuthenticated = (): boolean => {
 /**
  * Get authorization header for API requests
  */
-export const getAuthHeader = (): { Authorization: string } | {} => {
+export const getAuthHeader = (): { Authorization: string } | Record<string, never> => {
   const authData = getAuthData();
   if (authData && authData.token) {
     return { Authorization: `Bearer ${authData.token}` };

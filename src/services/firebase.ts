@@ -4,7 +4,9 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 import type { ConfirmationResult, User } from 'firebase/auth';
+import type { Firestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -12,6 +14,7 @@ const firebaseConfig = {
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ?? undefined,
 };
 
 let confirmationResult: ConfirmationResult | null = null;
@@ -26,6 +29,11 @@ const ensureFirebaseApp = () => {
 const getFirebaseAuth = () => {
   ensureFirebaseApp();
   return getAuth();
+};
+
+export const getDb = (): Firestore => {
+  ensureFirebaseApp();
+  return getFirestore();
 };
 
 export const getRecaptchaVerifier = (containerId = 'recaptcha-container') => {

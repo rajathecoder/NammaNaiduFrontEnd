@@ -54,8 +54,7 @@ const RegisterPage = () => {
             
             console.log('📥 RegisterPage - OTP Response:', JSON.stringify(data, null, 2));
 
-            if (data.status && data.otp) {
-                // Store registration data in localStorage for OTP verification
+            if (data.success !== false && (data.status !== false)) {
                 localStorage.setItem('otpFlow', 'register');
                 localStorage.setItem('registrationData', JSON.stringify({
                     name,
@@ -64,21 +63,9 @@ const RegisterPage = () => {
                     countryCode,
                     profileFor,
                     mobileno: mobileno,
-                    otp: data.otp, // Store OTP for verification
                 }));
 
-                // Show appropriate message based on SMS status
-                let message = '';
-                if (data.smsSent === true) {
-                    message = data.message || 'OTP sent successfully to your mobile number via SMS!';
-                } else if (data.smsSent === false) {
-                    message = `OTP generated. SMS sending failed. OTP: ${data.otp} (for testing)`;
-                } else {
-                    message = data.message || `OTP sent successfully! Your OTP is: ${data.otp}`;
-                }
-
-                alert(message);
-                // Navigate to OTP verification page
+                alert(data.message || 'OTP sent successfully. Please check your mobile.');
                 navigate('/verify-otp');
             } else {
                 alert(data.message || 'Failed to send OTP. Please try again.');

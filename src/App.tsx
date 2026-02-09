@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import LoginPage from './pages/LoginPage/LoginPage';
+import ForgotPasswordPage from './pages/ForgotPassword/ForgotPasswordPage';
 import OTPPage from './pages/OTPPage/OTPPage';
 import BasicDetails from './pages/BasicDetails/BasicDetails';
 import PersonalReligiousDetails from './pages/BasicDetails/PersonalReligiousDetails';
@@ -13,10 +14,13 @@ import MyProfile from './pages/MyProfile/MyProfile';
 import ProfileDetail from './pages/ProfileDetail/ProfileDetail';
 import Interests from './pages/Interests/Interests';
 import MessagesList from './pages/Messages/MessagesList';
+import ConversationsList from './pages/Messages/ConversationsList';
+import ChatWindow from './pages/Messages/ChatWindow';
 import Search from './pages/Search/Search';
 import Matches from './pages/Matches/Matches';
 import Notifications from './pages/Notifications/Notifications';
 import LandingPage from './pages/LandingPage/LandingPage';
+import UserProtectedRoute from './components/common/UserProtectedRoute';
 import AdminLayout from './admin/components/layout/AdminLayout';
 import ProtectedRoute from './admin/components/common/ProtectedRoute';
 import Dashboard from './admin/pages/Dashboard/Dashboard';
@@ -42,25 +46,29 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-otp" element={<OTPPage />} />
-        <Route path="/basic-details" element={<BasicDetails />} />
-        <Route path="/personal-religious-details" element={<PersonalReligiousDetails />} />
-        <Route path="/professional-details" element={<ProfessionalDetails />} />
-        <Route path="/additional-details" element={<AdditionalDetails />} />
-        <Route path="/registration-success" element={<RegistrationSuccess />} />
-        <Route path="/subscription-plans" element={<SubscriptionPlans />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/my-profile" element={<MyProfile />} />
-        <Route path="/profile/:id" element={<ProfileDetail />} />
-        <Route path="/interests" element={<Interests />} />
-        <Route path="/messages" element={<MessagesList />} />
-        <Route path="/messages/:id" element={<MessagesList />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/matches" element={<Matches />} />
-        <Route path="/notifications" element={<Notifications />} />
+
+        {/* Protected user routes */}
+        <Route path="/basic-details" element={<UserProtectedRoute><BasicDetails /></UserProtectedRoute>} />
+        <Route path="/personal-religious-details" element={<UserProtectedRoute><PersonalReligiousDetails /></UserProtectedRoute>} />
+        <Route path="/professional-details" element={<UserProtectedRoute><ProfessionalDetails /></UserProtectedRoute>} />
+        <Route path="/additional-details" element={<UserProtectedRoute><AdditionalDetails /></UserProtectedRoute>} />
+        <Route path="/registration-success" element={<UserProtectedRoute><RegistrationSuccess /></UserProtectedRoute>} />
+        <Route path="/subscription-plans" element={<UserProtectedRoute><SubscriptionPlans /></UserProtectedRoute>} />
+        <Route path="/home" element={<UserProtectedRoute><HomePage /></UserProtectedRoute>} />
+        <Route path="/my-profile" element={<UserProtectedRoute><MyProfile /></UserProtectedRoute>} />
+        <Route path="/profile/:id" element={<UserProtectedRoute><ProfileDetail /></UserProtectedRoute>} />
+        <Route path="/interests" element={<UserProtectedRoute><Interests /></UserProtectedRoute>} />
+        <Route path="/messages" element={<UserProtectedRoute><ConversationsList /></UserProtectedRoute>} />
+        <Route path="/messages/:conversationId" element={<UserProtectedRoute><ChatWindow /></UserProtectedRoute>} />
+        <Route path="/search" element={<UserProtectedRoute><Search /></UserProtectedRoute>} />
+        <Route path="/matches" element={<UserProtectedRoute><Matches /></UserProtectedRoute>} />
+        <Route path="/notifications" element={<UserProtectedRoute><Notifications /></UserProtectedRoute>} />
 
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>

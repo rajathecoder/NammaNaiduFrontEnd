@@ -167,7 +167,7 @@ const BasicDetails = () => {
 
             console.log('📥 BasicDetails - Verify OTP Response:', JSON.stringify(data, null, 2));
 
-            if (data.status && data.response === 'Verified Successfully') {
+            if (data.success && (data.data?.verified === true || data.response === 'Verified Successfully' || (data.message && data.message.toLowerCase().includes('verified')))) {
                 setIsEmailVerified(true);
                 setShowOtpFields(false);
                 // Clear OTP fields after successful verification

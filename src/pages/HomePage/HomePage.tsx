@@ -499,7 +499,24 @@ const HomePage = () => {
         }
     }, [userInfo, loading]);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        // Revoke refresh token on backend before clearing local data
+        try {
+            const authData = getAuthData();
+            if (authData?.token) {
+                await fetch(getApiUrl(API_ENDPOINTS.AUTH.LOGOUT), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authData.token}`,
+                    },
+                    body: JSON.stringify({ refreshToken: authData.refreshToken }),
+                });
+            }
+        } catch (error) {
+            console.error('Logout API error:', error);
+        }
+
         // Clear all user-related data from localStorage
         clearAuthData();
 

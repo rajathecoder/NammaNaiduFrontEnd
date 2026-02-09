@@ -144,13 +144,17 @@ const OTPPage = () => {
                 return;
             }
 
-            const payload: Record<string, string | undefined> = {
-                mobile: normalizedMobile,
+            const code = registrationData.countryCode || countryCode;
+            const mobileno = `${code}${normalizedMobile}`.replace(/\s+/g, '');
+            const payload: Record<string, string | boolean | undefined> = {
+                isemailid: false,
                 otp: otpValue,
-                countryCode: registrationData.countryCode || countryCode,
+                mobileno,
+                mobile: normalizedMobile,
+                countryCode: code,
             };
 
-            if (registrationData.mobile) {
+            if (registrationData.mobile && (registrationData.name ?? registrationData.gender ?? registrationData.profileFor)) {
                 payload.name = registrationData.name;
                 payload.gender = registrationData.gender;
                 payload.profileFor = registrationData.profileFor;
@@ -173,7 +177,8 @@ const OTPPage = () => {
                         data.data.token,
                         user.id || 0,
                         user.accountId || '',
-                        user
+                        user,
+                        data.data.refreshToken
                     );
 
                     registerFcmToken(user.accountId || '', data.data.token).catch(err => {
@@ -224,7 +229,7 @@ const OTPPage = () => {
                 isemailid: false
             };
 
-            const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.SEND_OTP_NEW), {
+            const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.SEND_OTP), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -234,17 +239,8 @@ const OTPPage = () => {
 
             const data = await response.json();
 
-            if (data.status && data.otp) {
-                // Show appropriate message based on SMS status
-                let message = '';
-                if (data.smsSent === true) {
-                    message = data.message || 'OTP sent successfully to your mobile number via SMS!';
-                } else if (data.smsSent === false) {
-                    message = `OTP generated. SMS sending failed. OTP: ${data.otp} (for testing)`;
-                } else {
-                    message = data.message || `OTP sent successfully! Your OTP is: ${data.otp}`;
-                }
-                alert(message);
+            if (data.status) {
+                alert(data.message || 'OTP sent successfully. Please check your mobile.');
                 setMobileNumber(normalizedMobile);
                 setTimer(28);
                 setCanResend(false);
@@ -285,7 +281,7 @@ const OTPPage = () => {
                 isemailid: false
             };
 
-            const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.SEND_OTP_NEW), {
+            const response = await fetch(getApiUrl(API_ENDPOINTS.AUTH.SEND_OTP), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -295,17 +291,8 @@ const OTPPage = () => {
 
             const data = await response.json();
 
-            if (data.status && data.otp) {
-                // Show appropriate message based on SMS status
-                let message = '';
-                if (data.smsSent === true) {
-                    message = data.message || 'OTP resent successfully to your mobile number via SMS!';
-                } else if (data.smsSent === false) {
-                    message = `OTP generated. SMS sending failed. OTP: ${data.otp} (for testing)`;
-                } else {
-                    message = data.message || `OTP resent successfully! Your OTP is: ${data.otp}`;
-                }
-                alert(message);
+            if (data.status) {
+                alert(data.message || 'OTP resent successfully. Please check your mobile.');
                 setMobileNumber(normalizedMobile);
                 setTimer(28);
                 setCanResend(false);

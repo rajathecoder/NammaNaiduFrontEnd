@@ -1,7 +1,7 @@
 // API Configuration
 // Priority:
 // 1. Use VITE_API_BASE_URL environment variable if set
-// 2. In production: use relative URL (same origin) - works if frontend/backend on same server
+// 2. In production: use the production API URL
 // 3. In development: fallback to localhost:5000
 const getApiBaseUrl = () => {
   // If environment variable is set, use it (highest priority)
@@ -9,11 +9,9 @@ const getApiBaseUrl = () => {
     return import.meta.env.VITE_API_BASE_URL;
   }
   
-  // In production build, use relative URL (empty string = same origin)
-  // This works when frontend and backend are served from the same domain
+  // In production build, use the production API
   if (import.meta.env.PROD) {
-    // Use relative URL - browser will use same protocol/hostname/port as the page
-    return '';
+    return 'https://api.nammanaidu.cloud';
   }
   
   // Development fallback to localhost
@@ -24,19 +22,25 @@ export const API_BASE_URL = getApiBaseUrl();
 
 // API Endpoints
 export const API_ENDPOINTS = {
-  // Auth endpoints
+  // Auth endpoints (single OTP flow: /api/auth/otp/send, /api/auth/otp/verify)
   AUTH: {
     LOGIN: '/api/auth/login',
     REGISTER: '/api/auth/register',
-    SEND_OTP: '/api/auth/send-otp', // Old endpoint for registration
-    SEND_OTP_NEW: '/api/auth/otp/send', // New endpoint with MSG91 integration
-    VERIFY_OTP: '/api/auth/verify-otp',
-    VERIFY_OTP_NEW: '/api/auth/otp/verify', // New endpoint with MSG91 support
+    SEND_OTP: '/api/auth/otp/send',
+    VERIFY_OTP: '/api/auth/otp/verify',
     FIREBASE_LOGIN: '/api/auth/firebase-login',
+    REFRESH_TOKEN: '/api/auth/refresh-token',
+    LOGOUT: '/api/auth/logout',
+    FORGOT_PASSWORD: '/api/auth/forgot-password',
+    RESET_PASSWORD: '/api/auth/reset-password',
   },
   // User endpoints
   USERS: {
+    ME: '/api/users/me',
     PROFILE: '/api/users/profile',
+    PROFILE_COMPLETE: '/api/users/profile/complete',
+    REGISTRATION_PROGRESS: '/api/users/registration-progress',
+    PROFILE_SECTION: (section: string) => `/api/users/profile/sections/${section}`,
     PROFILE_BY_ACCOUNT_ID: (accountId: string) => `/api/users/profile/${accountId}`,
     UPDATE_PROFILE: '/api/users/profile',
     BASIC_DETAILS: '/api/users/basic-details',
@@ -44,6 +48,7 @@ export const API_ENDPOINTS = {
     PROFILE_ACTION_BY_TARGET: (targetUserId: string) => `/api/users/profile-actions/${targetUserId}`,
     MY_PROFILE_ACTIONS: '/api/users/my-profile-actions',
     RECEIVED_PROFILE_ACTIONS: '/api/users/received-profile-actions',
+    MATCHES: '/api/users/matches',
     OPPOSITE_GENDER_PROFILES: '/api/users/opposite-gender-profiles',
     OPPOSITE_GENDER_PROFILES_BY_ID: (id: number) => `/api/users/opposite-gender-profiles/${id}`,
     UPLOAD_PHOTOS: '/api/users/photos',
@@ -58,6 +63,28 @@ export const API_ENDPOINTS = {
       READ: (id: string | number) => `/api/notifications/${id}/read`,
       READ_ALL: '/api/notifications/read-all',
     }
+  },
+  // Subscription (authenticated)
+  SUBSCRIPTION: {
+    STATUS: '/api/subscription/status',
+    PURCHASE: '/api/subscription/purchase',
+  },
+  // Messages (PostgreSQL - optional)
+  MESSAGES: {
+    CONVERSATIONS: '/api/messages/conversations',
+    CONVERSATION_BY_ID: (id: number | string) => `/api/messages/conversations/${id}`,
+    CONVERSATION_MESSAGES: (id: number | string) => `/api/messages/conversations/${id}`,
+    SEND_MESSAGE: (conversationId: number | string) => `/api/messages/conversations/${conversationId}/messages`,
+    MARK_READ: (conversationId: number | string, messageId: number | string) =>
+      `/api/messages/conversations/${conversationId}/messages/${messageId}/read`,
+  },
+  // Chat (Firestore real-time)
+  CHAT: {
+    CONVERSATIONS: '/api/chat/conversations',
+    CONVERSATION_READ: (id: string) => `/api/chat/conversations/${id}/read`,
+    MESSAGES: '/api/chat/messages',
+    BLOCK: (id: string) => `/api/chat/conversations/${id}/block`,
+    UNBLOCK: (id: string) => `/api/chat/conversations/${id}/unblock`,
   },
   // Device endpoints
   DEVICES: {

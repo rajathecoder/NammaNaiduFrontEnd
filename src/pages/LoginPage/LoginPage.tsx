@@ -38,13 +38,14 @@ const LoginPage = () => {
                     // Redirect to admin dashboard
                     navigate('/admin/dashboard');
                 } else {
-                    // Store user token, userId, accountId and info
+                    // Store user token, userId, accountId and info (including refresh token)
                     const user = data.data.user;
                     setAuthData(
                         data.data.token,
                         user.id || 0,
                         user.accountId || '',
-                        user
+                        user,
+                        data.data.refreshToken
                     );
 
                     // Register FCM token after successful login
@@ -218,7 +219,11 @@ const LoginPage = () => {
                                         Login with OTP
                                     </button>
                                     <span className="text-gray-300">|</span>
-                                    <a href="#" className="text-[#a413ed] no-underline text-xs transition-colors duration-300 hover:text-[#8b10c9] hover:underline">Forgot Password?</a>
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate('/forgot-password')}
+                                        className="text-[#a413ed] no-underline text-xs transition-colors duration-300 hover:text-[#8b10c9] hover:underline bg-transparent border-none cursor-pointer"
+                                    >Forgot Password?</button>
                                 </div>
                             </div>
                         </form>
