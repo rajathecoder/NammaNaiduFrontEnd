@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -614,7 +614,7 @@ const HomePage = () => {
         }
     };
 
-    const handleConnect = async (accountId: string) => {
+    const handleConnect = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
@@ -646,16 +646,15 @@ const HomePage = () => {
             console.error('Error sending interest:', error);
             alert('An error occurred while sending interest');
         }
-    };
+    }, [navigate]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (accountId: string, isShortlisted: boolean) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
 
-        const isShortlisted = shortlistedProfiles.has(accountId);
         const method = isShortlisted ? 'DELETE' : 'POST';
 
         try {
@@ -687,7 +686,21 @@ const HomePage = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    const handleCardPrimaryAction = useCallback((profile: any, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (sentInterests.has(profile.accountId)) {
+            navigate(`/profile/${profile.accountId}`);
+        } else {
+            handleConnect(profile.accountId);
+        }
+    }, [sentInterests, navigate, handleConnect]);
+
+    const handleCardFavorite = useCallback((profile: any, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleShortlist(profile.accountId, shortlistedProfiles.has(profile.accountId));
+    }, [handleShortlist, shortlistedProfiles]);
 
     const fetchShortlistedProfiles = async () => {
         const authData = getAuthData();
@@ -1290,18 +1303,8 @@ const HomePage = () => {
                                         profile={profile}
                                         profilePhoto={profilePhotos[profile.accountId]?.photo1link}
                                         primaryButtonText={sentInterests.has(profile.accountId) ? "View Profile" : "Connect"}
-                                        onPrimaryAction={(e) => {
-                                            e.stopPropagation();
-                                            if (sentInterests.has(profile.accountId)) {
-                                                navigate(`/profile/${profile.accountId}`);
-                                            } else {
-                                                handleConnect(profile.accountId);
-                                            }
-                                        }}
-                                        onFavorite={(e) => {
-                                            e.stopPropagation();
-                                            handleShortlist(profile.accountId);
-                                        }}
+                                        onPrimaryAction={handleCardPrimaryAction}
+                                        onFavorite={handleCardFavorite}
                                         isFavorite={shortlistedProfiles.has(profile.accountId)}
                                     />
                                 ))}
@@ -1338,18 +1341,8 @@ const HomePage = () => {
                                         profile={profile}
                                         profilePhoto={profilePhotos[profile.accountId]?.photo1link}
                                         primaryButtonText={sentInterests.has(profile.accountId) ? "View Profile" : "Connect"}
-                                        onPrimaryAction={(e) => {
-                                            e.stopPropagation();
-                                            if (sentInterests.has(profile.accountId)) {
-                                                navigate(`/profile/${profile.accountId}`);
-                                            } else {
-                                                handleConnect(profile.accountId);
-                                            }
-                                        }}
-                                        onFavorite={(e) => {
-                                            e.stopPropagation();
-                                            handleShortlist(profile.accountId);
-                                        }}
+                                        onPrimaryAction={handleCardPrimaryAction}
+                                        onFavorite={handleCardFavorite}
                                         isFavorite={shortlistedProfiles.has(profile.accountId)}
                                     />
                                 ))}
