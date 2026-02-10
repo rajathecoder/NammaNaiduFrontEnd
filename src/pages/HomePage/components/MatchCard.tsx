@@ -6,12 +6,12 @@ interface MatchCardProps {
     profile: any;
     profilePhoto?: string;
     primaryButtonText?: string;
-    onPrimaryAction?: (e: React.MouseEvent) => void;
-    onFavorite?: (e: React.MouseEvent) => void;
+    onPrimaryAction?: (profile: any) => void;
+    onFavorite?: (profile: any) => void;
     isFavorite?: boolean;
 }
 
-const MatchCard: React.FC<MatchCardProps> = ({
+const MatchCard: React.FC<MatchCardProps> = React.memo(({
     profile,
     profilePhoto,
     primaryButtonText = "Connect",
@@ -90,9 +90,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
                         onClick={(e) => {
                             e.stopPropagation();
                             if (onPrimaryAction) {
-                                onPrimaryAction(e);
-                            } else {
-                                // Default connect logic
+                                onPrimaryAction(profile);
                             }
                         }}
                     >
@@ -102,7 +100,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
                         className={`w-9 h-9 backdrop-blur-md border rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.05] active:scale-95 cursor-pointer shadow-lg ${isFavorite ? 'bg-[#a413ed] border-[#a413ed] text-white' : 'bg-white/20 border-white/30 text-white hover:bg-white/40'}`}
                         onClick={(e) => {
                             e.stopPropagation();
-                            if (onFavorite) onFavorite(e);
+                            if (onFavorite) onFavorite(profile);
                         }}
                     >
                         <svg className="w-5 h-5" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -113,8 +111,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
             </div>
         </div>
     );
-};
+});
 
 
 export default MatchCard;
-
