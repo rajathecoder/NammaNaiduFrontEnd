@@ -1,17 +1,30 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import verifiedBadge from '../../../assets/images/verified-badge.png';
+// Minimal interface for what MatchCard needs
+export interface MatchCardProfile {
+    accountId: string;
+    name: string;
+    profileveriffied?: number;
+    basicDetail?: {
+        dateOfBirth?: string;
+        height?: string;
+        occupation?: string;
+        [key: string]: any;
+    };
+    [key: string]: any;
+}
 
 interface MatchCardProps {
-    profile: any;
+    profile: MatchCardProfile;
     profilePhoto?: string;
     primaryButtonText?: string;
-    onPrimaryAction?: (e: React.MouseEvent) => void;
-    onFavorite?: (e: React.MouseEvent) => void;
+    onPrimaryAction?: (profile: MatchCardProfile, e: React.MouseEvent) => void;
+    onFavorite?: (profile: MatchCardProfile, e: React.MouseEvent) => void;
     isFavorite?: boolean;
 }
 
-const MatchCard: React.FC<MatchCardProps> = ({
+const MatchCard = React.memo<MatchCardProps>(({
     profile,
     profilePhoto,
     primaryButtonText = "Connect",
@@ -90,7 +103,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
                         onClick={(e) => {
                             e.stopPropagation();
                             if (onPrimaryAction) {
-                                onPrimaryAction(e);
+                                onPrimaryAction(profile, e);
                             } else {
                                 // Default connect logic
                             }
@@ -102,7 +115,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
                         className={`w-9 h-9 backdrop-blur-md border rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.05] active:scale-95 cursor-pointer shadow-lg ${isFavorite ? 'bg-[#a413ed] border-[#a413ed] text-white' : 'bg-white/20 border-white/30 text-white hover:bg-white/40'}`}
                         onClick={(e) => {
                             e.stopPropagation();
-                            if (onFavorite) onFavorite(e);
+                            if (onFavorite) onFavorite(profile, e);
                         }}
                     >
                         <svg className="w-5 h-5" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -113,7 +126,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
             </div>
         </div>
     );
-};
+});
 
 
 export default MatchCard;

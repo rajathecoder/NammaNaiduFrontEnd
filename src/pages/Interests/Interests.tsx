@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { getAuthData } from '../../utils/auth';
-import MatchCard from '../HomePage/components/MatchCard';
+import MatchCard, { type MatchCardProfile } from '../HomePage/components/MatchCard';
 
 
 interface InterestProfile {
@@ -30,9 +30,13 @@ const Interests = () => {
     const [interestsByOther, setInterestsByOther] = useState<InterestProfile[]>([]);
     const [loading, setLoading] = useState(true);
     const [shortlistedProfiles, setShortlistedProfiles] = useState<Set<string>>(new Set());
+    const shortlistedProfilesRef = useRef(shortlistedProfiles);
 
+    useEffect(() => {
+        shortlistedProfilesRef.current = shortlistedProfiles;
+    }, [shortlistedProfiles]);
 
-    const handleInterestAction = async (accountId: string, action: 'accept' | 'view') => {
+    const handleInterestAction = useCallback(async (accountId: string, action: 'accept' | 'view') => {
         if (action === 'view') {
             navigate(`/profile/${accountId}`);
             return;
@@ -88,16 +92,16 @@ const Interests = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [navigate, interestsByOther]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
 
-        const isShortlisted = shortlistedProfiles.has(accountId);
+        const isShortlisted = shortlistedProfilesRef.current.has(accountId);
         const method = isShortlisted ? 'DELETE' : 'POST';
 
         try {
@@ -128,7 +132,17 @@ const Interests = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    const handlePrimaryAction = useCallback((profile: MatchCardProfile, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleInterestAction(profile.accountId, activeTab === 'received' ? 'accept' : 'view');
+    }, [activeTab, handleInterestAction]);
+
+    const handleFavoriteAction = useCallback((profile: any, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleShortlist(profile.accountId);
+    }, [handleShortlist]);
 
     const fetchShortlistedProfiles = async () => {
         const authData = getAuthData();
@@ -318,14 +332,8 @@ const Interests = () => {
                                     profile={interest}
                                     profilePhoto={interest.photo1link}
                                     primaryButtonText={activeTab === 'received' ? "Accept" : "View Profile"}
-                                    onPrimaryAction={(e) => {
-                                        e.stopPropagation();
-                                        handleInterestAction(interest.accountId, activeTab === 'received' ? 'accept' : 'view');
-                                    }}
-                                    onFavorite={(e) => {
-                                        e.stopPropagation();
-                                        handleShortlist(interest.accountId);
-                                    }}
+                                    onPrimaryAction={handlePrimaryAction}
+                                    onFavorite={handleFavoriteAction}
                                     isFavorite={shortlistedProfiles.has(interest.accountId)}
                                 />
                             ))}
