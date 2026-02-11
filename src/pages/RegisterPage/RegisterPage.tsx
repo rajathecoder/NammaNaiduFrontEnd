@@ -40,8 +40,6 @@ const RegisterPage = () => {
                 isemailid: false
             };
 
-            console.log('📤 RegisterPage - Sending OTP Payload:', JSON.stringify(payload, null, 2));
-
             const response = await fetch(getApiUrl('/api/auth/otp/send'), {
                 method: 'POST',
                 headers: {
@@ -51,8 +49,6 @@ const RegisterPage = () => {
             });
 
             const data = await response.json();
-            
-            console.log('📥 RegisterPage - OTP Response:', JSON.stringify(data, null, 2));
 
             if (data.success !== false && (data.status !== false)) {
                 localStorage.setItem('otpFlow', 'register');

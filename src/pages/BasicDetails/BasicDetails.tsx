@@ -52,8 +52,6 @@ const BasicDetails = () => {
                 isemailid: true
             };
 
-            console.log('📤 BasicDetails - Sending OTP Payload:', JSON.stringify(payload, null, 2));
-
             const response = await fetch(getApiUrl('/api/auth/otp/send'), {
                 method: 'POST',
                 headers: {
@@ -63,8 +61,6 @@ const BasicDetails = () => {
             });
 
             const data = await response.json();
-
-            console.log('📥 BasicDetails - OTP Response:', JSON.stringify(data, null, 2));
 
             if (data.status && data.otp) {
                 // Show appropriate message based on email status
@@ -153,8 +149,6 @@ const BasicDetails = () => {
                 isemailid: true
             };
 
-            console.log('📤 BasicDetails - Verifying OTP Payload:', JSON.stringify(payload, null, 2));
-
             const response = await fetch(getApiUrl('/api/auth/otp/verify'), {
                 method: 'POST',
                 headers: {
@@ -164,8 +158,6 @@ const BasicDetails = () => {
             });
 
             const data = await response.json();
-
-            console.log('📥 BasicDetails - Verify OTP Response:', JSON.stringify(data, null, 2));
 
             if (data.success && (data.data?.verified === true || data.response === 'Verified Successfully' || (data.message && data.message.toLowerCase().includes('verified')))) {
                 setIsEmailVerified(true);
@@ -211,7 +203,6 @@ const BasicDetails = () => {
             password
         }));
 
-        console.log('Basic Details:', { day, month, year, email, password });
         // Navigate to Personal and Religious Details page
         navigate('/personal-religious-details');
     };
