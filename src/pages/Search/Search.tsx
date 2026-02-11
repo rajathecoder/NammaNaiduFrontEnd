@@ -1,16 +1,17 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Header from '../../components/layout/Header';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { getAuthData } from '../../utils/auth';
-import MatchCard from '../HomePage/components/MatchCard';
+import MatchCard, { type MatchCardProfile } from '../HomePage/components/MatchCard';
 import Loading from '../../components/common/Loading';
 import { useNavigate } from 'react-router-dom';
+import type { UserProfile } from '../../services/api/user.api';
 
 const Search = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('criteria');
     const [searching, setSearching] = useState(false);
-    const [results, setResults] = useState<any[] | null>(null);
+    const [results, setResults] = useState<UserProfile[] | null>(null);
 
     // Filter states
     const [filters, setFilters] = useState({
@@ -119,7 +120,12 @@ const Search = () => {
         }
     };
 
-    const handleAction = (accountId: string) => navigate(`/profile/${accountId}`);
+    const handlePrimaryAction = useCallback((profile: MatchCardProfile, e: React.MouseEvent) => {
+        e.stopPropagation();
+        navigate(`/profile/${profile.accountId}`);
+    }, [navigate]);
+
+    const handleFavoriteAction = useCallback(() => { }, []);
 
     return (
         <div className="min-h-screen bg-[#f8f9fa]">
@@ -365,12 +371,9 @@ const Search = () => {
                                     <MatchCard
                                         key={profile.accountId}
                                         profile={profile}
-                                        onPrimaryAction={(e) => {
-                                            e.stopPropagation();
-                                            handleAction(profile.accountId);
-                                        }}
+                                        onPrimaryAction={handlePrimaryAction}
                                         primaryButtonText="View Profile"
-                                        onFavorite={() => { }}
+                                        onFavorite={handleFavoriteAction}
                                         isFavorite={false}
                                     />
                                 ))}
