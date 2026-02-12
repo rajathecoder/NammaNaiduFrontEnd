@@ -26,6 +26,14 @@ const RegisterPage = () => {
         setIsSubmitting(true);
 
         try {
+            // Validate name
+            const nameRegex = /^[a-zA-Z\s.'-]+$/;
+            if (!name.trim() || !nameRegex.test(name)) {
+                alert('Please enter a valid name (letters, spaces, dots, and hyphens only)');
+                setIsSubmitting(false);
+                return;
+            }
+
             const normalizedMobile = mobile.replace(/\D/g, '');
             if (!normalizedMobile) {
                 alert('Please enter a valid mobile number');
@@ -40,8 +48,6 @@ const RegisterPage = () => {
                 isemailid: false
             };
 
-            console.log('📤 RegisterPage - Sending OTP Payload:', JSON.stringify(payload, null, 2));
-
             const response = await fetch(getApiUrl('/api/auth/otp/send'), {
                 method: 'POST',
                 headers: {
@@ -51,8 +57,6 @@ const RegisterPage = () => {
             });
 
             const data = await response.json();
-            
-            console.log('📥 RegisterPage - OTP Response:', JSON.stringify(data, null, 2));
 
             if (data.success !== false && (data.status !== false)) {
                 localStorage.setItem('otpFlow', 'register');
