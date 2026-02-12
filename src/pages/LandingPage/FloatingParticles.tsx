@@ -1,5 +1,6 @@
 import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { Line } from '@react-three/drei';
 import * as THREE from 'three';
 
 /* ─── 3D Kolam Mandala ─────────────────────────────────── */
@@ -101,8 +102,8 @@ function KolamMandala() {
       {/* Floating particles */}
       <points ref={particleRef}>
         <bufferGeometry>
-          <bufferAttribute attach="attributes-position" count={particleCount} array={particlePositions} itemSize={3} />
-          <bufferAttribute attach="attributes-size" count={particleCount} array={particleSizes} itemSize={1} />
+          <bufferAttribute attach="attributes-position" args={[particlePositions, 3]} />
+          <bufferAttribute attach="attributes-size" args={[particleSizes, 1]} />
         </bufferGeometry>
         <pointsMaterial
           color="#D4A017"
@@ -130,24 +131,20 @@ function KolamRing({ radius, dots, color, size }: { radius: number; dots: number
     return pos;
   }, [radius, dots]);
 
-  /* Ring outline */
-  const ringPoints = useMemo(() => {
-    const pts: THREE.Vector3[] = [];
+  /* Ring outline points as [x,y,z] tuples */
+  const ringPts = useMemo(() => {
+    const pts: [number, number, number][] = [];
     for (let i = 0; i <= 64; i++) {
       const a = (i / 64) * Math.PI * 2;
-      pts.push(new THREE.Vector3(Math.cos(a) * radius, Math.sin(a) * radius, 0));
+      pts.push([Math.cos(a) * radius, Math.sin(a) * radius, 0]);
     }
     return pts;
   }, [radius]);
 
-  const ringGeometry = useMemo(() => new THREE.BufferGeometry().setFromPoints(ringPoints), [ringPoints]);
-
   return (
     <group>
       {/* Ring circle */}
-      <line geometry={ringGeometry}>
-        <lineBasicMaterial color={color} transparent opacity={0.25} />
-      </line>
+      <Line points={ringPts} color={color} transparent opacity={0.25} lineWidth={1} />
       {/* Dots on the ring */}
       {positions.map((pos, i) => (
         <mesh key={i} position={pos}>
@@ -162,22 +159,20 @@ function KolamRing({ radius, dots, color, size }: { radius: number; dots: number
 /* ─── Kolam Petal (curved line from center) ─────────────── */
 
 function KolamPetal({ angle, color }: { angle: number; color: string }) {
-  const geometry = useMemo(() => {
-    const pts: THREE.Vector3[] = [];
+  const points = useMemo(() => {
+    const pts: [number, number, number][] = [];
     for (let t = 0; t <= 1; t += 0.05) {
       const r = t * 2.8;
       const wobble = Math.sin(t * Math.PI * 2) * 0.3;
       const x = Math.cos(angle + wobble * 0.2) * r;
       const y = Math.sin(angle + wobble * 0.2) * r;
-      pts.push(new THREE.Vector3(x, y, wobble * 0.15));
+      pts.push([x, y, wobble * 0.15]);
     }
-    return new THREE.BufferGeometry().setFromPoints(pts);
+    return pts;
   }, [angle]);
 
   return (
-    <line geometry={geometry}>
-      <lineBasicMaterial color={color} transparent opacity={0.15} />
-    </line>
+    <Line points={points} color={color} transparent opacity={0.15} lineWidth={1} />
   );
 }
 
