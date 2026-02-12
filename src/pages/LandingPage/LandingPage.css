@@ -1062,9 +1062,7 @@
 .footer-bottom p + p { margin-top: 6px; }
 
 /* ═══ GSAP animation initial states ════════════════════════ */
-
-.gs-reveal { opacity: 0; transform: translateY(40px); }
-.gs-scale { opacity: 0; transform: scale(0.9); }
+/* Note: initial states handled by GSAP .from() — no CSS opacity override */
 
 /* ═══ Responsive ═══════════════════════════════════════════ */
 
