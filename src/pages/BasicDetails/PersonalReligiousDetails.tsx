@@ -10,6 +10,7 @@ const PersonalReligiousDetails = () => {
   const [religion, setReligion] = useState('');
   const [caste, setCaste] = useState('');
     const [subcaste, setSubcaste] = useState('');
+    const [houseName, setHouseName] = useState('');
     const [willingToMarryFromAnyCaste, setWillingToMarryFromAnyCaste] = useState(true);
     const [dosham, setDosham] = useState('No');
     const navigate = useNavigate();
@@ -53,6 +54,7 @@ const PersonalReligiousDetails = () => {
             religion,
             caste,
             subcaste,
+            houseName,
             willingToMarryFromAnyCaste,
             dosham
         }));
@@ -64,6 +66,7 @@ const PersonalReligiousDetails = () => {
             religion,
             caste,
             subcaste,
+            houseName,
             willingToMarryFromAnyCaste,
             dosham
         });
@@ -279,6 +282,18 @@ const PersonalReligiousDetails = () => {
                                         placeholder="Enter subcaste (Optional)"
                                         value={subcaste}
                                         onChange={(e) => setSubcaste(e.target.value)}
+                                        className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 box-border focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500"
+                                    />
+                                </div>
+
+                                {/* House Name */}
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-600 mb-2">House Name</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter your house name"
+                                        value={houseName}
+                                        onChange={(e) => setHouseName(e.target.value)}
                                         className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 box-border focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500"
                                     />
                                 </div>

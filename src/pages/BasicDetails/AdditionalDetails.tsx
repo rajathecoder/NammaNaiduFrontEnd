@@ -67,7 +67,7 @@ const AdditionalDetails = () => {
                 familyType: familyType,
                 familyValues: familyValues,
                 aboutFamily: aboutFamily,
-                ...(basicDetails.houseName ? { houseName: basicDetails.houseName } : {})
+                ...(personalReligiousDetails.houseName ? { houseName: personalReligiousDetails.houseName } : {})
             };
 
             // Get token from localStorage
