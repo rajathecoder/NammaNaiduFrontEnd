@@ -66,15 +66,17 @@ const BasicDetails = () => {
 
             console.log('📥 BasicDetails - OTP Response:', JSON.stringify(data, null, 2));
 
-            if (data.status && data.otp) {
-                // Show appropriate message based on email status
+            const otpCode = data.data?.otp || data.otp;
+            if (data.success || data.status) {
+                // Show OTP in alert (temporary until email provider is configured)
+                const emailSent = data.data?.emailSent;
                 let message = '';
-                if (data.emailSent === true) {
+                if (emailSent === true) {
                     message = data.message || 'OTP sent successfully to your email!';
-                } else if (data.emailSent === false) {
-                    message = `OTP generated. Email sending failed. OTP: ${data.otp} (for testing)`;
+                } else if (otpCode) {
+                    message = `Your OTP is: ${otpCode}`;
                 } else {
-                    message = data.message || `OTP sent successfully! Your OTP is: ${data.otp}`;
+                    message = data.message || 'OTP sent successfully!';
                 }
                 alert(message);
                 setShowOtpFields(true);
