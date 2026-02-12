@@ -9,6 +9,7 @@ const BasicDetails = () => {
     const [year, setYear] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [houseName, setHouseName] = useState('');
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [isEmailVerified, setIsEmailVerified] = useState(false);
     const [isSendingOtp, setIsSendingOtp] = useState(false);
@@ -210,10 +211,11 @@ const BasicDetails = () => {
             month,
             year,
             email,
-            password
+            password,
+            houseName
         }));
 
-        console.log('Basic Details:', { day, month, year, email, password });
+        console.log('Basic Details:', { day, month, year, email, password, houseName });
         // Navigate to Personal and Religious Details page
         navigate('/personal-religious-details');
     };
@@ -431,6 +433,18 @@ const BasicDetails = () => {
                                     minLength={8}
                                     maxLength={20}
                                     required
+                                />
+                            </div>
+
+                            {/* House Name */}
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-800 mb-3">House Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter your house name"
+                                    value={houseName}
+                                    onChange={(e) => setHouseName(e.target.value)}
+                                    className="w-full py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500"
                                 />
                             </div>
 
