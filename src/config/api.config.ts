@@ -130,6 +130,8 @@ export const API_ENDPOINTS = {
     ADMIN_USER_STATUS: (id: number) => `/api/admin/admin-users/${id}/status`,
     // Admin notification endpoints
     SEND_PUSH_NOTIFICATION: '/api/admin/notifications/send-push',
+    NOTIFICATION_HISTORY: '/api/admin/notifications/history',
+    NOTIFICATION_STATS: '/api/admin/notifications/stats',
   },
 };
 
