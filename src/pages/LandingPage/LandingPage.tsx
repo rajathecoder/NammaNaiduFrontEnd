@@ -256,7 +256,7 @@ const LandingPage: React.FC = () => {
         <div className="hero-visual">
           <div className="hero-image-frame">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Radha_Krishna.jpg/800px-Radha_Krishna.jpg"
+              src="/krishna-radha.png"
               alt="Krishna and Radha"
             />
             <div className="hero-image-overlay">
