@@ -69,7 +69,7 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                                     value={data.fatherName}
                                     onChange={handleChange}
                                     placeholder="Enter father's name"
-                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                                 />
                             </div>
                             <div>
@@ -82,7 +82,7 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                                     value={data.fatherOccupation}
                                     onChange={handleChange}
                                     placeholder="Enter father's occupation"
-                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                                 />
                             </div>
                             <div>
@@ -93,7 +93,7 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                                     name="fatherStatus"
                                     value={data.fatherStatus}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                                 >
                                     <option value="alive">Alive</option>
                                     <option value="late">Late</option>
@@ -116,7 +116,7 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                                     value={data.motherName}
                                     onChange={handleChange}
                                     placeholder="Enter mother's name"
-                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                                 />
                             </div>
                             <div>
@@ -129,7 +129,7 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                                     value={data.motherOccupation}
                                     onChange={handleChange}
                                     placeholder="Enter mother's occupation"
-                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                                 />
                             </div>
                             <div>
@@ -140,7 +140,7 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                                     name="motherStatus"
                                     value={data.motherStatus}
                                     onChange={handleChange}
-                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                                 >
                                     <option value="alive">Alive</option>
                                     <option value="late">Late</option>
@@ -177,13 +177,13 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                                 placeholder="Sibling Name"
                                 value={newSibling.name}
                                 onChange={handleSiblingChange}
-                                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                             />
                             <select
                                 name="gender"
                                 value={newSibling.gender}
                                 onChange={handleSiblingChange}
-                                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                             >
                                 <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
@@ -196,12 +196,12 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                                     placeholder="Occupation (Optional)"
                                     value={newSibling.occupation || ''}
                                     onChange={handleSiblingChange}
-                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                                 />
                                 <button
                                     type="button"
                                     onClick={onAddSibling}
-                                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                                    className="px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-800 transition-colors"
                                 >
                                     Add
                                 </button>
@@ -219,7 +219,7 @@ const FamilyDetailsModal: React.FC<FamilyDetailsModalProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-6 py-3 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
+                            className="flex-1 px-6 py-3 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
                         >
                             Save
                         </button>

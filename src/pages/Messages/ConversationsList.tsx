@@ -68,7 +68,7 @@ const ConversationsList = () => {
       <div className="min-h-screen bg-[#f0f2f5]">
         <Header />
         <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#a413ed]"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1B5E20]"></div>
         </div>
       </div>
     );
@@ -94,7 +94,7 @@ const ConversationsList = () => {
                   onClick={() => navigate(`/messages/${conv.conversationId}`)}
                   className="p-4 hover:bg-gray-50 cursor-pointer transition-colors flex items-start gap-3"
                 >
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-white font-bold flex-shrink-0 overflow-hidden">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-white font-bold flex-shrink-0 overflow-hidden">
                     {conv.otherUserPhoto ? (
                       <img
                         src={conv.otherUserPhoto}
@@ -119,7 +119,7 @@ const ConversationsList = () => {
                         {conv.lastMessage || 'Start a conversation'}
                       </p>
                       {conv.unreadCount > 0 && (
-                        <span className="bg-[#a413ed] text-white text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0">
+                        <span className="bg-[#1B5E20] text-white text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0">
                           {conv.unreadCount}
                         </span>
                       )}

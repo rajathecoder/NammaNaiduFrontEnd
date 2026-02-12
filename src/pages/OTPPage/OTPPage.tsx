@@ -343,7 +343,7 @@ const OTPPage = () => {
                     <img src={logoOnly} alt="Namma Naidu Logo" className="h-11 w-auto md:h-9 sm:h-8" />
                     <div className="flex items-center gap-2">
                         <span className="text-gray-600 text-sm">Need help? Call</span>
-                        <a href="tel:8144998877" className="text-[#ff6b35] font-semibold text-lg no-underline transition-colors duration-300 hover:text-[#e55a25]">📞 8144-99-88-77</a>
+                        <a href="tel:8144998877" className="text-[#1B5E20] font-semibold text-lg no-underline transition-colors duration-300 hover:text-[#0D3B13]">📞 8144-99-88-77</a>
                     </div>
                 </div>
             </header>
@@ -370,7 +370,7 @@ const OTPPage = () => {
                                 <select
                                     value={countryCode}
                                     onChange={(e) => setCountryCode(e.target.value)}
-                                    className="w-24 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                    className="w-24 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_2px_rgba(27,94,32,0.1)]"
                                 >
                                     <option>+91</option>
                                     <option>+1</option>
@@ -382,13 +382,13 @@ const OTPPage = () => {
                                     placeholder="9865614558"
                                     value={phoneInput}
                                     onChange={(e) => setPhoneInput(e.target.value)}
-                                    className="flex-1 min-w-[200px] text-base py-3.5 px-4 border border-gray-300 rounded transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                    className="flex-1 min-w-[200px] text-base py-3.5 px-4 border border-gray-300 rounded transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_2px_rgba(27,94,32,0.1)]"
                                 />
                                 <button
                                     type="button"
                                     onClick={handleSendOtp}
                                     disabled={isSendingOtp}
-                                    className="px-4 py-3.5 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-none rounded text-sm font-semibold cursor-pointer transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="px-4 py-3.5 bg-gradient-to-r from-[#1B5E20] to-[#4CAF50] text-white border-none rounded text-sm font-semibold cursor-pointer transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isSendingOtp ? 'Sending...' : 'Send OTP'}
                                 </button>
@@ -418,13 +418,13 @@ const OTPPage = () => {
                                             inputRefs[5].current?.focus();
                                         }
                                     }}
-                                    className="w-[60px] h-[60px] border-2 border-gray-200 rounded-lg text-center text-2xl font-semibold text-gray-800 transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_3px_rgba(251,52,170,0.1)] md:w-[50px] md:h-[50px] md:text-xl sm:w-[45px] sm:h-[45px] sm:text-lg"
+                                    className="w-[60px] h-[60px] border-2 border-gray-200 rounded-lg text-center text-2xl font-semibold text-gray-800 transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_3px_rgba(27,94,32,0.1)] md:w-[50px] md:h-[50px] md:text-xl sm:w-[45px] sm:h-[45px] sm:text-lg"
                                     placeholder="0"
                                 />
                             ))}
                         </div>
                         {otp.join('').length < 6 && (
-                            <p className="text-center text-sm text-[#ff6b35] -mt-6 mb-4 font-medium">Enter 6-digit OTP</p>
+                            <p className="text-center text-sm text-[#1B5E20] -mt-6 mb-4 font-medium">Enter 6-digit OTP</p>
                         )}
 
                         <div className="flex justify-between items-center mb-8 px-4 md:flex-col md:gap-4 md:items-start">
@@ -433,7 +433,7 @@ const OTPPage = () => {
                                 <button
                                     type="button"
                                     onClick={handleResend}
-                                    className={`bg-transparent border-none font-semibold text-sm cursor-pointer p-0 text-left transition-colors duration-300 ${!canResend || isSendingOtp ? 'text-gray-500 cursor-not-allowed' : 'text-[#ff6b35] hover:text-[#e55a25]'}`}
+                                    className={`bg-transparent border-none font-semibold text-sm cursor-pointer p-0 text-left transition-colors duration-300 ${!canResend || isSendingOtp ? 'text-gray-500 cursor-not-allowed' : 'text-[#1B5E20] hover:text-[#0D3B13]'}`}
                                     disabled={!canResend || isSendingOtp}
                                 >
                                     Resend OTP {!canResend && `${timer} sec`}
@@ -442,13 +442,13 @@ const OTPPage = () => {
 
                             <div className="flex flex-col gap-1 items-end md:items-start">
                                 <span className="text-xs text-gray-600">Verify with Missed</span>
-                                <a href="tel:+919790770977" className="text-[#ff6b35] font-semibold text-sm no-underline transition-colors duration-300 hover:text-[#e55a25]">
+                                <a href="tel:+919790770977" className="text-[#1B5E20] font-semibold text-sm no-underline transition-colors duration-300 hover:text-[#0D3B13]">
                                     Call to +91 9790770977
                                 </a>
                             </div>
                         </div>
 
-                        <button type="submit" className="w-full py-4 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-none rounded-lg text-lg font-semibold cursor-pointer transition-all duration-300 uppercase tracking-wider hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(255,107,53,0.4)] disabled:opacity-50 disabled:cursor-not-allowed" disabled={isVerifying}>
+                        <button type="submit" className="w-full py-4 bg-gradient-to-r from-[#1B5E20] to-[#4CAF50] text-white border-none rounded-lg text-lg font-semibold cursor-pointer transition-all duration-300 uppercase tracking-wider hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(27,94,32,0.25)] disabled:opacity-50 disabled:cursor-not-allowed" disabled={isVerifying}>
                             {isVerifying ? 'Verifying...' : 'Submit'}
                         </button>
                     </form>

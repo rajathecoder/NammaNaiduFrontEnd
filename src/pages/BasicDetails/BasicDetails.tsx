@@ -244,7 +244,7 @@ const BasicDetails = () => {
                         <span className="text-gray-600">Need help?</span>
                         <a
                             href="tel:8144998877"
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
                         >
                             <span className="text-base">📞</span>
                             8144-99-88-77
@@ -257,7 +257,7 @@ const BasicDetails = () => {
             <div className="bg-white border-b border-gray-200">
                 <div className="max-w-[1200px] mx-auto px-6 py-3 md:px-4">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span className="w-8 h-8 rounded-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white flex items-center justify-center font-semibold">1</span>
+                        <span className="w-8 h-8 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white flex items-center justify-center font-semibold">1</span>
                         <span className="font-semibold text-gray-800">Basic Details</span>
                         <span className="h-px flex-1 bg-gray-200 mx-2" />
                         <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold">2</span>
@@ -290,7 +290,7 @@ const BasicDetails = () => {
                                     <select
                                         value={day}
                                         onChange={(e) => setDay(e.target.value)}
-                                        className="py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20"
+                                        className="py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
                                         required
                                     >
                                         <option value="">Day</option>
@@ -301,7 +301,7 @@ const BasicDetails = () => {
                                     <select
                                         value={month}
                                         onChange={(e) => setMonth(e.target.value)}
-                                        className="py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20"
+                                        className="py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
                                         required
                                     >
                                         <option value="">Month</option>
@@ -312,7 +312,7 @@ const BasicDetails = () => {
                                     <select
                                         value={year}
                                         onChange={(e) => setYear(e.target.value)}
-                                        className="py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20"
+                                        className="py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
                                         required
                                     >
                                         <option value="">Year</option>
@@ -340,14 +340,14 @@ const BasicDetails = () => {
                                             setOtp(['', '', '', '', '', '']);
                                         }}
                                         disabled={isEmailVerified}
-                                        className="flex-1 py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20 placeholder:text-gray-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                        className="flex-1 py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                         required
                                     />
                                     <button
                                         type="button"
                                         onClick={handleSendOtp}
                                         disabled={isEmailVerified || isSendingOtp || !email.trim()}
-                                        className="px-6 py-3 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="px-6 py-3 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         {isSendingOtp ? 'Sending...' : 'Verify'}
                                     </button>
@@ -395,7 +395,7 @@ const BasicDetails = () => {
                                                                     otpInputRefs[5].current?.focus();
                                                                 }
                                                             }}
-                                                            className="w-12 h-12 border-2 border-gray-300 rounded-lg text-center text-xl font-semibold text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20"
+                                                            className="w-12 h-12 border-2 border-gray-300 rounded-lg text-center text-xl font-semibold text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
                                                             placeholder="0"
                                                         />
                                                     ))}
@@ -404,7 +404,7 @@ const BasicDetails = () => {
                                                     type="button"
                                                     onClick={() => handleVerifyOtp()}
                                                     disabled={isVerifyingOtp || otp.join('').length !== 6}
-                                                    className="w-full py-3 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    className="w-full py-3 bg-gradient-to-r from-[#1B5E20] to-[#4CAF50] text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                                 >
                                                     {isVerifyingOtp ? 'Verifying...' : 'Verify OTP'}
                                                 </button>
@@ -425,7 +425,7 @@ const BasicDetails = () => {
                                     placeholder="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20 placeholder:text-gray-500"
+                                    className="w-full py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500"
                                     minLength={8}
                                     maxLength={20}
                                     required
@@ -435,7 +435,7 @@ const BasicDetails = () => {
                             {/* Next Button */}
                             <button
                                 type="submit"
-                                className="w-full py-4 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                                className="w-full py-4 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                             >
                                 Continue
                             </button>

@@ -171,7 +171,7 @@ const MessagesList = () => {
                         {!isChatListMinimized ? (
                             <>
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-purple-200 ring-2 ring-white">
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-green-200 ring-2 ring-white">
                                         JD
                                     </div>
                                     <h2 className="text-xl font-bold text-gray-800 m-0 tracking-tight">Chats</h2>
@@ -210,13 +210,13 @@ const MessagesList = () => {
                             {/* Search & Filters */}
                             <div className="px-4 py-3 bg-white border-b border-gray-50">
                                 <div className="relative group">
-                                    <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#8b10c9] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-[#0D3B13] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                     <input
                                         type="text"
                                         placeholder="Search messages..."
-                                        className="w-full py-3 pl-12 pr-4 bg-gray-100 focus:bg-white border-transparent focus:border-[#8b10c910] rounded-2xl text-[15px] font-medium outline-none transition-all focus:ring-4 focus:ring-[#8b10c905]"
+                                        className="w-full py-3 pl-12 pr-4 bg-gray-100 focus:bg-white border-transparent focus:border-[#0D3B1310] rounded-2xl text-[15px] font-medium outline-none transition-all focus:ring-4 focus:ring-[#0D3B1305]"
                                     />
                                 </div>
                                 <div className="flex gap-2 mt-4 overflow-x-auto no-scrollbar">
@@ -245,7 +245,7 @@ const MessagesList = () => {
                                         onClick={() => handleChatClick(conv.id)}
                                     >
                                         <div className="relative mr-4 shrink-0">
-                                            <div className="w-14 h-14 rounded-[20px] bg-gradient-to-br from-[#a413ed] to-[#8b10c9] text-white flex items-center justify-center text-xl font-black shadow-lg shadow-[#a413ed10] group-hover:scale-105 transition-transform duration-300">
+                                            <div className="w-14 h-14 rounded-[20px] bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] text-white flex items-center justify-center text-xl font-black shadow-lg shadow-[#1B5E2010] group-hover:scale-105 transition-transform duration-300">
                                                 {conv.avatar}
                                             </div>
                                             {conv.online && (
@@ -257,14 +257,14 @@ const MessagesList = () => {
                                                 <div className="flex items-center gap-1.5 min-w-0">
                                                     <h3 className="font-black text-gray-800 text-[16px] m-0 truncate">{conv.name}</h3>
                                                 </div>
-                                                <span className={`text-[11px] font-bold ${conv.unread > 0 ? 'text-[#8b10c9]' : 'text-gray-400'}`}>{conv.time}</span>
+                                                <span className={`text-[11px] font-bold ${conv.unread > 0 ? 'text-[#0D3B13]' : 'text-gray-400'}`}>{conv.time}</span>
                                             </div>
                                             <div className="flex justify-between items-center gap-3">
                                                 <p className={`text-[13px] truncate m-0 flex-1 leading-tight ${conv.unread > 0 ? 'text-gray-900 font-bold' : 'text-gray-500 font-medium'}`}>
                                                     {conv.lastMessage}
                                                 </p>
                                                 {conv.unread > 0 && (
-                                                    <span className="bg-[#8b10c9] text-white text-[10px] h-5 min-w-[20px] px-1.5 flex items-center justify-center rounded-full font-black animate-pulse">
+                                                    <span className="bg-[#0D3B13] text-white text-[10px] h-5 min-w-[20px] px-1.5 flex items-center justify-center rounded-full font-black animate-pulse">
                                                         {conv.unread}
                                                     </span>
                                                 )}
@@ -287,7 +287,7 @@ const MessagesList = () => {
                                     <div className="w-12 h-12 rounded-2xl bg-[#f0f2f5] flex items-center justify-center font-black text-[#1a1a1a] shadow-sm border border-gray-100">
                                         {conv.avatar}
                                     </div>
-                                    {conv.unread > 0 && <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#8b10c9] rounded-full border-2 border-white"></span>}
+                                    {conv.unread > 0 && <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#0D3B13] rounded-full border-2 border-white"></span>}
                                 </div>
                             ))}
                         </div>
@@ -335,7 +335,7 @@ const MessagesList = () => {
                                             <div className={`
                                                 relative max-w-[75%] px-4 py-3 rounded-2xl shadow-sm
                                                 ${msg.sender === 'me'
-                                                    ? 'bg-gradient-to-br from-[#a413ed] to-[#8b10c9] text-white rounded-tr-none'
+                                                    ? 'bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] text-white rounded-tr-none'
                                                     : 'bg-white text-gray-800 rounded-tl-none border border-gray-100'}
                                             `}>
                                                 <p className="text-[15px] font-medium leading-relaxed m-0 mb-1">{msg.text}</p>
@@ -346,7 +346,7 @@ const MessagesList = () => {
                                                     )}
                                                 </div>
                                                 {/* Tail Effect */}
-                                                <div className={`absolute top-0 ${msg.sender === 'me' ? '-right-2 text-[#8b10c9]' : '-left-2 text-white'}`}>
+                                                <div className={`absolute top-0 ${msg.sender === 'me' ? '-right-2 text-[#0D3B13]' : '-left-2 text-white'}`}>
                                                     <svg width="12" height="12" viewBox="0 0 12 12"><path fill="currentColor" d={msg.sender === 'me' ? "M0 0 L12 0 L0 12 Z" : "M0 0 L12 0 L12 12 Z"} /></svg>
                                                 </div>
                                             </div>
@@ -371,7 +371,7 @@ const MessagesList = () => {
                                     <button
                                         type="submit"
                                         disabled={!messageInput.trim()}
-                                        className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white transition-all shadow-lg ${messageInput.trim() ? 'bg-gradient-to-br from-[#a413ed] to-[#8b10c9] shadow-[#a413ed30] scale-100' : 'bg-gray-300 scale-95 cursor-not-allowed opacity-50'}`}
+                                        className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white transition-all shadow-lg ${messageInput.trim() ? 'bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] shadow-[#1B5E2030] scale-100' : 'bg-gray-300 scale-95 cursor-not-allowed opacity-50'}`}
                                     >
                                         <svg className="w-6 h-6 rotate-45" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
                                     </button>

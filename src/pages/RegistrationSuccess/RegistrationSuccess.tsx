@@ -18,14 +18,14 @@ const RegistrationSuccess = () => {
 
     return (
         <div className="min-h-screen bg-white flex items-center justify-center relative overflow-hidden">
-            <div className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] bg-[radial-gradient(circle,rgba(255,182,193,0.1)_0%,rgba(221,160,221,0.1)_50%,transparent_100%)] animate-[pulse_4s_ease-in-out_infinite]"></div>
+            <div className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] bg-[radial-gradient(circle,rgba(27,94,32,0.05)_0%,rgba(212,160,23,0.05)_50%,transparent_100%)] animate-[pulse_4s_ease-in-out_infinite]"></div>
             <div className="w-full max-w-[600px] p-8 z-[1] md:p-4">
                 <div className="text-center mb-12">
                     <img src={logoOnly} alt="Namma Naidu Logo" className="h-20 w-auto mx-auto mb-4" />
                     <h1 className="font-['Georgia','Times_New_Roman',serif] text-3xl font-semibold text-gray-900 m-0 md:text-2xl">Nanma Naidu Matrimony</h1>
                 </div>
 
-                <div className="bg-white rounded-[20px] p-12 shadow-[0_10px_40px_rgba(0,0,0,0.1)] border-2 border-transparent bg-[linear-gradient(white,white),linear-gradient(135deg,#ff6b9d,#c44569,#a29bfe)] bg-origin-border bg-clip-padding relative overflow-hidden md:p-8">
+                <div className="bg-white rounded-[20px] p-12 shadow-[0_10px_40px_rgba(0,0,0,0.1)] border-2 border-transparent bg-[linear-gradient(white,white),linear-gradient(135deg,#4CAF50,#1B5E20,#D4A017)] bg-origin-border bg-clip-padding relative overflow-hidden md:p-8">
                     <div className="w-full h-[300px] mb-8 flex items-center justify-center">
                         <Lottie
                             animationData={accountsCreatedAnimation}

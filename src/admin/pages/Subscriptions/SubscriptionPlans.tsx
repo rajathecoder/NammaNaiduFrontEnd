@@ -548,7 +548,7 @@ const SubscriptionPlans: React.FC = () => {
                     <tr key={plan.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          plan.planType === 'year' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                          plan.planType === 'year' ? 'bg-green-100 text-green-900' : 'bg-blue-100 text-blue-800'
                         }`}>
                           {plan.planType === 'year' ? '📅 Year' : '📆 Months'}
                         </span>
@@ -559,7 +559,7 @@ const SubscriptionPlans: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           plan.category === 'Both' ? 'bg-gray-100 text-gray-800' :
-                          plan.category === 'Male' ? 'bg-blue-100 text-blue-800' : 'bg-pink-100 text-pink-800'
+                          plan.category === 'Male' ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'
                         }`}>
                           {plan.category === 'Both' ? '👥 Both' : plan.category === 'Male' ? '👨 Male' : '👩 Female'}
                         </span>

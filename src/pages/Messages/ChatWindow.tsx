@@ -96,7 +96,7 @@ const ChatWindow = () => {
       <div className="min-h-screen bg-[#f0f2f5]">
         <Header />
         <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#a413ed]"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1B5E20]"></div>
         </div>
       </div>
     );
@@ -128,7 +128,7 @@ const ChatWindow = () => {
                 <div
                   className={`max-w-[75%] rounded-2xl px-4 py-2 ${
                     isSentByMe
-                      ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white'
+                      ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white'
                       : 'bg-gray-100 text-gray-900'
                   }`}
                 >
@@ -159,13 +159,13 @@ const ChatWindow = () => {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1 px-4 py-2 border border-gray-200 rounded-full focus:outline-none focus:border-[#a413ed] focus:ring-1 focus:ring-[#a413ed]"
+              className="flex-1 px-4 py-2 border border-gray-200 rounded-full focus:outline-none focus:border-[#1B5E20] focus:ring-1 focus:ring-[#1B5E20]"
               disabled={sending}
             />
             <button
               type="submit"
               disabled={sending || !newMessage.trim()}
-              className="px-6 py-2 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-full font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-shadow"
+              className="px-6 py-2 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white rounded-full font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-shadow"
             >
               {sending ? 'Sending...' : 'Send'}
             </button>

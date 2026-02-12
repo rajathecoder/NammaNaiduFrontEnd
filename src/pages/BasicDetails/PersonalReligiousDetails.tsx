@@ -99,7 +99,7 @@ const PersonalReligiousDetails = () => {
                         <span className="text-gray-600">Need help?</span>
                         <a
                             href="tel:8144998877"
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
                         >
                             <span className="text-base">📞</span>
                             8144-99-88-77
@@ -115,7 +115,7 @@ const PersonalReligiousDetails = () => {
                         <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold">1</span>
                         <span className="text-gray-500">Basic Details</span>
                         <span className="h-px flex-1 bg-gray-200 mx-2" />
-                        <span className="w-8 h-8 rounded-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white flex items-center justify-center font-semibold">2</span>
+                        <span className="w-8 h-8 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white flex items-center justify-center font-semibold">2</span>
                         <span className="font-semibold text-gray-800">Personal & Religious</span>
                         <span className="h-px flex-1 bg-gray-200 mx-2" />
                         <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold">3</span>
@@ -145,7 +145,7 @@ const PersonalReligiousDetails = () => {
                                 <select
                                     value={height}
                                     onChange={(e) => setHeight(e.target.value)}
-                                    className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20"
+                                    className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
                                     required
                                 >
                                     <option value="">Select your height</option>
@@ -157,18 +157,18 @@ const PersonalReligiousDetails = () => {
 
                             {/* Physical Status */}
                             <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-3">Your physical status <span className="text-[#a413ed] font-semibold">*</span></label>
+                                <label className="block text-sm font-semibold text-gray-800 mb-3">Your physical status <span className="text-[#1B5E20] font-semibold">*</span></label>
                                 <div className="grid grid-cols-2 gap-3">
                                     <button
                                         type="button"
-                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${physicalStatus === 'Normal' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
+                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${physicalStatus === 'Normal' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#1B5E20]'}`}
                                         onClick={() => setPhysicalStatus('Normal')}
                                     >
                                         Normal
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${physicalStatus === 'Physically challenged' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
+                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${physicalStatus === 'Physically challenged' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#1B5E20]'}`}
                                         onClick={() => setPhysicalStatus('Physically challenged')}
                                     >
                                         Physically challenged
@@ -178,32 +178,32 @@ const PersonalReligiousDetails = () => {
 
                             {/* Marital Status */}
                             <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-3">Your marital status <span className="text-[#a413ed] font-semibold">*</span></label>
+                                <label className="block text-sm font-semibold text-gray-800 mb-3">Your marital status <span className="text-[#1B5E20] font-semibold">*</span></label>
                                 <div className="grid grid-cols-2 gap-3">
                                     <button
                                         type="button"
-                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${maritalStatus === 'Never married' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
+                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${maritalStatus === 'Never married' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#1B5E20]'}`}
                                         onClick={() => setMaritalStatus('Never married')}
                                     >
                                         Never married
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${maritalStatus === 'Widower' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
+                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${maritalStatus === 'Widower' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#1B5E20]'}`}
                                         onClick={() => setMaritalStatus('Widower')}
                                     >
                                         Widower
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${maritalStatus === 'Awaiting divorce' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
+                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${maritalStatus === 'Awaiting divorce' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#1B5E20]'}`}
                                         onClick={() => setMaritalStatus('Awaiting divorce')}
                                     >
                                         Awaiting divorce
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${maritalStatus === 'Divorced' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
+                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${maritalStatus === 'Divorced' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#1B5E20]'}`}
                                         onClick={() => setMaritalStatus('Divorced')}
                                     >
                                         Divorced
@@ -223,7 +223,7 @@ const PersonalReligiousDetails = () => {
                                         <select
                                             value={religion}
                                             onChange={(e) => setReligion(e.target.value)}
-                                            className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20 disabled:opacity-50"
+                                            className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 disabled:opacity-50"
                                             required
                                             disabled={!religionOptions.length}
                                         >
@@ -250,7 +250,7 @@ const PersonalReligiousDetails = () => {
                                         <select
                                             value={caste}
                                             onChange={(e) => setCaste(e.target.value)}
-                                            className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20 disabled:opacity-50"
+                                            className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 disabled:opacity-50"
                                             required
                                             disabled={!casteOptions.length}
                                         >
@@ -279,7 +279,7 @@ const PersonalReligiousDetails = () => {
                                         placeholder="Enter subcaste (Optional)"
                                         value={subcaste}
                                         onChange={(e) => setSubcaste(e.target.value)}
-                                        className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 box-border focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20 placeholder:text-gray-500"
+                                        className="w-full py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 box-border focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500"
                                     />
                                 </div>
                             </div>
@@ -291,7 +291,7 @@ const PersonalReligiousDetails = () => {
                                         type="checkbox"
                                         checked={willingToMarryFromAnyCaste}
                                         onChange={(e) => setWillingToMarryFromAnyCaste(e.target.checked)}
-                                        className="mr-3 h-4 w-4 accent-[#a413ed]"
+                                        className="mr-3 h-4 w-4 accent-[#1B5E20]"
                                     />
                                     <span>Willing to marry from any caste</span>
                                 </label>
@@ -303,21 +303,21 @@ const PersonalReligiousDetails = () => {
                                 <div className="grid grid-cols-3 gap-3">
                                     <button
                                         type="button"
-                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${dosham === 'No' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
+                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${dosham === 'No' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#1B5E20]'}`}
                                         onClick={() => setDosham('No')}
                                     >
                                         No
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${dosham === 'Yes' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
+                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${dosham === 'Yes' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#1B5E20]'}`}
                                         onClick={() => setDosham('Yes')}
                                     >
                                         Yes
                                     </button>
                                     <button
                                         type="button"
-                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${dosham === "Don't know" ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#a413ed]'}`}
+                                        className={`py-3 px-4 border rounded-full text-sm text-gray-800 cursor-pointer transition-all duration-200 font-medium ${dosham === "Don't know" ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white shadow-sm' : 'border-gray-200 bg-white hover:border-[#1B5E20]'}`}
                                         onClick={() => setDosham("Don't know")}
                                     >
                                         Don't know
@@ -330,13 +330,13 @@ const PersonalReligiousDetails = () => {
                                 <button
                                     type="button"
                                     onClick={handleBack}
-                                    className="w-1/3 py-3 border border-gray-200 text-gray-700 rounded-xl font-semibold transition-all duration-200 hover:border-[#a413ed] hover:text-[#a413ed] bg-white"
+                                    className="w-1/3 py-3 border border-gray-200 text-gray-700 rounded-xl font-semibold transition-all duration-200 hover:border-[#1B5E20] hover:text-[#1B5E20] bg-white"
                                 >
                                     Back
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 py-4 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                                    className="flex-1 py-4 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                                 >
                                     Continue
                                 </button>

@@ -100,12 +100,12 @@ const Notifications = () => {
                         <h1 className="text-3xl font-extrabold text-[#1a1a1a] mb-2">Notifications</h1>
                         <p className="text-gray-500 font-medium">Stay updated with your latest activities and matches.</p>
                     </div>
-                    <button className="text-[#8b10c9] font-bold text-sm hover:underline" onClick={markAllAsRead}>Mark all as read</button>
+                    <button className="text-[#0D3B13] font-bold text-sm hover:underline" onClick={markAllAsRead}>Mark all as read</button>
                 </div>
 
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[40px] shadow-sm border border-gray-100">
-                        <div className="w-12 h-12 border-4 border-[#a413ed10] border-t-[#a413ed] rounded-full animate-spin mb-4"></div>
+                        <div className="w-12 h-12 border-4 border-[#1B5E2010] border-t-[#1B5E20] rounded-full animate-spin mb-4"></div>
                         <p className="text-gray-400 font-bold">Fetching your updates...</p>
                     </div>
                 ) : notifications.length > 0 ? (
@@ -113,13 +113,13 @@ const Notifications = () => {
                         {notifications.map((notification) => (
                             <div
                                 key={notification.id}
-                                className={`group relative bg-white p-6 rounded-[32px] border transition-all duration-300 flex gap-6 items-start cursor-pointer hover:shadow-xl hover:-translate-y-1 ${notification.isRead ? 'border-gray-50 opacity-80' : 'border-[#a413ed20] shadow-md shadow-[#a413ed05]'}`}
+                                className={`group relative bg-white p-6 rounded-[32px] border transition-all duration-300 flex gap-6 items-start cursor-pointer hover:shadow-xl hover:-translate-y-1 ${notification.isRead ? 'border-gray-50 opacity-80' : 'border-[#1B5E2020] shadow-md shadow-[#1B5E2005]'}`}
                                 onClick={() => {
                                     markAsRead(notification.id);
                                     if (notification.sender?.accountId) navigate(`/profile/${notification.sender.accountId}`);
                                 }}
                             >
-                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-110 ${notification.isRead ? 'bg-gray-100 text-gray-400' : 'bg-gradient-to-br from-[#a413ed10] to-[#8b10c910] text-[#8b10c9]'}`}>
+                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-110 ${notification.isRead ? 'bg-gray-100 text-gray-400' : 'bg-gradient-to-br from-[#1B5E2010] to-[#0D3B1310] text-[#0D3B13]'}`}>
                                     {getTypeIcon(notification.type)}
                                 </div>
                                 <div className="flex-1">
@@ -130,7 +130,7 @@ const Notifications = () => {
                                     <p className="text-gray-500 font-medium leading-relaxed">{notification.message}</p>
                                 </div>
                                 {!notification.isRead && (
-                                    <div className="w-3 h-3 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] rounded-full shadow-lg shadow-[#a413ed50]"></div>
+                                    <div className="w-3 h-3 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] rounded-full shadow-lg shadow-[#1B5E2050]"></div>
                                 )}
                             </div>
                         ))}

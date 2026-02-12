@@ -1178,7 +1178,7 @@ const MyProfile = () => {
                     <div className="bg-white rounded-xl p-8 text-center shadow-[0_2px_8px_rgba(0,0,0,0.1)]">
                         <p className="text-red-600 mb-4">{error}</p>
                         <div className="flex gap-4 justify-center">
-                            <button onClick={fetchProfile} className="py-2 px-6 bg-[#ff6b35] text-white rounded-md font-semibold cursor-pointer transition-colors duration-300 hover:bg-[#e55a2b]">Retry</button>
+                            <button onClick={fetchProfile} className="py-2 px-6 bg-[#1B5E20] text-white rounded-md font-semibold cursor-pointer transition-colors duration-300 hover:bg-[#0D3B13]">Retry</button>
                             <button onClick={() => navigate('/home')} className="py-2 px-6 bg-gray-200 text-gray-800 rounded-md font-semibold cursor-pointer transition-colors duration-300 hover:bg-gray-300">Back to Home</button>
                         </div>
                     </div>
@@ -1205,7 +1205,7 @@ const MyProfile = () => {
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => navigate('/partner-preferences')}
-                            className="flex items-center gap-2 px-4 py-2 bg-white text-[#a413ed] rounded-lg font-medium hover:bg-purple-50 transition-colors shadow-sm border border-[#a413ed]/30"
+                            className="flex items-center gap-2 px-4 py-2 bg-white text-[#1B5E20] rounded-lg font-medium hover:bg-green-50 transition-colors shadow-sm border border-[#1B5E20]/30"
                         >
                             <span>💑</span>
                             <span>Partner Preferences</span>
@@ -1237,7 +1237,7 @@ const MyProfile = () => {
 
                 <div className="bg-white rounded-xl p-8 shadow-[0_2px_8px_rgba(0,0,0,0.1)]">
                     <div className="flex items-center gap-8 pb-8 border-b-2 border-gray-100 mb-8">
-                        <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-br from-[#ff6b9d] to-[#c44569] flex items-center justify-center text-white font-semibold text-5xl flex-shrink-0 overflow-hidden">
+                        <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-br from-[#4CAF50] to-[#1B5E20] flex items-center justify-center text-white font-semibold text-5xl flex-shrink-0 overflow-hidden">
                             {userPhotos?.photo1link ? (
                                 <img 
                                     src={userPhotos.photo1link} 
@@ -1276,7 +1276,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'basic'
-                                        ? 'border-[#a413ed] text-[#a413ed]'
+                                        ? 'border-[#1B5E20] text-[#1B5E20]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('basic')}
@@ -1286,7 +1286,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'horoscope'
-                                        ? 'border-[#a413ed] text-[#a413ed]'
+                                        ? 'border-[#1B5E20] text-[#1B5E20]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('horoscope')}
@@ -1296,7 +1296,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'family'
-                                        ? 'border-[#a413ed] text-[#a413ed]'
+                                        ? 'border-[#1B5E20] text-[#1B5E20]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('family')}
@@ -1306,7 +1306,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'images'
-                                        ? 'border-[#a413ed] text-[#a413ed]'
+                                        ? 'border-[#1B5E20] text-[#1B5E20]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('images')}
@@ -1316,7 +1316,7 @@ const MyProfile = () => {
                             <button
                                 className={`px-6 py-4 font-semibold transition-colors duration-200 border-b-2 ${
                                     activeTab === 'hobbies'
-                                        ? 'border-[#a413ed] text-[#a413ed]'
+                                        ? 'border-[#1B5E20] text-[#1B5E20]'
                                         : 'border-transparent text-gray-600 hover:text-gray-800'
                                 }`}
                                 onClick={() => setActiveTab('hobbies')}
@@ -1337,7 +1337,7 @@ const MyProfile = () => {
                                 {isEditing ? (
                                     <input
                                         type="text"
-                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                         value={editData?.name || ''}
                                         onChange={(e) => handleInputChange('name', e.target.value)}
                                     />
@@ -1351,7 +1351,7 @@ const MyProfile = () => {
                                 {isEditing ? (
                                     <input
                                         type="email"
-                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                         value={editData?.email || ''}
                                         onChange={(e) => handleInputChange('email', e.target.value)}
                                     />
@@ -1440,7 +1440,7 @@ const MyProfile = () => {
                                         {isEditing ? (
                                             <input
                                                 type="text"
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.height || ''}
                                                 onChange={(e) => handleInputChange('height', e.target.value, true)}
                                                 placeholder="e.g., 5' 9&quot;"
@@ -1455,7 +1455,7 @@ const MyProfile = () => {
                                         {isEditing ? (
                                             <input
                                                 type="text"
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.physicalStatus || ''}
                                                 onChange={(e) => handleInputChange('physicalStatus', e.target.value, true)}
                                             />
@@ -1469,7 +1469,7 @@ const MyProfile = () => {
                                         {isEditing ? (
                                             <input
                                                 type="text"
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.maritalStatus || ''}
                                                 onChange={(e) => handleInputChange('maritalStatus', e.target.value, true)}
                                             />
@@ -1506,7 +1506,7 @@ const MyProfile = () => {
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">Caste</label>
                                         {isEditing ? (
                                             <select
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.caste || ''}
                                                 onChange={(e) => handleInputChange('caste', e.target.value, true)}
                                                 disabled={mastersLoading}
@@ -1528,7 +1528,7 @@ const MyProfile = () => {
                                         {isEditing ? (
                                             <input
                                                 type="text"
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.subcaste || ''}
                                                 onChange={(e) => handleInputChange('subcaste', e.target.value, true)}
                                             />
@@ -1541,7 +1541,7 @@ const MyProfile = () => {
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">Willing to Marry from Any Caste</label>
                                         {isEditing ? (
                                             <select
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.willingToMarryFromAnyCaste === true ? 'true' : editData?.basicDetail?.willingToMarryFromAnyCaste === false ? 'false' : ''}
                                                 onChange={(e) => handleInputChange('willingToMarryFromAnyCaste', e.target.value === 'true', true)}
                                             >
@@ -1563,7 +1563,7 @@ const MyProfile = () => {
                                         {isEditing ? (
                                             <input
                                                 type="text"
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.dosham || ''}
                                                 onChange={(e) => handleInputChange('dosham', e.target.value, true)}
                                             />
@@ -1583,7 +1583,7 @@ const MyProfile = () => {
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">Education</label>
                                         {isEditing ? (
                                             <select
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.education || ''}
                                                 onChange={(e) => handleInputChange('education', e.target.value, true)}
                                                 disabled={mastersLoading}
@@ -1604,7 +1604,7 @@ const MyProfile = () => {
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">Employment Type</label>
                                         {isEditing ? (
                                             <select
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.employmentType || ''}
                                                 onChange={(e) => handleInputChange('employmentType', e.target.value, true)}
                                                 disabled={mastersLoading}
@@ -1625,7 +1625,7 @@ const MyProfile = () => {
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">Occupation</label>
                                         {isEditing ? (
                                             <select
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.occupation || ''}
                                                 onChange={(e) => handleInputChange('occupation', e.target.value, true)}
                                                 disabled={mastersLoading}
@@ -1646,7 +1646,7 @@ const MyProfile = () => {
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">Currency</label>
                                         {isEditing ? (
                                             <select
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.currency || ''}
                                                 onChange={(e) => handleInputChange('currency', e.target.value, true)}
                                                 disabled={mastersLoading}
@@ -1667,7 +1667,7 @@ const MyProfile = () => {
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">Annual Income</label>
                                         {isEditing ? (
                                             <select
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.annualIncome || ''}
                                                 onChange={(e) => handleInputChange('annualIncome', e.target.value, true)}
                                                 disabled={mastersLoading}
@@ -1797,7 +1797,7 @@ const MyProfile = () => {
                                         {isEditing ? (
                                             <input
                                                 type="text"
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.familyStatus || ''}
                                                 onChange={(e) => handleInputChange('familyStatus', e.target.value, true)}
                                             />
@@ -1810,7 +1810,7 @@ const MyProfile = () => {
                                         {isEditing ? (
                                             <input
                                                 type="text"
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.familyType || ''}
                                                 onChange={(e) => handleInputChange('familyType', e.target.value, true)}
                                             />
@@ -1823,7 +1823,7 @@ const MyProfile = () => {
                                         {isEditing ? (
                                             <input
                                                 type="text"
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
                                                 value={editData?.basicDetail?.familyValues || ''}
                                                 onChange={(e) => handleInputChange('familyValues', e.target.value, true)}
                                             />
@@ -1835,7 +1835,7 @@ const MyProfile = () => {
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">About My Family</label>
                                         {isEditing ? (
                                             <textarea
-                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#ff6b35] focus:border-transparent resize-none"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent resize-none"
                                                 rows={4}
                                                 value={editData?.basicDetail?.aboutFamily || ''}
                                                 onChange={(e) => handleInputChange('aboutFamily', e.target.value, true)}
@@ -1871,7 +1871,7 @@ const MyProfile = () => {
                                 ) : (
                                     <button
                                         onClick={handleEditHoroscope}
-                                        className="px-4 py-2 bg-[#ff6b35] text-white rounded-md font-medium cursor-pointer transition-colors duration-200 hover:bg-[#e55a2b]"
+                                        className="px-4 py-2 bg-[#1B5E20] text-white rounded-md font-medium cursor-pointer transition-colors duration-200 hover:bg-[#0D3B13]"
                                     >
                                         ➕ Add
                                     </button>
@@ -1901,7 +1901,7 @@ const MyProfile = () => {
                                     <p className="text-gray-600 mb-4">No horoscope details found. Add your horoscope details.</p>
                                     <button
                                         onClick={handleEditHoroscope}
-                                        className="px-6 py-2 bg-[#ff6b35] text-white rounded-lg font-medium hover:bg-[#e55a2b] transition-colors"
+                                        className="px-6 py-2 bg-[#1B5E20] text-white rounded-lg font-medium hover:bg-[#0D3B13] transition-colors"
                                     >
                                         Add Horoscope Details
                                     </button>
@@ -1924,7 +1924,7 @@ const MyProfile = () => {
                                 ) : (
                                     <button
                                         onClick={handleEditFamily}
-                                        className="px-4 py-2 bg-[#ff6b35] text-white rounded-md font-medium cursor-pointer transition-colors duration-200 hover:bg-[#e55a2b]"
+                                        className="px-4 py-2 bg-[#1B5E20] text-white rounded-md font-medium cursor-pointer transition-colors duration-200 hover:bg-[#0D3B13]"
                                     >
                                         ➕ Add
                                     </button>
@@ -2013,7 +2013,7 @@ const MyProfile = () => {
                                     <p className="text-gray-600 mb-4">No family details found. Add your family details.</p>
                                     <button
                                         onClick={handleEditFamily}
-                                        className="px-6 py-2 bg-[#ff6b35] text-white rounded-lg font-medium hover:bg-[#e55a2b] transition-colors"
+                                        className="px-6 py-2 bg-[#1B5E20] text-white rounded-lg font-medium hover:bg-[#0D3B13] transition-colors"
                                     >
                                         Add Family Details
                                     </button>
@@ -2036,7 +2036,7 @@ const MyProfile = () => {
                                 ) : (
                                     <button
                                         onClick={handleAddPhotos}
-                                        className="px-4 py-2 bg-[#ff6b35] text-white rounded-md font-medium cursor-pointer transition-colors duration-200 hover:bg-[#e55a2b]"
+                                        className="px-4 py-2 bg-[#1B5E20] text-white rounded-md font-medium cursor-pointer transition-colors duration-200 hover:bg-[#0D3B13]"
                                     >
                                         ➕ Add
                                     </button>
@@ -2070,7 +2070,7 @@ const MyProfile = () => {
                                     <p className="text-gray-500 mb-4">No photos uploaded yet.</p>
                                     <button
                                         onClick={handleAddPhotos}
-                                        className="px-6 py-2 bg-[#ff6b35] text-white rounded-lg font-medium hover:bg-[#e55a2b] transition-colors"
+                                        className="px-6 py-2 bg-[#1B5E20] text-white rounded-lg font-medium hover:bg-[#0D3B13] transition-colors"
                                     >
                                         Add Photos
                                     </button>
@@ -2093,7 +2093,7 @@ const MyProfile = () => {
                                 ) : (
                                     <button
                                         onClick={handleEditHobbies}
-                                        className="px-4 py-2 bg-[#ff6b35] text-white rounded-md font-medium cursor-pointer transition-colors duration-200 hover:bg-[#e55a2b]"
+                                        className="px-4 py-2 bg-[#1B5E20] text-white rounded-md font-medium cursor-pointer transition-colors duration-200 hover:bg-[#0D3B13]"
                                     >
                                         ➕ Add
                                     </button>
@@ -2110,7 +2110,7 @@ const MyProfile = () => {
                                                 {hobbiesData.hobbies.map((hobby, index) => (
                                                     <span
                                                         key={index}
-                                                        className="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-medium"
+                                                        className="px-4 py-2 bg-green-100 text-green-900 rounded-full text-sm font-medium"
                                                     >
                                                         {hobby}
                                                     </span>
@@ -2178,7 +2178,7 @@ const MyProfile = () => {
                                                 {hobbiesData.sports.map((sport, index) => (
                                                     <span
                                                         key={index}
-                                                        className="px-4 py-2 bg-orange-100 text-orange-800 rounded-full text-sm font-medium"
+                                                        className="px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium"
                                                     >
                                                         {sport}
                                                     </span>
@@ -2212,7 +2212,7 @@ const MyProfile = () => {
                                                 {hobbiesData.languages.map((language, index) => (
                                                     <span
                                                         key={index}
-                                                        className="px-4 py-2 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium"
+                                                        className="px-4 py-2 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium"
                                                     >
                                                         {language}
                                                     </span>
@@ -2233,7 +2233,7 @@ const MyProfile = () => {
                                             <p className="text-gray-500 text-lg mb-4">No hobbies or interests added yet.</p>
                                             <button
                                                 onClick={handleEditHobbies}
-                                                className="px-6 py-2 bg-[#ff6b35] text-white rounded-lg font-medium hover:bg-[#e55a2b] transition-colors"
+                                                className="px-6 py-2 bg-[#1B5E20] text-white rounded-lg font-medium hover:bg-[#0D3B13] transition-colors"
                                             >
                                                 Add Hobbies & Interests
                                             </button>
@@ -2247,7 +2247,7 @@ const MyProfile = () => {
                                     <p className="text-gray-500 text-lg mb-4">No hobbies data available.</p>
                                     <button
                                         onClick={handleEditHobbies}
-                                        className="px-6 py-2 bg-[#ff6b35] text-white rounded-lg font-medium hover:bg-[#e55a2b] transition-colors"
+                                        className="px-6 py-2 bg-[#1B5E20] text-white rounded-lg font-medium hover:bg-[#0D3B13] transition-colors"
                                     >
                                         Add Hobbies & Interests
                                     </button>
@@ -2262,7 +2262,7 @@ const MyProfile = () => {
                                 <button onClick={handleCancel} className="py-2.5 px-6 bg-gray-200 text-gray-800 rounded-lg font-semibold cursor-pointer transition-colors duration-200 hover:bg-gray-300 disabled:opacity-50" disabled={saving}>
                                     Cancel
                                 </button>
-                                <button onClick={handleSave} className="py-2.5 px-6 bg-[#ff6b35] text-white rounded-lg font-semibold cursor-pointer transition-colors duration-200 hover:bg-[#e55a2b] disabled:opacity-50" disabled={saving}>
+                                <button onClick={handleSave} className="py-2.5 px-6 bg-[#1B5E20] text-white rounded-lg font-semibold cursor-pointer transition-colors duration-200 hover:bg-[#0D3B13] disabled:opacity-50" disabled={saving}>
                                     {saving ? 'Saving...' : 'Save Changes'}
                                 </button>
                             </>
@@ -2271,7 +2271,7 @@ const MyProfile = () => {
                                 <button onClick={() => navigate('/home')} className="py-2.5 px-6 bg-gray-200 text-gray-800 rounded-lg font-semibold cursor-pointer transition-colors duration-200 hover:bg-gray-300">
                                     Back to Home
                                 </button>
-                                <button onClick={fetchProfile} className="py-2.5 px-6 bg-[#ff6b35] text-white rounded-lg font-semibold cursor-pointer transition-colors duration-200 hover:bg-[#e55a2b]">
+                                <button onClick={fetchProfile} className="py-2.5 px-6 bg-[#1B5E20] text-white rounded-lg font-semibold cursor-pointer transition-colors duration-200 hover:bg-[#0D3B13]">
                                     Refresh Profile
                                 </button>
                             </>
@@ -2321,16 +2321,16 @@ const MyProfile = () => {
                                         />
                                         <label
                                             htmlFor="profile-photo-upload-edit"
-                                            className={`block w-32 h-32 border-2 border-dashed border-pink-300 rounded-xl cursor-pointer transition-all hover:border-pink-400 hover:bg-pink-50 flex items-center justify-center ${editingPhotos.length >= 5 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                            className={`block w-32 h-32 border-2 border-dashed border-green-300 rounded-xl cursor-pointer transition-all hover:border-green-500 hover:bg-green-50 flex items-center justify-center ${editingPhotos.length >= 5 ? 'opacity-50 cursor-not-allowed' : ''}`}
                                         >
-                                            <span className="text-3xl text-pink-400">+</span>
+                                            <span className="text-3xl text-green-500">+</span>
                                         </label>
                                     </div>
                                     
                                     {/* Selected Images in Row */}
                                     {editingPhotos.length > 0 && (
                                         <div className="flex-1 min-w-0">
-                                            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-pink-300 scrollbar-track-gray-100" style={{ maxWidth: '100%' }}>
+                                            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-green-300 scrollbar-track-gray-100" style={{ maxWidth: '100%' }}>
                                                 {editingPhotos.map((photo) => (
                                                     <div key={photo.photoplacement} className="relative flex-shrink-0">
                                                         <div className="w-32 h-32 relative">
@@ -2384,7 +2384,7 @@ const MyProfile = () => {
                                     type="button"
                                     onClick={handlePhotoSave}
                                     disabled={editingPhotos.length === 0 || uploadingPhotos}
-                                    className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {uploadingPhotos ? 'Saving...' : 'Save Photos'}
                                 </button>

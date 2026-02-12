@@ -129,19 +129,19 @@ const Search = () => {
                     {/* Tabs */}
                     <div className="flex bg-gray-50/50 p-2 gap-2 border-b border-gray-100">
                         <button
-                            className={`flex-1 py-4 px-6 rounded-[30px] text-sm font-bold transition-all duration-300 ${activeTab === 'criteria' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white shadow-lg' : 'text-gray-500 hover:bg-white'}`}
+                            className={`flex-1 py-4 px-6 rounded-[30px] text-sm font-bold transition-all duration-300 ${activeTab === 'criteria' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white shadow-lg' : 'text-gray-500 hover:bg-white'}`}
                             onClick={() => { setActiveTab('criteria'); setResults(null); }}
                         >
                             Advanced Search
                         </button>
                         <button
-                            className={`flex-1 py-4 px-6 rounded-[30px] text-sm font-bold transition-all duration-300 ${activeTab === 'profileId' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white shadow-lg' : 'text-gray-500 hover:bg-white'}`}
+                            className={`flex-1 py-4 px-6 rounded-[30px] text-sm font-bold transition-all duration-300 ${activeTab === 'profileId' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white shadow-lg' : 'text-gray-500 hover:bg-white'}`}
                             onClick={() => { setActiveTab('profileId'); setResults(null); }}
                         >
                             Search by ID
                         </button>
                         <button
-                            className={`flex-1 py-4 px-6 rounded-[30px] text-sm font-bold transition-all duration-300 ${activeTab === 'saved' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white shadow-lg' : 'text-gray-500 hover:bg-white'}`}
+                            className={`flex-1 py-4 px-6 rounded-[30px] text-sm font-bold transition-all duration-300 ${activeTab === 'saved' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white shadow-lg' : 'text-gray-500 hover:bg-white'}`}
                             onClick={() => { setActiveTab('saved'); setResults(null); }}
                         >
                             Saved Searches
@@ -168,11 +168,11 @@ const Search = () => {
                                             <div className="flex flex-col gap-2">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Age Range</label>
                                                 <div className="flex items-center gap-4">
-                                                    <select value={filters.ageMin} onChange={(e) => handleFilterChange('ageMin', e.target.value)} className="flex-1 h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none">
+                                                    <select value={filters.ageMin} onChange={(e) => handleFilterChange('ageMin', e.target.value)} className="flex-1 h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none">
                                                         {ageOptions.map(age => <option key={age} value={age}>{age} Yrs</option>)}
                                                     </select>
                                                     <span className="text-gray-300 font-bold">to</span>
-                                                    <select value={filters.ageMax} onChange={(e) => handleFilterChange('ageMax', e.target.value)} className="flex-1 h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none">
+                                                    <select value={filters.ageMax} onChange={(e) => handleFilterChange('ageMax', e.target.value)} className="flex-1 h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none">
                                                         {ageOptions.map(age => <option key={age} value={age}>{age} Yrs</option>)}
                                                     </select>
                                                 </div>
@@ -180,21 +180,21 @@ const Search = () => {
 
                                             <div className="flex flex-col gap-2">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Marital Status</label>
-                                                <select value={filters.maritalStatus} onChange={(e) => handleFilterChange('maritalStatus', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none">
+                                                <select value={filters.maritalStatus} onChange={(e) => handleFilterChange('maritalStatus', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none">
                                                     {maritalStatusOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                                 </select>
                                             </div>
 
                                             <div className="flex flex-col gap-2">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Religion</label>
-                                                <select value={filters.religion} onChange={(e) => handleFilterChange('religion', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none">
+                                                <select value={filters.religion} onChange={(e) => handleFilterChange('religion', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none">
                                                     {religionOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                                 </select>
                                             </div>
 
                                             <div className="flex flex-col gap-2">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Caste</label>
-                                                <select value={filters.caste} onChange={(e) => handleFilterChange('caste', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none">
+                                                <select value={filters.caste} onChange={(e) => handleFilterChange('caste', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none">
                                                     {casteOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                                 </select>
                                             </div>
@@ -206,7 +206,7 @@ const Search = () => {
                                                     placeholder="Enter city (e.g. Hyderabad)"
                                                     value={filters.city}
                                                     onChange={(e) => handleFilterChange('city', e.target.value)}
-                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none"
+                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none"
                                                 />
                                             </div>
 
@@ -217,7 +217,7 @@ const Search = () => {
                                                     placeholder="Enter occupation (e.g. Engineer)"
                                                     value={filters.occupation}
                                                     onChange={(e) => handleFilterChange('occupation', e.target.value)}
-                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none"
+                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none"
                                                 />
                                             </div>
 
@@ -228,13 +228,13 @@ const Search = () => {
                                                     placeholder="e.g. B.Tech, MS, MBA"
                                                     value={filters.education}
                                                     onChange={(e) => handleFilterChange('education', e.target.value)}
-                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none"
+                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none"
                                                 />
                                             </div>
 
                                             <div className="flex flex-col gap-2">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Annual Income</label>
-                                                <select value={filters.incomeMin} onChange={(e) => handleFilterChange('incomeMin', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none">
+                                                <select value={filters.incomeMin} onChange={(e) => handleFilterChange('incomeMin', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none">
                                                     {incomeOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                                 </select>
                                             </div>
@@ -250,14 +250,14 @@ const Search = () => {
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                                             <div className="flex flex-col gap-2">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Rasi (Zodiac)</label>
-                                                <select value={filters.rasi} onChange={(e) => handleFilterChange('rasi', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none">
+                                                <select value={filters.rasi} onChange={(e) => handleFilterChange('rasi', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none">
                                                     {rasiOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                                 </select>
                                             </div>
 
                                             <div className="flex flex-col gap-2">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Natchathiram (Star)</label>
-                                                <select value={filters.natchathiram} onChange={(e) => handleFilterChange('natchathiram', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none">
+                                                <select value={filters.natchathiram} onChange={(e) => handleFilterChange('natchathiram', e.target.value)} className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none">
                                                     {starOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                                                 </select>
                                             </div>
@@ -269,7 +269,7 @@ const Search = () => {
                                                     placeholder="e.g. Photography, Cooking"
                                                     value={filters.hobby}
                                                     onChange={(e) => handleFilterChange('hobby', e.target.value)}
-                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none"
+                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none"
                                                 />
                                             </div>
 
@@ -280,16 +280,16 @@ const Search = () => {
                                                     placeholder="e.g. Travel, Music"
                                                     value={filters.interest}
                                                     onChange={(e) => handleFilterChange('interest', e.target.value)}
-                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#a413ed10] outline-none"
+                                                    className="h-14 bg-white border border-gray-100 rounded-2xl px-6 text-sm font-bold text-gray-700 shadow-sm focus:ring-4 focus:ring-[#1B5E2010] outline-none"
                                                 />
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="relative p-10 rounded-[40px] bg-gradient-to-br from-[#1a1a1a] to-[#333] border border-gray-800 overflow-hidden text-white group">
-                                        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#a413ed30] to-[#8b10c930] blur-[80px] -mr-32 -mt-32 transition-all"></div>
+                                        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#1B5E2030] to-[#0D3B1330] blur-[80px] -mr-32 -mt-32 transition-all"></div>
                                         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                                            <div className="w-20 h-20 bg-gradient-to-br from-[#a413ed] to-[#8b10c9] rounded-3xl flex items-center justify-center text-4xl shadow-2xl">⭐</div>
+                                            <div className="w-20 h-20 bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] rounded-3xl flex items-center justify-center text-4xl shadow-2xl">⭐</div>
                                             <div className="flex-1">
                                                 <h4 className="text-xl font-bold mb-2">Premium Search Filters</h4>
                                                 <p className="text-gray-400 text-sm font-medium">Filter by Star, Horoscope, Education Institute, and Workplace.</p>
@@ -301,7 +301,7 @@ const Search = () => {
 
                                 <div className="flex justify-center mt-16">
                                     <button
-                                        className="h-16 px-20 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-full text-lg font-black shadow-2xl shadow-[#a413ed40] transition-all hover:scale-105 active:scale-95 flex items-center gap-3 disabled:opacity-70"
+                                        className="h-16 px-20 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white rounded-full text-lg font-black shadow-2xl shadow-[#1B5E2040] transition-all hover:scale-105 active:scale-95 flex items-center gap-3 disabled:opacity-70"
                                         onClick={handleSearch}
                                         disabled={searching}
                                     >
@@ -321,11 +321,11 @@ const Search = () => {
                                         placeholder="Enter Profile ID (e.g., NN#00001)"
                                         value={filters.profileId}
                                         onChange={(e) => handleFilterChange('profileId', e.target.value)}
-                                        className="w-full h-16 bg-gray-50 border border-gray-100 rounded-3xl px-8 text-lg font-bold text-gray-700 shadow-inner focus:bg-white focus:ring-4 focus:ring-[#a413ed10] outline-none"
+                                        className="w-full h-16 bg-gray-50 border border-gray-100 rounded-3xl px-8 text-lg font-bold text-gray-700 shadow-inner focus:bg-white focus:ring-4 focus:ring-[#1B5E2010] outline-none"
                                     />
                                 </div>
                                 <button
-                                    className="w-full h-16 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-3xl text-lg font-black shadow-xl shadow-[#a413ed20] hover:scale-[1.02] active:scale-95 disabled:opacity-70"
+                                    className="w-full h-16 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white rounded-3xl text-lg font-black shadow-xl shadow-[#1B5E2020] hover:scale-[1.02] active:scale-95 disabled:opacity-70"
                                     onClick={handleSearchById}
                                     disabled={searching || !filters.profileId}
                                 >
@@ -354,9 +354,9 @@ const Search = () => {
                     <div className="animate-in fade-in slide-in-from-bottom-8 duration-500">
                         <div className="flex items-center justify-between mb-8">
                             <h3 className="text-2xl font-black text-[#1a1a1a]">
-                                Search Results <span className="text-[#a413ed] ml-2 font-bold bg-[#a413ed10] px-4 py-1 rounded-full text-lg">{results.length}</span>
+                                Search Results <span className="text-[#1B5E20] ml-2 font-bold bg-[#1B5E2010] px-4 py-1 rounded-full text-lg">{results.length}</span>
                             </h3>
-                            <button className="text-gray-400 font-bold hover:text-[#8b10c9]" onClick={() => setResults(null)}>Clear Results</button>
+                            <button className="text-gray-400 font-bold hover:text-[#0D3B13]" onClick={() => setResults(null)}>Clear Results</button>
                         </div>
 
                         {results.length > 0 ? (

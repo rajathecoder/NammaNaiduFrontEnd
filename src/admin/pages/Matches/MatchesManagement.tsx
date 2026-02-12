@@ -180,7 +180,7 @@ const MatchesManagement: React.FC = () => {
                           ? 'bg-green-100 text-green-700'
                           : match.status === 'viewed'
                           ? 'bg-yellow-100 text-yellow-700'
-                          : 'bg-purple-100 text-purple-700'
+                          : 'bg-green-100 text-green-800'
                       }`}
                     >
                       {match.status}
@@ -200,7 +200,7 @@ const MatchesManagement: React.FC = () => {
                     </div>
                     <div className="text-2xl text-gray-400">↔</div>
                     <div className="flex-1 flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white font-bold text-lg">
                         {match.userB.name.charAt(0)}
                       </div>
                       <div className="flex-1">
@@ -339,7 +339,7 @@ const MatchesManagement: React.FC = () => {
                           ? 'bg-green-100 text-green-700'
                           : selectedMatch.status === 'viewed'
                           ? 'bg-yellow-100 text-yellow-700'
-                          : 'bg-purple-100 text-purple-700'
+                          : 'bg-green-100 text-green-800'
                       }`}
                     >
                       {selectedMatch.status}

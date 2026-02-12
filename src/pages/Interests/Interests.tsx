@@ -292,13 +292,13 @@ const Interests = () => {
 
                 <div className="flex gap-4 mb-8">
                     <button
-                        className={`py-3 px-8 rounded-2xl font-bold transition-all duration-300 shadow-md ${activeTab === 'received' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white scale-105' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+                        className={`py-3 px-8 rounded-2xl font-bold transition-all duration-300 shadow-md ${activeTab === 'received' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white scale-105' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
                         onClick={() => setActiveTab('received')}
                     >
                         Interest by Other ({interestsByOther.length})
                     </button>
                     <button
-                        className={`py-3 px-8 rounded-2xl font-bold transition-all duration-300 shadow-md ${activeTab === 'sent' ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white scale-105' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+                        className={`py-3 px-8 rounded-2xl font-bold transition-all duration-300 shadow-md ${activeTab === 'sent' ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white scale-105' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
                         onClick={() => setActiveTab('sent')}
                     >
                         Interest by Me ({interestsByMe.length})

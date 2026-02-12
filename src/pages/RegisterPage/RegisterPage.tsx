@@ -87,7 +87,7 @@ const RegisterPage = () => {
                     <img src={logoOnly} alt="Namma Naidu Logo" className="h-10 w-auto sm:h-8" />
                     <div className="flex items-center gap-3">
                         <span className="text-gray-600 text-sm sm:hidden">Already a member?</span>
-                        <button className="px-5 py-1.5 border-2 border-[#ff6b35] bg-white text-[#ff6b35] rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:bg-[#ff6b35] hover:text-white" onClick={() => navigate('/login')}>LOGIN</button>
+                        <button className="px-5 py-1.5 border-2 border-[#1B5E20] bg-white text-[#1B5E20] rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:bg-[#1B5E20] hover:text-white" onClick={() => navigate('/login')}>LOGIN</button>
                         <button className="flex items-center gap-1 px-3.5 py-1.5 border border-gray-300 bg-white rounded-md text-sm cursor-pointer transition-all duration-300 hover:bg-gray-100">
                             <span className="inline-flex items-center justify-center w-[18px] h-[18px] border-2 border-gray-600 rounded-full text-xs font-bold">?</span> Help
                         </button>
@@ -111,7 +111,7 @@ const RegisterPage = () => {
                 {/* Right Side - Registration Form */}
                 <div className="flex-1 flex items-center justify-center">
                     <div className="w-full max-w-[450px] bg-white rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden">
-                        <div className="bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white py-5 px-5 text-center">
+                        <div className="bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white py-5 px-5 text-center">
                             <h2 className="m-0 text-xl font-semibold">Create a Matrimony Profile</h2>
                         </div>
 
@@ -125,7 +125,7 @@ const RegisterPage = () => {
                                     <select
                                         value={profileFor}
                                         onChange={(e) => setProfileFor(e.target.value)}
-                                        className="flex-1 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                        className="flex-1 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_2px_rgba(27,94,32,0.1)]"
                                     >
                                         <option>Myself</option>
                                         <option>Son</option>
@@ -138,7 +138,7 @@ const RegisterPage = () => {
                                     <select
                                         value={gender}
                                         onChange={(e) => setGender(e.target.value)}
-                                        className="flex-1 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                        className="flex-1 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_2px_rgba(27,94,32,0.1)]"
                                     >
                                         <option>Male</option>
                                         <option>Female</option>
@@ -154,7 +154,7 @@ const RegisterPage = () => {
                                     placeholder="Raja"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="w-full py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                    className="w-full py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_2px_rgba(27,94,32,0.1)]"
                                     required
                                 />
                             </div>
@@ -165,7 +165,7 @@ const RegisterPage = () => {
                                     <select
                                         value={countryCode}
                                         onChange={(e) => setCountryCode(e.target.value)}
-                                        className="w-20 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                        className="w-20 py-3 px-3.5 border border-gray-300 rounded text-sm transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_2px_rgba(27,94,32,0.1)]"
                                     >
                                         <option>+91</option>
                                         <option>+1</option>
@@ -177,7 +177,7 @@ const RegisterPage = () => {
                                         placeholder="9865614558"
                                         value={mobile}
                                         onChange={(e) => setMobile(e.target.value)}
-                                        className="flex-1 min-w-[200px] text-base py-3.5 px-4 border border-gray-300 rounded transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_2px_rgba(251,52,170,0.1)]"
+                                        className="flex-1 min-w-[200px] text-base py-3.5 px-4 border border-gray-300 rounded transition-all duration-300 bg-white text-gray-800 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_2px_rgba(27,94,32,0.1)]"
                                         required
                                     />
                                 </div>
@@ -185,7 +185,7 @@ const RegisterPage = () => {
                             </div>
 
                             {/* Register Button */}
-                            <button type="submit" className="w-full py-3.5 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-none rounded-md text-base font-semibold cursor-pointer transition-all duration-300 mt-3.5 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(255,107,53,0.4)] disabled:opacity-50 disabled:cursor-not-allowed" disabled={isSubmitting}>
+                            <button type="submit" className="w-full py-3.5 bg-gradient-to-r from-[#1B5E20] to-[#4CAF50] text-white border-none rounded-md text-base font-semibold cursor-pointer transition-all duration-300 mt-3.5 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(27,94,32,0.25)] disabled:opacity-50 disabled:cursor-not-allowed" disabled={isSubmitting}>
                                 {isSubmitting ? 'Sending OTP...' : 'REGISTER FREE →'}
                             </button>
 
@@ -200,8 +200,8 @@ const RegisterPage = () => {
                                     />
                                     <span>
                                         *By clicking register free, I agree to the{' '}
-                                        <a href="#" className="text-[#a413ed] no-underline hover:underline">T&C</a> and{' '}
-                                        <a href="#" className="text-[#a413ed] no-underline hover:underline">Privacy Policy</a>
+                                        <a href="#" className="text-[#1B5E20] no-underline hover:underline">T&C</a> and{' '}
+                                        <a href="#" className="text-[#1B5E20] no-underline hover:underline">Privacy Policy</a>
                                     </span>
                                 </label>
                             </div>

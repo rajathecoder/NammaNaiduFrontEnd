@@ -114,7 +114,7 @@ const ProfileSettings = () => {
             <div className="min-h-screen bg-gray-50">
                 <Header />
                 <div className="flex items-center justify-center h-[60vh]">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#a413ed]" />
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#1B5E20]" />
                 </div>
             </div>
         );
@@ -132,7 +132,7 @@ const ProfileSettings = () => {
                         <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
                         <p className="text-sm text-gray-500 mt-1">Manage your profile visibility and account settings</p>
                     </div>
-                    <button onClick={() => navigate('/my-profile')} className="text-sm text-[#a413ed] hover:underline font-medium">
+                    <button onClick={() => navigate('/my-profile')} className="text-sm text-[#1B5E20] hover:underline font-medium">
                         Back to Profile
                     </button>
                 </div>
@@ -157,11 +157,11 @@ const ProfileSettings = () => {
                     <div className="mt-4">
                         <div className="flex items-center justify-between mb-2">
                             <span className="text-sm font-medium text-gray-700">Profile Completion</span>
-                            <span className="text-sm font-bold text-[#a413ed]">{completionPct}%</span>
+                            <span className="text-sm font-bold text-[#1B5E20]">{completionPct}%</span>
                         </div>
                         <div className="w-full bg-gray-100 rounded-full h-3">
                             <div
-                                className="h-3 rounded-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] transition-all duration-500"
+                                className="h-3 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] transition-all duration-500"
                                 style={{ width: `${completionPct}%` }}
                             />
                         </div>
@@ -183,7 +183,7 @@ const ProfileSettings = () => {
                                 onClick={() => handleVisibilityChange(opt.value)}
                                 disabled={isSaving}
                                 className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-200 text-left ${visibility === opt.value
-                                    ? 'border-[#a413ed] bg-purple-50'
+                                    ? 'border-[#1B5E20] bg-green-50'
                                     : 'border-gray-200 bg-white hover:border-gray-300'
                                     } disabled:opacity-50`}
                             >
@@ -193,7 +193,7 @@ const ProfileSettings = () => {
                                     <div className="text-sm text-gray-500">{opt.desc}</div>
                                 </div>
                                 {visibility === opt.value && (
-                                    <div className="w-6 h-6 rounded-full bg-[#a413ed] flex items-center justify-center">
+                                    <div className="w-6 h-6 rounded-full bg-[#1B5E20] flex items-center justify-center">
                                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                         </svg>

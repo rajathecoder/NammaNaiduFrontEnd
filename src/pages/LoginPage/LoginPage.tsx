@@ -105,7 +105,7 @@ const LoginPage = () => {
                 <div className="max-w-[1400px] mx-auto flex justify-between items-center">
                     <img src={logoOnly} alt="Namma Naidu Logo" className="h-10 w-auto" />
                     <div className="flex items-center gap-3">
-                        <button className="px-5 py-2 border-2 border-[#ff6b35] bg-white text-[#ff6b35] rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:bg-[#ff6b35] hover:text-white" onClick={() => navigate('/')}>
+                        <button className="px-5 py-2 border-2 border-[#1B5E20] bg-white text-[#1B5E20] rounded-md font-semibold text-sm cursor-pointer transition-all duration-300 hover:bg-[#1B5E20] hover:text-white" onClick={() => navigate('/')}>
                             Register Free
                         </button>
                         <button className="flex items-center gap-1 px-3.5 py-1.5 border border-gray-300 bg-white rounded-md text-sm cursor-pointer transition-all duration-300 hover:bg-gray-100">
@@ -122,7 +122,7 @@ const LoginPage = () => {
                     <h2 className="text-3xl font-semibold text-gray-800 mb-6 leading-snug">
                         To speed up your partner search,
                         <br />
-                        download <span className="font-bold bg-gradient-to-r from-[#a413ed] to-[#8b10c9] bg-clip-text text-transparent">Namma Naidu App</span>
+                        download <span className="font-bold bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] bg-clip-text text-transparent">Namma Naidu App</span>
                     </h2>
 
                     <div className="w-full max-w-[400px] mb-6">
@@ -154,7 +154,7 @@ const LoginPage = () => {
                 {/* Right Side - Login Form */}
                 <div className="flex-1 flex items-center justify-center">
                     <div className="w-full max-w-[450px] bg-white rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.1)] overflow-hidden">
-                        <div className="bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white py-5 px-5 text-center">
+                        <div className="bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white py-5 px-5 text-center">
                             <h2 className="m-0 text-xl font-semibold">Member Login</h2>
                         </div>
 
@@ -165,7 +165,7 @@ const LoginPage = () => {
                                     placeholder="E-mail or Mobile Number"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full py-3 px-3.5 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-[#a413ed] box-border"
+                                    className="w-full py-3 px-3.5 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-[#1B5E20] box-border"
                                     required
                                 />
                             </div>
@@ -176,7 +176,7 @@ const LoginPage = () => {
                                     placeholder="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full py-3 px-3.5 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-[#a413ed] box-border"
+                                    className="w-full py-3 px-3.5 border-2 border-gray-200 rounded-md text-sm transition-all duration-300 focus:outline-none focus:border-[#1B5E20] box-border"
                                     required
                                 />
                                 <button
@@ -200,7 +200,7 @@ const LoginPage = () => {
                                 </label>
                             </div>
 
-                            <button type="submit" className="w-full py-3.5 bg-gradient-to-r from-[#ff6b35] to-[#f7931e] text-white border-none rounded-md text-base font-semibold cursor-pointer transition-all duration-300 uppercase tracking-wider hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(255,107,53,0.4)]">
+                            <button type="submit" className="w-full py-3.5 bg-gradient-to-r from-[#1B5E20] to-[#4CAF50] text-white border-none rounded-md text-base font-semibold cursor-pointer transition-all duration-300 uppercase tracking-wider hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(27,94,32,0.25)]">
                                 LOGIN
                             </button>
 
@@ -214,7 +214,7 @@ const LoginPage = () => {
                                             localStorage.setItem('otpFlow', 'login');
                                             navigate('/verify-otp');
                                         }}
-                                        className="text-[#a413ed] no-underline text-xs transition-colors duration-300 hover:text-[#8b10c9] hover:underline"
+                                        className="text-[#1B5E20] no-underline text-xs transition-colors duration-300 hover:text-[#0D3B13] hover:underline"
                                     >
                                         Login with OTP
                                     </button>
@@ -222,7 +222,7 @@ const LoginPage = () => {
                                     <button
                                         type="button"
                                         onClick={() => navigate('/forgot-password')}
-                                        className="text-[#a413ed] no-underline text-xs transition-colors duration-300 hover:text-[#8b10c9] hover:underline bg-transparent border-none cursor-pointer"
+                                        className="text-[#1B5E20] no-underline text-xs transition-colors duration-300 hover:text-[#0D3B13] hover:underline bg-transparent border-none cursor-pointer"
                                     >Forgot Password?</button>
                                 </div>
                             </div>

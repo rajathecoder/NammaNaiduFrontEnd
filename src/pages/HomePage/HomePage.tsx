@@ -1069,7 +1069,7 @@ const HomePage = () => {
                     {/* Profile Card */}
                     {userInfo && (
                         <div className="bg-white rounded-2xl p-6 text-center shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-100 sm:p-4">
-                            <div className="w-[80px] h-[80px] rounded-full bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-white font-bold text-3xl mx-auto mb-3 relative shadow-lg sm:w-[70px] sm:h-[70px] sm:text-2xl overflow-hidden">
+                            <div className="w-[80px] h-[80px] rounded-full bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-white font-bold text-3xl mx-auto mb-3 relative shadow-lg sm:w-[70px] sm:h-[70px] sm:text-2xl overflow-hidden">
                                 {userPhotos?.photo1link ? (
                                     <img
                                         src={userPhotos.photo1link}
@@ -1103,7 +1103,7 @@ const HomePage = () => {
                     )}
 
                     {/* Upgrade Card */}
-                    <div className="bg-gradient-to-br from-[#a413ed] to-[#8b10c9] rounded-2xl p-6 text-center text-white shadow-[0_8px_24px_rgba(251,52,170,0.25)] sm:p-4">
+                    <div className="bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] rounded-2xl p-6 text-center text-white shadow-[0_8px_24px_rgba(27,94,32,0.2)] sm:p-4">
                         <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 backdrop-blur-sm sm:w-10 sm:h-10">
                             <svg className="w-6 h-6 text-white sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -1111,7 +1111,7 @@ const HomePage = () => {
                         </div>
                         <h4 className="text-sm font-bold mb-2 sm:text-xs">Upgrade membership to call or message with matches</h4>
                         <button
-                            className="bg-white text-[#a413ed] border-none rounded-lg px-6 py-2.5 font-bold cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl w-full text-sm mt-2 sm:text-xs sm:py-2"
+                            className="bg-white text-[#1B5E20] border-none rounded-lg px-6 py-2.5 font-bold cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl w-full text-sm mt-2 sm:text-xs sm:py-2"
                             onClick={() => navigate('/subscription-plans')}
                         >
                             Upgrade now
@@ -1193,21 +1193,21 @@ const HomePage = () => {
                                 <div className="mb-6 md:mb-4">
                                     <div className="flex justify-between items-center mb-3 md:mb-2">
                                         <span className="text-base text-gray-600 font-medium md:text-sm">Profile completeness score</span>
-                                        <span className="text-2xl font-bold bg-gradient-to-r from-[#a413ed] to-[#8b10c9] bg-clip-text text-transparent md:text-xl">{completenessScore}%</span>
+                                        <span className="text-2xl font-bold bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] bg-clip-text text-transparent md:text-xl">{completenessScore}%</span>
                                     </div>
                                     <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden md:h-2.5">
-                                        <div className="h-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] rounded-full transition-all duration-500" style={{ width: `${completenessScore}%` }}></div>
+                                        <div className="h-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] rounded-full transition-all duration-500" style={{ width: `${completenessScore}%` }}></div>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-3 gap-4 md:grid-cols-2">
                                     {!isHoroscopeCompleted() && (
                                         <div
-                                            className="p-5 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border-2 border-purple-200 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg md:p-4"
+                                            className="p-5 bg-gradient-to-br from-green-50 to-green-100 rounded-xl border-2 border-green-200 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg md:p-4"
                                             onClick={() => setShowHoroscopeModal(true)}
                                         >
                                             <div className="flex items-center gap-3 mb-2">
                                                 <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center md:w-8 md:h-8">
-                                                    <svg className="w-6 h-6 text-purple-600 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg className="w-6 h-6 text-green-700 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                                                     </svg>
                                                 </div>
@@ -1218,12 +1218,12 @@ const HomePage = () => {
                                     )}
                                     {!isHobbiesCompleted() && (
                                         <div
-                                            className="p-5 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border-2 border-purple-200 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg md:p-4"
+                                            className="p-5 bg-gradient-to-br from-green-50 to-green-100 rounded-xl border-2 border-green-200 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg md:p-4"
                                             onClick={() => setShowHobbiesModal(true)}
                                         >
                                             <div className="flex items-center gap-3 mb-2">
                                                 <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center md:w-8 md:h-8">
-                                                    <svg className="w-6 h-6 text-purple-600 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg className="w-6 h-6 text-green-700 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg>
                                                 </div>
@@ -1234,12 +1234,12 @@ const HomePage = () => {
                                     )}
                                     {!isPhotosCompleted() && (
                                         <div
-                                            className="p-5 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border-2 border-purple-200 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg md:p-4"
+                                            className="p-5 bg-gradient-to-br from-green-50 to-green-100 rounded-xl border-2 border-green-200 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg md:p-4"
                                             onClick={() => setShowPhotoModal(true)}
                                         >
                                             <div className="flex items-center gap-3 mb-2">
                                                 <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center md:w-8 md:h-8">
-                                                    <svg className="w-6 h-6 text-purple-600 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <svg className="w-6 h-6 text-green-700 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                     </svg>
                                                 </div>
@@ -1274,7 +1274,7 @@ const HomePage = () => {
                         <div className="mb-8 flex items-center justify-between">
                             <h2 className="text-2xl font-extrabold text-[#1a1a1a] m-0">Daily Recommendations</h2>
                             <button
-                                className="text-[#8b10c9] font-bold text-sm bg-transparent border-none cursor-pointer hover:underline"
+                                className="text-[#0D3B13] font-bold text-sm bg-transparent border-none cursor-pointer hover:underline"
                                 onClick={() => navigate('/matches')}
                             >
                                 See All
@@ -1322,7 +1322,7 @@ const HomePage = () => {
                         <div className="mb-8 flex items-center justify-between">
                             <h2 className="text-2xl font-extrabold text-[#1a1a1a] m-0">All Matches</h2>
                             <button
-                                className="text-[#8b10c9] font-bold text-sm bg-transparent border-none cursor-pointer hover:underline"
+                                className="text-[#0D3B13] font-bold text-sm bg-transparent border-none cursor-pointer hover:underline"
                                 onClick={() => navigate('/matches')}
                             >
                                 See All
@@ -1372,7 +1372,7 @@ const HomePage = () => {
                             <div>
                                 <h3 className="text-2xl font-bold text-gray-800 m-0 mb-2">Assisted service</h3>
                                 <p className="text-base text-gray-600 m-0 mb-4">Personalised matchmaking service</p>
-                                <p className="text-xl font-semibold text-[#a413ed] my-4">Find your match <strong>10x faster</strong></p>
+                                <p className="text-xl font-semibold text-[#1B5E20] my-4">Find your match <strong>10x faster</strong></p>
                                 <p className="text-sm text-gray-700 my-4 leading-relaxed">Personalized matchmaking service through expert Relationship Manager</p>
                                 <ul className="list-none p-0 m-4 my-0">
                                     <li className="py-2 text-gray-800 font-medium">✓ Guaranteed matches</li>
@@ -1390,7 +1390,7 @@ const HomePage = () => {
                     <div className="bg-gradient-to-br from-[#fff3e0] to-[#ffe0b2] rounded-2xl p-8 flex items-center gap-8 shadow-[0_4px_20px_rgba(0,0,0,0.08)] md:flex-col">
                         <div className="flex-1">
                             <h3 className="text-2xl font-bold text-gray-800 m-0 mb-4">Become a paid member</h3>
-                            <p className="text-lg text-gray-600 m-0 mb-6">Get up to <strong className="text-[#a413ed] text-xl">54% OFF</strong> on paid membership!</p>
+                            <p className="text-lg text-gray-600 m-0 mb-6">Get up to <strong className="text-[#1B5E20] text-xl">54% OFF</strong> on paid membership!</p>
                             <ul className="list-none p-0 m-4 my-0 grid grid-cols-2 gap-3 md:grid-cols-1">
                                 <li className="p-3 bg-white rounded-lg text-gray-800 font-medium text-sm">📞 Call/WhatsApp matches</li>
                                 <li className="p-3 bg-white rounded-lg text-gray-800 font-medium text-sm">💬 Unlimited messages</li>
@@ -1411,39 +1411,39 @@ const HomePage = () => {
                                 <p className="text-gray-500 text-sm mt-1 font-medium">Members who have viewed your profile</p>
                             </div>
                         </div>
-                        <div className="flex gap-5 overflow-x-auto pb-4 mb-4 scrollbar-thin scrollbar-thumb-[#a413ed] scrollbar-track-gray-100">
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/11')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                        <div className="flex gap-5 overflow-x-auto pb-4 mb-4 scrollbar-thin scrollbar-thumb-[#1B5E20] scrollbar-track-gray-100">
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/11')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                                 <h4 className="text-base font-bold text-gray-900 my-2">Keerthana M</h4>
                                 <p className="text-sm text-gray-600 my-1 font-medium">28 Yrs • 4'10"</p>
                                 <span className="block text-xs text-gray-500 mt-2">Viewed on: 29 Nov 2025</span>
                             </div>
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/12')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/12')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                                 <h4 className="text-base font-bold text-gray-900 my-2">Mansi</h4>
                                 <p className="text-sm text-gray-600 my-1 font-medium">27 Yrs • 5'4"</p>
                                 <span className="block text-xs text-gray-500 mt-2">Viewed on: 29 Nov 2025</span>
                             </div>
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/13')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/13')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                                 <h4 className="text-base font-bold text-gray-900 my-2">Dhanalakshmi</h4>
                                 <p className="text-sm text-gray-600 my-1 font-medium">29 Yrs • 5'0"</p>
                                 <span className="block text-xs text-gray-500 mt-2">Viewed on: 29 Nov 2025</span>
                             </div>
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/14')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/14')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                                 <h4 className="text-base font-bold text-gray-900 my-2">Ramya</h4>
                                 <p className="text-sm text-gray-600 my-1 font-medium">28 Yrs • 5'3"</p>
                                 <span className="block text-xs text-gray-500 mt-2">Viewed on: 29 Nov 2025</span>
                             </div>
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/15')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/15')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                                 <h4 className="text-base font-bold text-gray-900 my-2">Yamini Raja</h4>
                                 <p className="text-sm text-gray-600 my-1 font-medium">23 Yrs • 5'7"</p>
                                 <span className="block text-xs text-gray-500 mt-2">Viewed on: 29 Nov 2025</span>
                             </div>
                         </div>
-                        <button className="w-full p-4 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white border-none rounded-xl text-base font-bold cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(251,52,170,0.3)]">
+                        <button className="w-full p-4 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-xl text-base font-bold cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,94,32,0.25)]">
                             View All →
                         </button>
                     </div>
@@ -1456,24 +1456,24 @@ const HomePage = () => {
                                 <p className="text-gray-500 text-sm mt-1 font-medium">Members that you have viewed</p>
                             </div>
                         </div>
-                        <div className="flex gap-5 overflow-x-auto pb-4 mb-4 scrollbar-thin scrollbar-thumb-[#a413ed] scrollbar-track-gray-100">
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/16')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                        <div className="flex gap-5 overflow-x-auto pb-4 mb-4 scrollbar-thin scrollbar-thumb-[#1B5E20] scrollbar-track-gray-100">
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/16')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                             </div>
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/17')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/17')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                             </div>
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/18')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/18')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                             </div>
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/19')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/19')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                             </div>
-                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(251,52,170,0.15)] hover:border-[#a413ed]" onClick={() => navigate('/profile/20')}>
-                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
+                            <div className="min-w-[200px] text-center p-5 border-2 border-gray-100 rounded-2xl bg-gradient-to-br from-white to-gray-50 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgba(27,94,32,0.12)] hover:border-[#1B5E20]" onClick={() => navigate('/profile/20')}>
+                                <div className="w-[140px] h-[140px] rounded-2xl bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-6xl mx-auto mb-4 text-white shadow-lg">👤</div>
                             </div>
                         </div>
-                        <button className="w-full p-4 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white border-none rounded-xl text-base font-bold cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(251,52,170,0.3)]">
+                        <button className="w-full p-4 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-xl text-base font-bold cursor-pointer transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(27,94,32,0.25)]">
                             View All →
                         </button>
                     </div>
@@ -1498,20 +1498,20 @@ const HomePage = () => {
                     <div className="flex flex-col">
                         <h4 className="text-base font-semibold text-gray-800 m-0 mb-4">Help & Support</h4>
                         <ul className="list-none p-0 m-0">
-                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#a413ed]">24x7 Live help</a></li>
-                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#a413ed]">Contact us</a></li>
-                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#a413ed]">Feedback</a></li>
-                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#a413ed]">FAQs</a></li>
+                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#1B5E20]">24x7 Live help</a></li>
+                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#1B5E20]">Contact us</a></li>
+                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#1B5E20]">Feedback</a></li>
+                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#1B5E20]">FAQs</a></li>
                         </ul>
                     </div>
 
                     <div className="flex flex-col">
                         <h4 className="text-base font-semibold text-gray-800 m-0 mb-4">Information</h4>
                         <ul className="list-none p-0 m-0">
-                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#a413ed]">About Us</a></li>
-                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#a413ed]">Success stories</a></li>
-                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#a413ed]">Terms & Conditions</a></li>
-                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#a413ed]">Privacy Policy</a></li>
+                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#1B5E20]">About Us</a></li>
+                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#1B5E20]">Success stories</a></li>
+                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#1B5E20]">Terms & Conditions</a></li>
+                            <li className="mb-2"><a href="#" className="text-gray-600 no-underline text-sm transition-colors duration-200 hover:text-[#1B5E20]">Privacy Policy</a></li>
                         </ul>
                     </div>
 

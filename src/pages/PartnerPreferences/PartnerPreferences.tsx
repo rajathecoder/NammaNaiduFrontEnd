@@ -129,7 +129,7 @@ const PartnerPreferences = () => {
                         key={opt}
                         type="button"
                         onClick={() => toggleArrayItem(field, opt)}
-                        className={`py-2 px-4 border-2 rounded-full text-sm cursor-pointer transition-all duration-200 font-medium ${selected.includes(opt) ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-[#a413ed]'}`}
+                        className={`py-2 px-4 border-2 rounded-full text-sm cursor-pointer transition-all duration-200 font-medium ${selected.includes(opt) ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-[#1B5E20]'}`}
                     >
                         {opt}
                     </button>
@@ -147,7 +147,7 @@ const PartnerPreferences = () => {
                         key={opt}
                         type="button"
                         onClick={() => onChange(opt)}
-                        className={`py-2 px-4 border-2 rounded-full text-sm cursor-pointer transition-all duration-200 font-medium ${value === opt ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] border-[#a413ed] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-[#a413ed]'}`}
+                        className={`py-2 px-4 border-2 rounded-full text-sm cursor-pointer transition-all duration-200 font-medium ${value === opt ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] border-[#1B5E20] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-[#1B5E20]'}`}
                     >
                         {opt}
                     </button>
@@ -167,7 +167,7 @@ const PartnerPreferences = () => {
             <div className="min-h-screen bg-gray-50">
                 <Header />
                 <div className="flex items-center justify-center h-[60vh]">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#a413ed]" />
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#1B5E20]" />
                 </div>
             </div>
         );
@@ -183,7 +183,7 @@ const PartnerPreferences = () => {
                         <h1 className="text-2xl font-bold text-gray-900">Partner Preferences</h1>
                         <p className="text-sm text-gray-500 mt-1">Set your ideal partner criteria to get better matches</p>
                     </div>
-                    <button onClick={() => navigate('/my-profile')} className="text-sm text-[#a413ed] hover:underline font-medium">
+                    <button onClick={() => navigate('/my-profile')} className="text-sm text-[#1B5E20] hover:underline font-medium">
                         Back to Profile
                     </button>
                 </div>
@@ -198,10 +198,10 @@ const PartnerPreferences = () => {
                         <label className="block text-sm font-semibold text-gray-800 mb-3">Age Range</label>
                         <div className="flex items-center gap-4">
                             <input type="number" min={18} max={100} value={form.ageMin} onChange={(e) => setForm({ ...form, ageMin: e.target.value ? parseInt(e.target.value) : '' })}
-                                className="w-24 py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20" placeholder="Min" />
+                                className="w-24 py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20" placeholder="Min" />
                             <span className="text-gray-400">to</span>
                             <input type="number" min={18} max={100} value={form.ageMax} onChange={(e) => setForm({ ...form, ageMax: e.target.value ? parseInt(e.target.value) : '' })}
-                                className="w-24 py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#a413ed] focus:ring-2 focus:ring-[#a413ed]/20" placeholder="Max" />
+                                className="w-24 py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20" placeholder="Max" />
                             <span className="text-sm text-gray-500">years</span>
                         </div>
                     </div>
@@ -211,13 +211,13 @@ const PartnerPreferences = () => {
                         <label className="block text-sm font-semibold text-gray-800 mb-3">Height Range</label>
                         <div className="flex items-center gap-4">
                             <select value={form.heightMin} onChange={(e) => setForm({ ...form, heightMin: e.target.value })}
-                                className="py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#a413ed]">
+                                className="py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#1B5E20]">
                                 <option value="">Min Height</option>
                                 {heightOptions.map((h) => <option key={h} value={h}>{h}</option>)}
                             </select>
                             <span className="text-gray-400">to</span>
                             <select value={form.heightMax} onChange={(e) => setForm({ ...form, heightMax: e.target.value })}
-                                className="py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#a413ed]">
+                                className="py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#1B5E20]">
                                 <option value="">Max Height</option>
                                 {heightOptions.map((h) => <option key={h} value={h}>{h}</option>)}
                             </select>
@@ -235,7 +235,7 @@ const PartnerPreferences = () => {
                         <ChipSelect label="Caste" options={(masters.caste || []).map((m) => m.name)} field="castes" selected={form.castes} />
                         <label className="flex items-center gap-2 mt-3 cursor-pointer">
                             <input type="checkbox" checked={form.willingToMarryFromAnyCaste} onChange={(e) => setForm({ ...form, willingToMarryFromAnyCaste: e.target.checked })}
-                                className="w-4 h-4 text-[#a413ed] border-gray-300 rounded focus:ring-[#a413ed]" />
+                                className="w-4 h-4 text-[#1B5E20] border-gray-300 rounded focus:ring-[#1B5E20]" />
                             <span className="text-sm text-gray-600">Willing to marry from any caste</span>
                         </label>
                     </div>
@@ -251,13 +251,13 @@ const PartnerPreferences = () => {
                         <label className="block text-sm font-semibold text-gray-800 mb-3">Annual Income Range</label>
                         <div className="flex items-center gap-4">
                             <select value={form.incomeMin} onChange={(e) => setForm({ ...form, incomeMin: e.target.value })}
-                                className="py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#a413ed]">
+                                className="py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#1B5E20]">
                                 <option value="">Min Income</option>
                                 {incomeOptions.map((i) => <option key={i} value={i}>{i}</option>)}
                             </select>
                             <span className="text-gray-400">to</span>
                             <select value={form.incomeMax} onChange={(e) => setForm({ ...form, incomeMax: e.target.value })}
-                                className="py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#a413ed]">
+                                className="py-2 px-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#1B5E20]">
                                 <option value="">Max Income</option>
                                 {incomeOptions.map((i) => <option key={i} value={i}>{i}</option>)}
                             </select>
@@ -272,7 +272,7 @@ const PartnerPreferences = () => {
 
                     {/* Save */}
                     <button onClick={handleSave} disabled={isSaving}
-                        className="w-full py-4 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                        className="w-full py-4 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
                         {isSaving ? 'Saving...' : 'Save Preferences'}
                     </button>
                 </div>

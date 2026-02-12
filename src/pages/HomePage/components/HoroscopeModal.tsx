@@ -124,7 +124,7 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
                             name="rasi"
                             value={data.rasi}
                             onChange={handleChange}
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent bg-white"
                         >
                             <option value="">Select Rasi</option>
                             {RASI_OPTIONS.map((option) => (
@@ -142,7 +142,7 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
                             name="natchathiram"
                             value={data.natchathiram}
                             onChange={handleChange}
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent bg-white"
                         >
                             <option value="">Select Natchathiram</option>
                             {NATCHATHIRAM_OPTIONS.map((option) => (
@@ -162,7 +162,7 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
                             value={data.birthPlace}
                             onChange={handleChange}
                             placeholder="Enter Birth Place"
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent"
                         />
                     </div>
                     <div>
@@ -173,7 +173,7 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
                             <select
                                 value={hour}
                                 onChange={(e) => handleTimeChange('hour', e.target.value)}
-                                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent bg-white"
                             >
                                 <option value="">Hr</option>
                                 {HOURS.map((h) => (
@@ -184,7 +184,7 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
                             <select
                                 value={minute}
                                 onChange={(e) => handleTimeChange('minute', e.target.value)}
-                                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent bg-white"
                             >
                                 <option value="">Min</option>
                                 {MINUTES.map((m) => (
@@ -194,7 +194,7 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
                             <select
                                 value={period}
                                 onChange={(e) => handleTimeChange('period', e.target.value)}
-                                className="w-24 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                                className="w-24 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-700 focus:border-transparent bg-white"
                             >
                                 {PERIODS.map((p) => (
                                     <option key={p} value={p}>{p}</option>
@@ -212,7 +212,7 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-lg hover:shadow-lg transition-all font-medium"
+                            className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white rounded-lg hover:shadow-lg transition-all font-medium"
                         >
                             Save
                         </button>

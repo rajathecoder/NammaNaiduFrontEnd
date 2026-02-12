@@ -182,7 +182,7 @@ const ReportsComplaints: React.FC = () => {
                     </div>
                     <div className="text-sm">
                       <strong className="text-gray-700">Reason:</strong>{' '}
-                      <span className="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">
+                      <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">
                         {report.reason}
                       </span>
                     </div>
@@ -304,7 +304,7 @@ const ReportsComplaints: React.FC = () => {
                   </div>
                   <div>
                     <strong className="text-gray-700">Reason:</strong>{' '}
-                    <span className="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">
+                    <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-medium">
                       {selectedReport.reason}
                     </span>
                   </div>

@@ -46,14 +46,14 @@ const MatchCard: React.FC<MatchCardProps> = ({
                             const parent = target.parentElement;
                             if (parent && !parent.querySelector('.fallback-initial')) {
                                 const fallback = document.createElement('div');
-                                fallback.className = 'fallback-initial w-full h-full flex items-center justify-center text-6xl text-white font-bold bg-gradient-to-br from-[#a413ed] to-[#8b10c9]';
+                                fallback.className = 'fallback-initial w-full h-full flex items-center justify-center text-6xl text-white font-bold bg-gradient-to-br from-[#1B5E20] to-[#0D3B13]';
                                 fallback.textContent = profile.name?.charAt(0) || '👤';
                                 parent.appendChild(fallback);
                             }
                         }}
                     />
                 ) : (
-                    <div className="w-full h-full flex items-center justify-center text-6xl text-white font-bold bg-gradient-to-br from-[#a413ed] to-[#8b10c9]">
+                    <div className="w-full h-full flex items-center justify-center text-6xl text-white font-bold bg-gradient-to-br from-[#1B5E20] to-[#0D3B13]">
                         {profile.name?.charAt(0) || '👤'}
                     </div>
                 )}
@@ -86,7 +86,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
 
                 <div className="flex items-center gap-2">
                     <button
-                        className="h-9 px-4 flex-1 bg-white text-[#8b10c9] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:bg-[#8b10c9] hover:text-white hover:scale-[1.05] active:scale-95 border-none cursor-pointer shadow-lg whitespace-nowrap"
+                        className="h-9 px-4 flex-1 bg-white text-[#0D3B13] rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:bg-[#0D3B13] hover:text-white hover:scale-[1.05] active:scale-95 border-none cursor-pointer shadow-lg whitespace-nowrap"
                         onClick={(e) => {
                             e.stopPropagation();
                             if (onPrimaryAction) {
@@ -99,7 +99,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
                         {primaryButtonText}
                     </button>
                     <button
-                        className={`w-9 h-9 backdrop-blur-md border rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.05] active:scale-95 cursor-pointer shadow-lg ${isFavorite ? 'bg-[#a413ed] border-[#a413ed] text-white' : 'bg-white/20 border-white/30 text-white hover:bg-white/40'}`}
+                        className={`w-9 h-9 backdrop-blur-md border rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.05] active:scale-95 cursor-pointer shadow-lg ${isFavorite ? 'bg-[#1B5E20] border-[#1B5E20] text-white' : 'bg-white/20 border-white/30 text-white hover:bg-white/40'}`}
                         onClick={(e) => {
                             e.stopPropagation();
                             if (onFavorite) onFavorite(e);

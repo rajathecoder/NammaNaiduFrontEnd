@@ -123,8 +123,8 @@ const Header = () => {
                     <a
                         href="#"
                         className={`text-gray-700 no-underline text-[0.95rem] font-medium flex items-center gap-2 transition-colors duration-300 relative pb-1 ${isActive('/home')
-                            ? 'text-[#a413ed] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#a413ed] after:to-[#8b10c9]'
-                            : 'hover:text-[#a413ed]'
+                            ? 'text-[#1B5E20] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#1B5E20] after:to-[#0D3B13]'
+                            : 'hover:text-[#1B5E20]'
                             }`}
                         onClick={(e) => handleNavClick(e, '/home')}
                     >
@@ -136,8 +136,8 @@ const Header = () => {
                     <a
                         href="#"
                         className={`text-gray-700 no-underline text-[0.95rem] font-medium flex items-center gap-2 transition-colors duration-300 relative pb-1 ${isActive('/matches')
-                            ? 'text-[#a413ed] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#a413ed] after:to-[#8b10c9]'
-                            : 'hover:text-[#a413ed]'
+                            ? 'text-[#1B5E20] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#1B5E20] after:to-[#0D3B13]'
+                            : 'hover:text-[#1B5E20]'
                             }`}
                         onClick={(e) => handleNavClick(e, '/matches')}
                     >
@@ -149,8 +149,8 @@ const Header = () => {
                     <a
                         href="#"
                         className={`text-gray-700 no-underline text-[0.95rem] font-medium flex items-center gap-2 transition-colors duration-300 relative pb-1 ${isActive('/interests')
-                            ? 'text-[#a413ed] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#a413ed] after:to-[#8b10c9]'
-                            : 'hover:text-[#a413ed]'
+                            ? 'text-[#1B5E20] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#1B5E20] after:to-[#0D3B13]'
+                            : 'hover:text-[#1B5E20]'
                             }`}
                         onClick={(e) => handleNavClick(e, '/interests')}
                     >
@@ -162,8 +162,8 @@ const Header = () => {
                     <a
                         href="#"
                         className={`text-gray-700 no-underline text-[0.95rem] font-medium flex items-center gap-2 transition-colors duration-300 relative pb-1 ${isActive('/messages')
-                            ? 'text-[#a413ed] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#a413ed] after:to-[#8b10c9]'
-                            : 'hover:text-[#a413ed]'
+                            ? 'text-[#1B5E20] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#1B5E20] after:to-[#0D3B13]'
+                            : 'hover:text-[#1B5E20]'
                             }`}
                         onClick={(e) => handleNavClick(e, '/messages')}
                     >
@@ -175,8 +175,8 @@ const Header = () => {
                     <a
                         href="#"
                         className={`text-gray-700 no-underline text-[0.95rem] font-medium flex items-center gap-2 transition-colors duration-300 relative pb-1 ${isActive('/search')
-                            ? 'text-[#a413ed] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#a413ed] after:to-[#8b10c9]'
-                            : 'hover:text-[#a413ed]'
+                            ? 'text-[#1B5E20] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#1B5E20] after:to-[#0D3B13]'
+                            : 'hover:text-[#1B5E20]'
                             }`}
                         onClick={(e) => handleNavClick(e, '/search')}
                     >
@@ -188,8 +188,8 @@ const Header = () => {
                     <a
                         href="#"
                         className={`text-gray-700 no-underline text-[0.95rem] font-medium flex items-center gap-2 transition-colors duration-300 relative pb-1 ${isActive('/notifications')
-                            ? 'text-[#a413ed] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#a413ed] after:to-[#8b10c9]'
-                            : 'hover:text-[#a413ed]'
+                            ? 'text-[#1B5E20] font-semibold after:content-[""] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-[#1B5E20] after:to-[#0D3B13]'
+                            : 'hover:text-[#1B5E20]'
                             }`}
                         onClick={(e) => handleNavClick(e, '/notifications')}
                     >
@@ -197,13 +197,13 @@ const Header = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
                         Notifications
-                        <span className="bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-full w-[18px] h-[18px] flex items-center justify-center text-xs font-semibold ml-1">8</span>
+                        <span className="bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white rounded-full w-[18px] h-[18px] flex items-center justify-center text-xs font-semibold ml-1">8</span>
                     </a>
                 </nav>
                 {userInfo && (
                     <div className="relative flex items-center">
                         <div
-                            className="w-10 h-10 rounded-full bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-white font-semibold text-base cursor-pointer transition-transform duration-200 hover:scale-105 shadow-md overflow-hidden"
+                            className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-white font-semibold text-base cursor-pointer transition-transform duration-200 hover:scale-105 shadow-md overflow-hidden"
                             onClick={() => setShowDropdown(!showDropdown)}
                         >
                             {userPhotos?.photo1link ? (
@@ -219,7 +219,7 @@ const Header = () => {
                         {showDropdown && (
                             <div className="absolute top-[calc(100%+10px)] right-0 bg-white rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.15)] min-w-[250px] z-[1000] animate-[dropdownFadeIn_0.3s_ease]">
                                 <div className="p-4 flex items-center gap-4 border-b border-gray-100">
-                                    <div className="w-[50px] h-[50px] rounded-full bg-gradient-to-br from-[#a413ed] to-[#8b10c9] flex items-center justify-center text-white font-semibold text-xl shrink-0 shadow-md overflow-hidden">
+                                    <div className="w-[50px] h-[50px] rounded-full bg-gradient-to-br from-[#1B5E20] to-[#0D3B13] flex items-center justify-center text-white font-semibold text-xl shrink-0 shadow-md overflow-hidden">
                                         {userPhotos?.photo1link ? (
                                             <img
                                                 src={userPhotos.photo1link}
@@ -233,7 +233,7 @@ const Header = () => {
                                     <div className="flex-1 min-w-0">
                                         <p className="text-base font-semibold text-gray-800 m-0 mb-1 whitespace-nowrap overflow-hidden text-ellipsis">{userInfo.name || 'User'}</p>
                                         <p className="text-sm text-gray-600 m-0 mb-1 whitespace-nowrap overflow-hidden text-ellipsis">{userInfo.email || userInfo.phone || ''}</p>
-                                        <div className="flex items-center gap-1 text-sm text-[#a413ed] font-medium">
+                                        <div className="flex items-center gap-1 text-sm text-[#1B5E20] font-medium">
                                             <span>🎫</span>
                                             <span>Tokens: {userInfo.profileViewTokens !== undefined ? userInfo.profileViewTokens : 0}</span>
                                         </div>

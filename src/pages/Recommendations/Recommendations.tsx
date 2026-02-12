@@ -110,7 +110,7 @@ const Recommendations = () => {
             <div className="min-h-screen bg-gray-50">
                 <Header />
                 <div className="flex items-center justify-center h-[60vh]">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#a413ed]" />
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#1B5E20]" />
                 </div>
             </div>
         );
@@ -127,7 +127,7 @@ const Recommendations = () => {
                             Profiles matched to your preferences {date ? `for ${new Date(date).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}` : ''}
                         </p>
                     </div>
-                    <button onClick={() => navigate('/matches')} className="text-sm text-[#a413ed] hover:underline font-medium">
+                    <button onClick={() => navigate('/matches')} className="text-sm text-[#1B5E20] hover:underline font-medium">
                         View All Matches
                     </button>
                 </div>
@@ -137,7 +137,7 @@ const Recommendations = () => {
                         <div className="text-5xl mb-4">💑</div>
                         <h3 className="text-lg font-semibold text-gray-800">No recommendations yet</h3>
                         <p className="text-sm text-gray-500 mt-2">Set your partner preferences to get personalized daily recommendations.</p>
-                        <button onClick={() => navigate('/partner-preferences')} className="mt-4 px-6 py-2 bg-[#a413ed] text-white rounded-lg font-medium hover:bg-[#8b10c9] transition-colors">
+                        <button onClick={() => navigate('/partner-preferences')} className="mt-4 px-6 py-2 bg-[#1B5E20] text-white rounded-lg font-medium hover:bg-[#0D3B13] transition-colors">
                             Set Preferences
                         </button>
                     </div>
@@ -167,7 +167,7 @@ const Recommendations = () => {
                                         <div className="flex-1 p-4">
                                             <div className="flex items-start justify-between">
                                                 <div>
-                                                    <h3 className="font-semibold text-gray-900 cursor-pointer hover:text-[#a413ed]" onClick={() => navigate(`/profile/${u.accountId}`)}>
+                                                    <h3 className="font-semibold text-gray-900 cursor-pointer hover:text-[#1B5E20]" onClick={() => navigate(`/profile/${u.accountId}`)}>
                                                         {u.name}
                                                     </h3>
                                                     <p className="text-xs text-gray-400">{u.userCode}</p>
@@ -185,7 +185,7 @@ const Recommendations = () => {
                                                 {u.basicDetail?.education && <div>{u.basicDetail.education}</div>}
                                             </div>
 
-                                            <p className="text-xs text-[#a413ed] mt-2 italic">{rec.reason}</p>
+                                            <p className="text-xs text-[#1B5E20] mt-2 italic">{rec.reason}</p>
 
                                             {/* Actions */}
                                             {acted ? (
@@ -198,11 +198,11 @@ const Recommendations = () => {
                                             ) : (
                                                 <div className="mt-3 flex gap-2">
                                                     <button onClick={() => handleAction(rec.id, 'interest', u.accountId)}
-                                                        className="px-3 py-1.5 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white text-xs font-semibold rounded-lg hover:shadow-md transition-all">
+                                                        className="px-3 py-1.5 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white text-xs font-semibold rounded-lg hover:shadow-md transition-all">
                                                         Send Interest
                                                     </button>
                                                     <button onClick={() => handleAction(rec.id, 'shortlist', u.accountId)}
-                                                        className="px-3 py-1.5 border border-[#a413ed] text-[#a413ed] text-xs font-semibold rounded-lg hover:bg-purple-50 transition-all">
+                                                        className="px-3 py-1.5 border border-[#1B5E20] text-[#1B5E20] text-xs font-semibold rounded-lg hover:bg-green-50 transition-all">
                                                         Shortlist
                                                     </button>
                                                     <button onClick={() => handleAction(rec.id, 'skipped', u.accountId)}

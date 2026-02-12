@@ -206,7 +206,7 @@ const ProfessionalDetails = () => {
                         <span className="text-gray-600">Need help?</span>
                         <a
                             href="tel:8144998877"
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
                         >
                             <span className="text-base">📞</span>
                             8144-99-88-77
@@ -225,7 +225,7 @@ const ProfessionalDetails = () => {
                         <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold">2</span>
                         <span className="text-gray-500">Personal & Religious</span>
                         <span className="h-px flex-1 bg-gray-200 mx-2" />
-                        <span className="w-8 h-8 rounded-full bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white flex items-center justify-center font-semibold">3</span>
+                        <span className="w-8 h-8 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white flex items-center justify-center font-semibold">3</span>
                         <span className="font-semibold text-gray-800">Professional</span>
                         <span className="h-px flex-1 bg-gray-200 mx-2" />
                         <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold">4</span>
@@ -249,7 +249,7 @@ const ProfessionalDetails = () => {
                                     const value = e.target.value.replace(/\D/g, '').slice(0, 6);
                                     setPincode(value);
                                 }}
-                                className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed]"
+                                className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20]"
                                 placeholder="Enter 6-digit pincode"
                                 maxLength={6}
                             />
@@ -271,7 +271,7 @@ const ProfessionalDetails = () => {
 
                         <div className="grid grid-cols-2 gap-4 mb-7">
                             <div className="relative">
-                                <label className="block text-sm font-medium text-gray-800 mb-2">State <span className="text-[#ff6b35] font-semibold">*</span></label>
+                                <label className="block text-sm font-medium text-gray-800 mb-2">State <span className="text-[#1B5E20] font-semibold">*</span></label>
                                 {district ? (
                                     <input
                                         type="text"
@@ -283,7 +283,7 @@ const ProfessionalDetails = () => {
                                     <select
                                         value={state}
                                         onChange={(e) => setState(e.target.value)}
-                                        className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed]"
+                                        className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20]"
                                         required
                                     >
                                         <option value="">Select state</option>
@@ -296,7 +296,7 @@ const ProfessionalDetails = () => {
                             </div>
 
                             <div className="relative">
-                                <label className="block text-sm font-medium text-gray-800 mb-2">Country <span className="text-[#ff6b35] font-semibold">*</span></label>
+                                <label className="block text-sm font-medium text-gray-800 mb-2">Country <span className="text-[#1B5E20] font-semibold">*</span></label>
                                 {district ? (
                                     <input
                                         type="text"
@@ -308,7 +308,7 @@ const ProfessionalDetails = () => {
                                     <select
                                         value={country}
                                         onChange={(e) => setCountry(e.target.value)}
-                                        className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed]"
+                                        className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20]"
                                         required
                                     >
                                         <option value="">Select country</option>
@@ -323,11 +323,11 @@ const ProfessionalDetails = () => {
 
                         {postOffices.length > 0 && (
                             <div className="relative mb-7">
-                                <label className="block text-sm font-medium text-gray-800 mb-2">City <span className="text-[#ff6b35] font-semibold">*</span></label>
+                                <label className="block text-sm font-medium text-gray-800 mb-2">City <span className="text-[#1B5E20] font-semibold">*</span></label>
                                 <select
                                     value={city}
                                     onChange={(e) => setCity(e.target.value)}
-                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed]"
+                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20]"
                                     required
                                 >
                                     <option value="">Select city</option>
@@ -342,12 +342,12 @@ const ProfessionalDetails = () => {
 
                         {!postOffices.length && (
                             <div className="relative mb-7">
-                                <label className="block text-sm font-medium text-gray-800 mb-2">City <span className="text-[#ff6b35] font-semibold">*</span></label>
+                                <label className="block text-sm font-medium text-gray-800 mb-2">City <span className="text-[#1B5E20] font-semibold">*</span></label>
                                 <input
                                     type="text"
                                     value={city}
                                     onChange={(e) => setCity(e.target.value)}
-                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed]"
+                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20]"
                                     placeholder="Enter city"
                                     required
                                 />
@@ -363,7 +363,7 @@ const ProfessionalDetails = () => {
                                 <select
                                     value={education}
                                     onChange={(e) => setEducation(e.target.value)}
-                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed] disabled:opacity-50"
+                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20] disabled:opacity-50"
                                     required
                                     disabled={!educationOptions.length}
                                 >
@@ -381,7 +381,7 @@ const ProfessionalDetails = () => {
                                 <select
                                     value={employmentType}
                                     onChange={(e) => setEmploymentType(e.target.value)}
-                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed] disabled:opacity-50"
+                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20] disabled:opacity-50"
                                     required
                                     disabled={!employmentOptions.length}
                                 >
@@ -400,7 +400,7 @@ const ProfessionalDetails = () => {
                             <select
                                 value={occupation}
                                 onChange={(e) => setOccupation(e.target.value)}
-                                className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed] disabled:opacity-50"
+                                className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20] disabled:opacity-50"
                                 required
                                 disabled={!occupationOptions.length}
                             >
@@ -422,7 +422,7 @@ const ProfessionalDetails = () => {
                                 <select
                                     value={currency}
                                     onChange={(e) => setCurrency(e.target.value)}
-                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed] disabled:opacity-50"
+                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20] disabled:opacity-50"
                                     required
                                     disabled={!currencyOptions.length}
                                 >
@@ -440,7 +440,7 @@ const ProfessionalDetails = () => {
                                 <select
                                     value={income}
                                     onChange={(e) => setIncome(e.target.value)}
-                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#a413ed] focus:shadow-[0_0_0_1px_#a413ed] disabled:opacity-50"
+                                    className="w-full py-3.5 px-4 border border-gray-300 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-300 focus:outline-none focus:border-[#1B5E20] focus:shadow-[0_0_0_1px_#1B5E20] disabled:opacity-50"
                                     required
                                     disabled={!incomeOptions.length}
                                 >
@@ -469,7 +469,7 @@ const ProfessionalDetails = () => {
                         )}
 
                         {/* Next Button */}
-                        <button type="submit" className="w-full py-4 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                        <button type="submit" className="w-full py-4 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                             Continue
                         </button>
                     </form>

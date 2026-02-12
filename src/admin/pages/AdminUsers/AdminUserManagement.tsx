@@ -411,7 +411,7 @@ const AdminUserManagement: React.FC = () => {
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-semibold ${
                           admin.role === 'Super Admin'
-                            ? 'bg-purple-100 text-purple-700'
+                            ? 'bg-green-100 text-green-800'
                             : admin.role === 'Moderator'
                             ? 'bg-blue-100 text-blue-700'
                             : 'bg-green-100 text-green-700'

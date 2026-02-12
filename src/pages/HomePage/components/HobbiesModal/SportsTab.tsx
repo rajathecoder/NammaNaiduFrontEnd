@@ -47,7 +47,7 @@ const SportsTab: React.FC<SportsTabProps> = ({
                 <button
                     type="button"
                     onClick={onToggleShowMore}
-                    className="text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1"
+                    className="text-amber-600 hover:text-amber-700 font-medium flex items-center gap-1"
                 >
                     Show more <span>↓</span>
                 </button>

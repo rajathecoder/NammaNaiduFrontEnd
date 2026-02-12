@@ -176,7 +176,7 @@ const PhotoUploadModal: React.FC<PhotoUploadModalProps> = ({
                         <button
                             type="submit"
                             disabled={uploading || !proofPhoto || personPhotos.length === 0}
-                            className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 px-6 py-2.5 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {uploading ? 'Uploading...' : 'Save'}
                         </button>

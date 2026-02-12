@@ -320,7 +320,7 @@ const Matches = () => {
                             <h3 className="text-lg font-bold text-[#1a1a1a] mb-4">Discovery</h3>
                             <div className="space-y-2">
                                 <div
-                                    className={`flex items-center p-3.5 rounded-2xl cursor-pointer transition-all duration-300 gap-3 ${selectedFilter === 'your-matches' ? 'bg-gradient-to-r from-[#a413ed15] to-[#8b10c915] text-[#8b10c9] border border-[#8b10c920]' : 'text-gray-600 hover:bg-gray-50'}`}
+                                    className={`flex items-center p-3.5 rounded-2xl cursor-pointer transition-all duration-300 gap-3 ${selectedFilter === 'your-matches' ? 'bg-gradient-to-r from-[#1B5E2015] to-[#0D3B1315] text-[#0D3B13] border border-[#0D3B1320]' : 'text-gray-600 hover:bg-gray-50'}`}
                                     onClick={() => setSelectedFilter('your-matches')}
                                 >
                                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${selectedFilter === 'your-matches' ? 'bg-white shadow-sm' : 'bg-gray-100'}`}>👤</div>
@@ -337,7 +337,7 @@ const Matches = () => {
                             <h3 className="text-lg font-bold text-[#1a1a1a] mb-4">Interactions</h3>
                             <div className="space-y-2">
                                 <div
-                                    className={`flex items-center p-3.5 rounded-2xl cursor-pointer transition-all duration-300 gap-3 ${selectedFilter === 'shortlisted-by-you' ? 'bg-gradient-to-r from-[#a413ed15] to-[#8b10c915] text-[#8b10c9] border border-[#8b10c920]' : 'text-gray-600 hover:bg-gray-50'}`}
+                                    className={`flex items-center p-3.5 rounded-2xl cursor-pointer transition-all duration-300 gap-3 ${selectedFilter === 'shortlisted-by-you' ? 'bg-gradient-to-r from-[#1B5E2015] to-[#0D3B1315] text-[#0D3B13] border border-[#0D3B1320]' : 'text-gray-600 hover:bg-gray-50'}`}
                                     onClick={() => setSelectedFilter('shortlisted-by-you')}
                                 >
                                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${selectedFilter === 'shortlisted-by-you' ? 'bg-white shadow-sm' : 'bg-gray-100'}`}>⭐</div>
@@ -345,7 +345,7 @@ const Matches = () => {
                                     <span className="text-lg opacity-40">›</span>
                                 </div>
                                 <div
-                                    className={`flex items-center p-3.5 rounded-2xl cursor-pointer transition-all duration-300 gap-3 ${selectedFilter === 'viewed-you' ? 'bg-gradient-to-r from-[#a413ed15] to-[#8b10c915] text-[#8b10c9] border border-[#8b10c920]' : 'text-gray-600 hover:bg-gray-50'}`}
+                                    className={`flex items-center p-3.5 rounded-2xl cursor-pointer transition-all duration-300 gap-3 ${selectedFilter === 'viewed-you' ? 'bg-gradient-to-r from-[#1B5E2015] to-[#0D3B1315] text-[#0D3B13] border border-[#0D3B1320]' : 'text-gray-600 hover:bg-gray-50'}`}
                                     onClick={() => setSelectedFilter('viewed-you')}
                                 >
                                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${selectedFilter === 'viewed-you' ? 'bg-white shadow-sm' : 'bg-gray-100'}`}>👁️</div>
@@ -359,7 +359,7 @@ const Matches = () => {
                             <h3 className="text-lg font-bold text-[#1a1a1a] mb-4">Quick Find</h3>
                             <div className="space-y-2">
                                 <div
-                                    className={`flex items-center p-3.5 rounded-2xl cursor-pointer transition-all duration-300 gap-3 ${selectedFilter === 'newly-joined' ? 'bg-gradient-to-r from-[#a413ed15] to-[#8b10c915] text-[#8b10c9] border border-[#8b10c920]' : 'text-gray-600 hover:bg-gray-50'}`}
+                                    className={`flex items-center p-3.5 rounded-2xl cursor-pointer transition-all duration-300 gap-3 ${selectedFilter === 'newly-joined' ? 'bg-gradient-to-r from-[#1B5E2015] to-[#0D3B1315] text-[#0D3B13] border border-[#0D3B1320]' : 'text-gray-600 hover:bg-gray-50'}`}
                                     onClick={() => setSelectedFilter('newly-joined')}
                                 >
                                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${selectedFilter === 'newly-joined' ? 'bg-white shadow-sm' : 'bg-gray-100'}`}>🆕</div>
@@ -385,13 +385,13 @@ const Matches = () => {
                             )}
                         </div>
                         <div className="flex gap-3 flex-wrap items-center">
-                            <button className="h-10 px-6 border border-gray-100 bg-white rounded-2xl shadow-sm text-sm font-bold text-gray-700 cursor-pointer flex items-center gap-2 transition-all hover:shadow-md hover:border-[#a413ed40]">
+                            <button className="h-10 px-6 border border-gray-100 bg-white rounded-2xl shadow-sm text-sm font-bold text-gray-700 cursor-pointer flex items-center gap-2 transition-all hover:shadow-md hover:border-[#1B5E2040]">
                                 <span>⚙️</span> Filter
                             </button>
-                            <button className="h-10 px-6 border border-gray-100 bg-white rounded-2xl shadow-sm text-sm font-bold text-gray-700 cursor-pointer flex items-center gap-2 transition-all hover:shadow-md hover:border-[#a413ed40]">Sort by ▼</button>
+                            <button className="h-10 px-6 border border-gray-100 bg-white rounded-2xl shadow-sm text-sm font-bold text-gray-700 cursor-pointer flex items-center gap-2 transition-all hover:shadow-md hover:border-[#1B5E2040]">Sort by ▼</button>
                             <div className="h-4 w-[1px] bg-gray-200 mx-2"></div>
-                            <button className="h-10 px-6 border border-gray-100 bg-white rounded-[20px] text-xs font-bold text-gray-500 cursor-pointer transition-all hover:bg-gray-50 hover:text-[#8b10c9]">Newly joined</button>
-                            <button className="h-10 px-6 border border-gray-100 bg-white rounded-[20px] text-xs font-bold text-gray-500 cursor-pointer transition-all hover:bg-gray-50 hover:text-[#8b10c9]">Profiles with photo</button>
+                            <button className="h-10 px-6 border border-gray-100 bg-white rounded-[20px] text-xs font-bold text-gray-500 cursor-pointer transition-all hover:bg-gray-50 hover:text-[#0D3B13]">Newly joined</button>
+                            <button className="h-10 px-6 border border-gray-100 bg-white rounded-[20px] text-xs font-bold text-gray-500 cursor-pointer transition-all hover:bg-gray-50 hover:text-[#0D3B13]">Profiles with photo</button>
                         </div>
                     </div>
 
@@ -400,7 +400,7 @@ const Matches = () => {
                             <div className="col-span-full p-12 text-center bg-white rounded-3xl border border-gray-100 shadow-sm">
                                 <div className="text-5xl mb-4">🔍</div>
                                 <p className="text-gray-500 font-bold text-lg">No matches found for this filter</p>
-                                <button className="mt-4 text-[#8b10c9] font-bold hover:underline" onClick={() => setSelectedFilter('your-matches')}>Clear all filters</button>
+                                <button className="mt-4 text-[#0D3B13] font-bold hover:underline" onClick={() => setSelectedFilter('your-matches')}>Clear all filters</button>
                             </div>
                         ) : (
                             currentProfiles.map((match) => (
@@ -431,7 +431,7 @@ const Matches = () => {
                     {totalPages > 1 && (
                         <div className="flex justify-center items-center gap-4 mt-12 py-8">
                             <button
-                                className="h-12 px-6 bg-white border border-gray-100 rounded-2xl font-bold text-gray-600 shadow-sm transition-all hover:shadow-md hover:border-[#a413ed] disabled:opacity-40 disabled:cursor-not-allowed"
+                                className="h-12 px-6 bg-white border border-gray-100 rounded-2xl font-bold text-gray-600 shadow-sm transition-all hover:shadow-md hover:border-[#1B5E20] disabled:opacity-40 disabled:cursor-not-allowed"
                                 onClick={handlePrevious}
                                 disabled={currentPage === 1}
                             >
@@ -443,7 +443,7 @@ const Matches = () => {
                                     typeof page === 'number' ? (
                                         <button
                                             key={`page-${page}`}
-                                            className={`w-12 h-12 rounded-2xl font-extrabold transition-all border-2 ${currentPage === page ? 'bg-gradient-to-r from-[#a413ed] to-[#8b10c9] text-white border-transparent shadow-lg scale-110' : 'bg-white text-gray-400 border-gray-50 hover:border-[#a413ed20] hover:text-[#8b10c9]'}`}
+                                            className={`w-12 h-12 rounded-2xl font-extrabold transition-all border-2 ${currentPage === page ? 'bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-transparent shadow-lg scale-110' : 'bg-white text-gray-400 border-gray-50 hover:border-[#1B5E2020] hover:text-[#0D3B13]'}`}
                                             onClick={() => handlePageChange(page)}
                                         >
                                             {page}
@@ -455,7 +455,7 @@ const Matches = () => {
                             </div>
 
                             <button
-                                className="h-12 px-6 bg-white border border-gray-100 rounded-2xl font-bold text-gray-600 shadow-sm transition-all hover:shadow-md hover:border-[#a413ed] disabled:opacity-40 disabled:cursor-not-allowed"
+                                className="h-12 px-6 bg-white border border-gray-100 rounded-2xl font-bold text-gray-600 shadow-sm transition-all hover:shadow-md hover:border-[#1B5E20] disabled:opacity-40 disabled:cursor-not-allowed"
                                 onClick={handleNext}
                                 disabled={currentPage === totalPages}
                             >

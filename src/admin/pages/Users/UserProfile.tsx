@@ -463,7 +463,7 @@ const UserProfile: React.FC = () => {
                     {user.status}
                   </span>
                   {user.verified && (
-                    <span className="px-3 py-1 bg-purple-100 text-purple-800 text-sm font-medium rounded-full">
+                    <span className="px-3 py-1 bg-green-100 text-green-900 text-sm font-medium rounded-full">
                       ✓ Verified
                     </span>
                   )}
@@ -773,7 +773,7 @@ const UserProfile: React.FC = () => {
                         {hobbiesData.hobbies.map((hobby, index) => (
                           <span
                             key={index}
-                            className="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-medium"
+                            className="px-4 py-2 bg-green-100 text-green-900 rounded-full text-sm font-medium"
                           >
                             {hobby}
                           </span>
@@ -841,7 +841,7 @@ const UserProfile: React.FC = () => {
                         {hobbiesData.sports.map((sport, index) => (
                           <span
                             key={index}
-                            className="px-4 py-2 bg-orange-100 text-orange-800 rounded-full text-sm font-medium"
+                            className="px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium"
                           >
                             {sport}
                           </span>
@@ -875,7 +875,7 @@ const UserProfile: React.FC = () => {
                         {hobbiesData.languages.map((language, index) => (
                           <span
                             key={index}
-                            className="px-4 py-2 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium"
+                            className="px-4 py-2 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium"
                           >
                             {language}
                           </span>
