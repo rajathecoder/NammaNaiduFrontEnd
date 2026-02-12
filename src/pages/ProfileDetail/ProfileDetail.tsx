@@ -480,6 +480,7 @@ const ProfileDetail = () => {
     const religion = profile.basicDetail?.religion || 'Not specified';
     const caste = profile.basicDetail?.caste || 'Not specified';
     const subcaste = profile.basicDetail?.subcaste || 'Not specified';
+    const houseName = profile.basicDetail?.houseName || 'Not specified';
     const location = formatLocation(profile);
 
     return (
@@ -673,6 +674,7 @@ const ProfileDetail = () => {
                                         <DetailRow label="Religion" value={religion} />
                                         <DetailRow label="Caste" value={caste} />
                                         <DetailRow label="Subcaste" value={subcaste} />
+                                        <DetailRow label="House Name" value={houseName} />
                                         <DetailRow label="Education" value={education} />
                                         <DetailRow label="Occupation" value={occupation} />
                                         <DetailRow label="Income" value={profile.basicDetail?.annualIncome ? `${profile.basicDetail.currency || '₹'} ${profile.basicDetail.annualIncome}` : 'Privacy Protected'} />

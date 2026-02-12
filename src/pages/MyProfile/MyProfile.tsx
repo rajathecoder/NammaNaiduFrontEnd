@@ -42,6 +42,7 @@ interface BasicDetail {
     religion?: string;
     caste?: string;
     subcaste?: string;
+    houseName?: string;
     willingToMarryFromAnyCaste?: boolean;
     dosham?: string;
     country?: string;
@@ -1120,6 +1121,7 @@ const MyProfile = () => {
                         religion: editData.basicDetail.religion,
                         caste: editData.basicDetail.caste,
                         subcaste: editData.basicDetail.subcaste,
+                        houseName: editData.basicDetail.houseName,
                         willingToMarryFromAnyCaste: editData.basicDetail.willingToMarryFromAnyCaste,
                         dosham: editData.basicDetail.dosham,
                         country: editData.basicDetail.country,
@@ -1534,6 +1536,20 @@ const MyProfile = () => {
                                             />
                                         ) : (
                                             <p className="text-gray-800 py-2.5">{profile.basicDetail.subcaste || 'Not provided'}</p>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">House Name</label>
+                                        {isEditing ? (
+                                            <input
+                                                type="text"
+                                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
+                                                value={editData?.basicDetail?.houseName || ''}
+                                                onChange={(e) => handleInputChange('houseName', e.target.value, true)}
+                                            />
+                                        ) : (
+                                            <p className="text-gray-800 py-2.5">{profile.basicDetail.houseName || 'Not provided'}</p>
                                         )}
                                     </div>
 

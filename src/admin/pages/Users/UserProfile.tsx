@@ -20,6 +20,7 @@ interface UserProfileData {
     religion: string;
     caste: string;
     subcaste: string;
+    houseName: string;
     dosham: string;
   };
   professionalInfo: {
@@ -159,6 +160,7 @@ const UserProfile: React.FC = () => {
               religion: basicDetail.religion || 'Not provided',
               caste: basicDetail.caste || 'Not provided',
               subcaste: basicDetail.subcaste || 'Not provided',
+              houseName: basicDetail.houseName || 'Not provided',
               dosham: basicDetail.dosham || 'Not provided',
             },
             professionalInfo: {
@@ -557,6 +559,10 @@ const UserProfile: React.FC = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Sub-caste</label>
                   <p className="text-gray-900">{user.personalInfo.subcaste}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">House Name</label>
+                  <p className="text-gray-900">{user.personalInfo.houseName}</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Dosham</label>
