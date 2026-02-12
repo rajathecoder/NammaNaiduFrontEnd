@@ -1,12 +1,8 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FloatingParticles from './FloatingParticles';
 import logo from '../../assets/images/logoonly.png';
 import './LandingPage.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 /* ═══════════════════════════════════════════════════
    Mock Data
@@ -54,10 +50,10 @@ const pricingPlans = [
 ];
 
 /* ═══════════════════════════════════════════════════
-   Animated Counter Hook
+   Animated Counter Hook (Intersection Observer)
    ═══════════════════════════════════════════════════ */
 
-function useCounter(end: number, suffix = '', duration = 2) {
+function useCounter(end: number, suffix = '', duration = 2000) {
   const [value, setValue] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const triggered = useRef(false);
@@ -66,23 +62,30 @@ function useCounter(end: number, suffix = '', duration = 2) {
     if (!ref.current) return;
     const el = ref.current;
 
-    const trigger = ScrollTrigger.create({
-      trigger: el,
-      start: 'top 85%',
-      onEnter: () => {
-        if (triggered.current) return;
-        triggered.current = true;
-        const obj = { val: 0 };
-        gsap.to(obj, {
-          val: end,
-          duration,
-          ease: 'power2.out',
-          onUpdate: () => setValue(Math.round(obj.val)),
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !triggered.current) {
+            triggered.current = true;
+            const start = performance.now();
+            const animate = (now: number) => {
+              const elapsed = now - start;
+              const progress = Math.min(elapsed / duration, 1);
+              // ease out quad
+              const eased = 1 - (1 - progress) * (1 - progress);
+              setValue(Math.round(eased * end));
+              if (progress < 1) requestAnimationFrame(animate);
+            };
+            requestAnimationFrame(animate);
+            observer.unobserve(el);
+          }
         });
       },
-    });
+      { threshold: 0.3 }
+    );
 
-    return () => trigger.kill();
+    observer.observe(el);
+    return () => observer.disconnect();
   }, [end, duration]);
 
   return { ref, display: `${value.toLocaleString()}${suffix}` };
@@ -122,114 +125,52 @@ const LandingPage: React.FC = () => {
   const counter3 = useCounter(8, '+', 1.5);
   const counter4 = useCounter(100, '%', 1);
 
-  /* Scroll-aware navbar */
+  /* Scroll-aware navbar + progress bar */
   useEffect(() => {
-    const onScroll = () => setNavScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll);
+    const onScroll = () => {
+      setNavScrolled(window.scrollY > 40);
+      const bar = document.querySelector('.scroll-progress-bar') as HTMLElement;
+      if (bar) {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.transform = `scaleX(${docHeight > 0 ? scrollTop / docHeight : 0})`;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   /* Close mobile menu on nav click */
   const closeMobile = useCallback(() => setMobileMenuOpen(false), []);
 
-  /* ── GSAP Master Timeline ─────────────────────────── */
+  /* ── Intersection Observer for scroll reveal ─────── */
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    const revealElements = containerRef.current?.querySelectorAll('.gs-reveal, .gs-scale, .stagger-children');
+    if (!revealElements) return;
 
-      /* Hero text reveal — letter by letter for h1 */
-      gsap.from('.hero-content > *', {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.12,
-        ease: 'power3.out',
-        delay: 0.3,
-      });
-
-      gsap.from('.hero-visual', {
-        x: 100,
-        opacity: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-        delay: 0.6,
-      });
-
-      /* Scroll progress bar at top */
-      gsap.to('.scroll-progress-bar', {
-        scaleX: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 0.3,
-        },
-      });
-
-      /* Generic fade-up reveals */
-      gsap.utils.toArray<HTMLElement>('.gs-reveal').forEach((el) => {
-        gsap.from(el, {
-          y: 50,
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
         });
-      });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
 
-      /* Stagger children in grids */
-      gsap.utils.toArray<HTMLElement>('.stagger-children').forEach((parent) => {
-        gsap.from(parent.children, {
-          y: 50,
-          opacity: 0,
-          duration: 0.7,
-          stagger: 0.08,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: parent, start: 'top 80%', toggleActions: 'play none none none' },
-        });
-      });
+    revealElements.forEach((el) => observer.observe(el));
 
-      /* Scale-up reveals */
-      gsap.utils.toArray<HTMLElement>('.gs-scale').forEach((el) => {
-        gsap.from(el, {
-          scale: 0.85,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'back.out(1.5)',
-          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
-        });
-      });
+    // Hero animations — trigger immediately after mount
+    const heroContent = containerRef.current?.querySelector('.hero-content');
+    const heroVisual = containerRef.current?.querySelector('.hero-visual');
+    requestAnimationFrame(() => {
+      heroContent?.classList.add('revealed');
+      heroVisual?.classList.add('revealed');
+    });
 
-      /* Parallax floating kolam corners */
-      gsap.utils.toArray<HTMLElement>('.kolam-corner').forEach((el) => {
-        gsap.to(el, {
-          rotation: 360,
-          ease: 'none',
-          scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 2 },
-        });
-      });
-
-      /* Horizontal profile scroll on scroll */
-      const profileRow = document.querySelector('.profiles-row') as HTMLElement;
-      if (profileRow) {
-        const scrollDist = profileRow.scrollWidth - profileRow.clientWidth;
-        if (scrollDist > 0) {
-          gsap.to(profileRow, {
-            scrollLeft: scrollDist,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: profileRow,
-              start: 'top 60%',
-              end: 'bottom 30%',
-              scrub: 1,
-            },
-          });
-        }
-      }
-
-    }, containerRef);
-
-    return () => ctx.revert();
+    return () => observer.disconnect();
   }, []);
 
   return (

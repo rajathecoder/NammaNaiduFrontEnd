@@ -1061,8 +1061,64 @@
 
 .footer-bottom p + p { margin-top: 6px; }
 
-/* ═══ GSAP animation initial states ════════════════════════ */
-/* Note: initial states handled by GSAP .from() — no CSS opacity override */
+/* ═══ CSS Scroll Reveal Animations ═════════════════════════ */
+
+.hero-content,
+.hero-visual {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.hero-visual {
+  transform: translateX(60px);
+}
+
+.hero-content.revealed,
+.hero-visual.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.gs-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.gs-reveal.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.gs-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.gs-scale.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.stagger-children.revealed > *:nth-child(1)  { transition-delay: 0.0s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(2)  { transition-delay: 0.06s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(3)  { transition-delay: 0.12s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(4)  { transition-delay: 0.18s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(5)  { transition-delay: 0.24s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(6)  { transition-delay: 0.30s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(7)  { transition-delay: 0.36s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(8)  { transition-delay: 0.42s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(9)  { transition-delay: 0.48s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(10) { transition-delay: 0.54s; opacity: 1; transform: none; }
+.stagger-children.revealed > *:nth-child(n+11) { transition-delay: 0.6s; opacity: 1; transform: none; }
 
 /* ═══ Responsive ═══════════════════════════════════════════ */
 
