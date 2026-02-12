@@ -8,12 +8,18 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#a413ed',
-          dark: '#8b10c9',
+          DEFAULT: '#1B5E20',
+          light: '#4CAF50',
+          dark: '#0D3B13',
         },
+        gold: {
+          DEFAULT: '#D4A017',
+          light: '#F9A825',
+          dark: '#B8860B',
+        },
+        kumkum: '#8B1A1A',
       },
     },
   },
   plugins: [],
 }
-

@@ -33,9 +33,7 @@ Thumbs.db
 *.sw?
 *.swp
 *.swo
-*~
-
-# Test coverage
+*~# Test coverage
 coverage/# Cache
 .eslintcache
 *.tsbuildinfo

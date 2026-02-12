@@ -1,236 +1,606 @@
-import React, { useState, useEffect } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import './LandingPage.css';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import FloatingParticles from './FloatingParticles';
 import logo from '../../assets/images/logoonly.png';
+import './LandingPage.css';
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* ═══════════════════════════════════════════════════
+   Mock Data
+   ═══════════════════════════════════════════════════ */
+
+const subCastes = [
+  { name: 'Balija Naidu', icon: '🏛️', count: '12,500+', desc: 'One of the largest Naidu sub-communities in Tamil Nadu & Andhra Pradesh' },
+  { name: 'Kamma Naidu', icon: '🌾', count: '18,200+', desc: 'Prominent agricultural and business community across South India' },
+  { name: 'Kapu Naidu', icon: '🪷', count: '15,800+', desc: 'Traditional landowning community with rich heritage' },
+  { name: 'Reddy Naidu', icon: '🏵️', count: '9,400+', desc: 'Distinguished community known for leadership and enterprise' },
+  { name: 'Gavara Naidu', icon: '🪔', count: '7,600+', desc: 'Business-oriented community with deep cultural roots' },
+  { name: 'Velama Naidu', icon: '⚜️', count: '6,300+', desc: 'Historic warrior and landowning community' },
+  { name: 'Ontari Naidu', icon: '🌿', count: '4,900+', desc: 'Community known for their agricultural traditions' },
+  { name: 'Perika Naidu', icon: '🎋', count: '3,200+', desc: 'Traditional trading community with strong family values' },
+  { name: 'Naidu (General)', icon: '🪷', count: '20,000+', desc: 'All other Naidu sub-communities welcome' },
+];
+
+const mockProfiles = [
+  { name: 'Karthik R.', age: 28, profession: 'Software Architect', city: 'Chennai', match: '98%', img: 'https://images.unsplash.com/photo-1614283233556-f35b0c801ef1?auto=format&fit=crop&q=80&w=400&h=600' },
+  { name: 'Revathi S.', age: 26, profession: 'Product Designer', city: 'Madurai', match: '95%', img: 'https://images.unsplash.com/photo-1596433811232-aeffa09794cb?auto=format&fit=crop&q=80&w=400&h=600' },
+  { name: 'Vignesh M.', age: 30, profession: 'Data Scientist', city: 'Coimbatore', match: '92%', img: 'https://images.unsplash.com/photo-1620935514040-7e6163f9ebba?auto=format&fit=crop&q=80&w=400&h=600' },
+  { name: 'Meenakshi P.', age: 27, profession: 'Chartered Accountant', city: 'Trichy', match: '90%', img: 'https://images.unsplash.com/photo-1621348880689-f308945625ec?auto=format&fit=crop&q=80&w=400&h=600' },
+  { name: 'Aravind K.', age: 29, profession: 'Civil Engineer', city: 'Tirunelveli', match: '88%', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400&h=600' },
+];
+
+const testimonials = [
+  { quote: 'We found each other on Namma Naidu within a month. The community-specific matching made all the difference — our families were so happy!', names: 'Priya & Suresh', detail: 'Married in 2025 • Kamma Naidu', initials: 'PS', rating: 5 },
+  { quote: 'As a working professional in Bangalore, finding a match from our Balija Naidu community seemed impossible. This platform changed everything.', names: 'Divya & Karthik', detail: 'Married in 2025 • Balija Naidu', initials: 'DK', rating: 5 },
+  { quote: 'The verified profiles gave us confidence. Within 3 months we found the perfect alliance. Thank you Namma Naidu Matrimony!', names: 'Lakshmi & Venkat', detail: 'Married in 2024 • Gavara Naidu', initials: 'LV', rating: 5 },
+];
+
+const pricingPlans = [
+  {
+    name: 'Free', price: '₹0', period: '', subtitle: 'Get started', popular: false,
+    features: ['Create your profile', 'Browse 50 profiles/day', 'Basic search filters', 'Send 5 interests/day', 'View contact details (limited)'],
+  },
+  {
+    name: 'Silver', price: '₹999', period: '/3 months', subtitle: 'Most popular choice', popular: true,
+    features: ['Unlimited profile browsing', 'Send 30 interests/day', 'View all contact details', 'Priority customer support', 'Profile boost (2x visibility)', 'Advanced search filters'],
+  },
+  {
+    name: 'Gold', price: '₹1,999', period: '/6 months', subtitle: 'Premium experience', popular: false,
+    features: ['Everything in Silver', 'Unlimited interests', 'Dedicated relationship advisor', 'Profile highlight (5x visibility)', 'Video call feature', 'Kundali matching report', 'VIP badge on profile'],
+  },
+];
+
+/* ═══════════════════════════════════════════════════
+   Animated Counter Hook
+   ═══════════════════════════════════════════════════ */
+
+function useCounter(end: number, suffix = '', duration = 2) {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const triggered = useRef(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const el = ref.current;
+
+    const trigger = ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      onEnter: () => {
+        if (triggered.current) return;
+        triggered.current = true;
+        const obj = { val: 0 };
+        gsap.to(obj, {
+          val: end,
+          duration,
+          ease: 'power2.out',
+          onUpdate: () => setValue(Math.round(obj.val)),
+        });
+      },
+    });
+
+    return () => trigger.kill();
+  }, [end, duration]);
+
+  return { ref, display: `${value.toLocaleString()}${suffix}` };
+}
+
+/* ═══════════════════════════════════════════════════
+   Kolam SVG Pattern (decorative)
+   ═══════════════════════════════════════════════════ */
+
+const KolamCornerSVG = () => (
+  <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="80" stroke="#1B5E20" strokeWidth="1" opacity="0.3" />
+    <circle cx="100" cy="100" r="60" stroke="#D4A017" strokeWidth="0.8" opacity="0.25" />
+    <circle cx="100" cy="100" r="40" stroke="#1B5E20" strokeWidth="0.8" opacity="0.2" />
+    <path d="M100 20 Q140 60 100 100 Q60 60 100 20Z" stroke="#1B5E20" strokeWidth="0.6" opacity="0.15" fill="none" />
+    <path d="M20 100 Q60 140 100 100 Q60 60 20 100Z" stroke="#D4A017" strokeWidth="0.6" opacity="0.15" fill="none" />
+    <path d="M100 180 Q60 140 100 100 Q140 140 100 180Z" stroke="#1B5E20" strokeWidth="0.6" opacity="0.15" fill="none" />
+    <path d="M180 100 Q140 60 100 100 Q140 140 180 100Z" stroke="#D4A017" strokeWidth="0.6" opacity="0.15" fill="none" />
+    {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
+      <circle key={deg} cx={100 + 80 * Math.cos((deg * Math.PI) / 180)} cy={100 + 80 * Math.sin((deg * Math.PI) / 180)} r="3" fill="#D4A017" opacity="0.2" />
+    ))}
+  </svg>
+);
+
+/* ═══════════════════════════════════════════════════
+   Main Landing Page
+   ═══════════════════════════════════════════════════ */
 
 const LandingPage: React.FC = () => {
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const [cursorOutlinePos, setCursorOutlinePos] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [navScrolled, setNavScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            setMousePos({ x: e.clientX, y: e.clientY });
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
+  /* Animated counters for stats bar */
+  const counter1 = useCounter(100000, '+', 2.5);
+  const counter2 = useCounter(25000, '+', 2);
+  const counter3 = useCounter(8, '+', 1.5);
+  const counter4 = useCounter(100, '%', 1);
 
-    // Smooth follower for cursor outline
-    useEffect(() => {
-        const followMouse = () => {
-            setCursorOutlinePos(prev => ({
-                x: prev.x + (mousePos.x - prev.x) * 0.15,
-                y: prev.y + (mousePos.y - prev.y) * 0.15
-            }));
-            requestAnimationFrame(followMouse);
-        };
-        const animId = requestAnimationFrame(followMouse);
-        return () => cancelAnimationFrame(animId);
-    }, [mousePos]);
+  /* Scroll-aware navbar */
+  useEffect(() => {
+    const onScroll = () => setNavScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-    return (
-        <div className="landing-container">
-            {/* Custom 3D Cursor */}
-            <div
-                className="custom-cursor"
-                style={{ left: `${mousePos.x}px`, top: `${mousePos.y}px` }}
-            ></div>
-            <div
-                className="custom-cursor-outline"
-                style={{ left: `${cursorOutlinePos.x - 10}px`, top: `${cursorOutlinePos.y - 10}px` }}
-            ></div>
+  /* Close mobile menu on nav click */
+  const closeMobile = useCallback(() => setMobileMenuOpen(false), []);
 
-            {/* Background blobs */}
-            <div className="blob blob-1"></div>
-            <div className="blob blob-2"></div>
+  /* ── GSAP Master Timeline ─────────────────────────── */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
 
-            {/* Navigation */}
-            <nav className="nav">
-                <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <img src={logo} alt="Logo" style={{ height: '40px' }} />
-                    <span style={{ color: 'var(--text-main)' }}>PERFECT</span> <span style={{ color: 'var(--primary)' }}>MATRIMONY APP</span>
-                </div>
-                <div className="nav-auth">
-                    <Link to="/login" className="btn btn-login">Login</Link>
-                    <Link to="/register" className="btn btn-signup">Register Free</Link>
-                </div>
-            </nav>
+      /* Hero text reveal — letter by letter for h1 */
+      gsap.from('.hero-content > *', {
+        y: 60,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.12,
+        ease: 'power3.out',
+        delay: 0.3,
+      });
 
-            {/* Hero Section */}
-            <section className="hero">
-                <div className="hero-content">
-                    <h1>Find Your <span>Perfect</span> Life Partner</h1>
-                    <p>
-                        The world's most innovative matrimony platform.
-                        We combine 3D visualization with advanced matchmaking
-                        to help you find "The One".
-                    </p>
-                    <div style={{ display: 'flex', gap: '1.5rem', marginTop: '2rem' }}>
-                        <div className="stat-item">
-                            <h3 style={{ color: 'var(--primary)', fontSize: '1.8rem' }}>80L+</h3>
-                            <p style={{ fontSize: '0.9rem' }}>Success Stories</p>
-                        </div>
-                        <div className="stat-item" style={{ borderLeft: '1px solid #e2e8f0', paddingLeft: '1.5rem' }}>
-                            <h3 style={{ color: 'var(--primary)', fontSize: '1.8rem' }}>100%</h3>
-                            <p style={{ fontSize: '0.9rem' }}>Verified Profiles</p>
-                        </div>
-                    </div>
-                </div>
+      gsap.from('.hero-visual', {
+        x: 100,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power3.out',
+        delay: 0.6,
+      });
 
-                <div className="hero-visual">
-                    <div className="floating-3d-card">
-                        <div className="hero-logo-badge">
-                            <img src={logo} alt="Logo" />
-                        </div>
-                        <img
-                            src="https://images.unsplash.com/photo-1510103757531-9f9361a97d8c?auto=format&fit=crop&q=80&w=800"
-                            alt="South Indian Couple"
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2.5rem', background: 'linear-gradient(transparent, rgba(164, 19, 237, 0.95))', color: 'white', textAlign: 'center' }}>
-                            <h3 style={{ fontSize: '1.6rem', fontWeight: '800' }}>South Indian Soulmates.</h3>
-                            <p style={{ color: '#f1f5f9', fontSize: '0.9rem', marginTop: '5px' }}>Where Traditional Values meet Modern Innovation</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+      /* Scroll progress bar at top */
+      gsap.to('.scroll-progress-bar', {
+        scaleX: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.3,
+        },
+      });
 
-            {/* Smart Matching Visualization */}
-            <section className="section" style={{ background: '#f8fafc' }}>
-                <div className="section-header">
-                    <h2>Premium Platform Innovation</h2>
-                    <p>Experience matchmaking like never before with our signature matching engine.</p>
-                </div>
+      /* Generic fade-up reveals */
+      gsap.utils.toArray<HTMLElement>('.gs-reveal').forEach((el) => {
+        gsap.from(el, {
+          y: 50,
+          opacity: 0,
+          duration: 0.9,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
+        });
+      });
 
-                <div className="feature-grid">
-                    <div className="feature-card">
-                        <div className="icon-3d">🧠</div>
-                        <h3>Cognitive Match</h3>
-                        <p style={{ color: 'var(--text-muted)' }}>Our engine understands your personality traits and values to find deeply compatible partners.</p>
-                    </div>
-                    <div className="feature-card">
-                        <div className="icon-3d">🛡️</div>
-                        <h3>Safe & Secure</h3>
-                        <p style={{ color: 'var(--text-muted)' }}>100% manual verification and advanced photo privacy controls for your peace of mind.</p>
-                    </div>
-                    <div className="feature-card">
-                        <div className="icon-3d">📈</div>
-                        <h3>Compatibility Score</h3>
-                        <p style={{ color: 'var(--text-muted)' }}>Get a detailed 3D visualization of how well you match with someone across 15+ parameters.</p>
-                    </div>
-                </div>
-            </section>
+      /* Stagger children in grids */
+      gsap.utils.toArray<HTMLElement>('.stagger-children').forEach((parent) => {
+        gsap.from(parent.children, {
+          y: 50,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: parent, start: 'top 80%', toggleActions: 'play none none none' },
+        });
+      });
 
-            {/* Premium Profile Showcase */}
-            <section className="section">
-                <div className="section-header">
-                    <h2>Verified Premium Profiles</h2>
-                    <p>Hand-picked profiles that match your standards of elegance and success.</p>
-                </div>
+      /* Scale-up reveals */
+      gsap.utils.toArray<HTMLElement>('.gs-scale').forEach((el) => {
+        gsap.from(el, {
+          scale: 0.85,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'back.out(1.5)',
+          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
+        });
+      });
 
-                <div className="profile-showcase">
-                    <div className="profile-card-3d">
-                        <div className="match-score-badge">98% Match</div>
-                        <img src="https://images.unsplash.com/photo-1614283233556-f35b0c801ef1?auto=format&fit=crop&q=80&w=400&h=600" alt="Karthik" />
-                        <div className="profile-info-overlay">
-                            <h4>Karthik, 28</h4>
-                            <p>Software Architect • Chennai</p>
-                        </div>
-                    </div>
-                    <div className="profile-card-3d">
-                        <div className="match-score-badge">95% Match</div>
-                        <img src="https://images.unsplash.com/photo-1596433811232-aeffa09794cb?auto=format&fit=crop&q=80&w=400&h=600" alt="Revathi" />
-                        <div className="profile-info-overlay">
-                            <h4>Revathi, 26</h4>
-                            <p>Product Designer • Madurai</p>
-                        </div>
-                    </div>
-                    <div className="profile-card-3d">
-                        <div className="match-score-badge">92% Match</div>
-                        <img src="https://images.unsplash.com/photo-1620935514040-7e6163f9ebba?auto=format&fit=crop&q=80&w=400&h=600" alt="Vignesh" />
-                        <div className="profile-info-overlay">
-                            <h4>Vignesh, 30</h4>
-                            <p>Data Scientist • Coimbatore</p>
-                        </div>
-                    </div>
-                    <div className="profile-card-3d">
-                        <div className="match-score-badge">90% Match</div>
-                        <img src="https://images.unsplash.com/photo-1621348880689-f308945625ec?auto=format&fit=crop&q=80&w=400&h=600" alt="Meenakshi" />
-                        <div className="profile-info-overlay">
-                            <h4>Meenakshi, 27</h4>
-                            <p>Chartered Accountant • Trichy</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+      /* Parallax floating kolam corners */
+      gsap.utils.toArray<HTMLElement>('.kolam-corner').forEach((el) => {
+        gsap.to(el, {
+          rotation: 360,
+          ease: 'none',
+          scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 2 },
+        });
+      });
 
-            {/* Search by Category */}
-            <section className="section" style={{ background: 'var(--bg-soft)' }}>
-                <div className="section-header">
-                    <h2>Browse by Category</h2>
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                    {[
-                        'Tamil Matrimony', 'Telugu Matrimony', 'Hindi Matrimony', 'Kerala Matrimony',
-                        'Bengali Matrimony', 'Brahmin Matrimony', 'Rajput Matrimony', 'Christian Matrimony'
-                    ].map(cat => (
-                        <div key={cat} className="glass-card" style={{ padding: '1.5rem', textAlign: 'center', background: 'white', borderRadius: '15px', border: '1.5px solid var(--secondary)', cursor: 'pointer' }}>
-                            <span style={{ fontWeight: '600' }}>{cat}</span>
-                        </div>
-                    ))}
-                </div>
-            </section>
+      /* Horizontal profile scroll on scroll */
+      const profileRow = document.querySelector('.profiles-row') as HTMLElement;
+      if (profileRow) {
+        const scrollDist = profileRow.scrollWidth - profileRow.clientWidth;
+        if (scrollDist > 0) {
+          gsap.to(profileRow, {
+            scrollLeft: scrollDist,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: profileRow,
+              start: 'top 60%',
+              end: 'bottom 30%',
+              scrub: 1,
+            },
+          });
+        }
+      }
 
-            {/* Footer */}
-            <footer className="footer">
-                <div className="footer-grid">
-                    <div>
-                        <div className="logo" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <img src={logo} alt="Logo" style={{ height: '30px' }} />
-                            <span style={{ color: 'var(--text-main' }}>PERFECT MATRIMONY APP</span>
-                        </div>
-                        <p style={{ color: 'var(--text-muted)' }}>
-                            India's most trusted and innovative matrimony service.
-                            Helping millions find their perfect life partner through
-                            advanced technology and human touch.
-                        </p>
-                    </div>
-                    <div className="footer-links">
-                        <h4>Need Help?</h4>
-                        <ul>
-                            <li><a href="#">Member Login</a></li>
-                            <li><a href="#">Sign Up</a></li>
-                            <li><a href="#">Partner Search</a></li>
-                            <li><a href="#">How to use</a></li>
-                        </ul>
-                    </div>
-                    <div className="footer-links">
-                        <h4>Company</h4>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Shaadi Blog</a></li>
-                            <li><a href="#">Success Stories</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                        </ul>
-                    </div>
-                    <div className="footer-links">
-                        <h4>Privacy & Terms</h4>
-                        <ul>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms of Use</a></li>
-                            <li><a href="#">Security Tips</a></li>
-                            <li><a href="#">Cookie Policy</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div style={{ textAlign: 'center', paddingTop: '40px', borderTop: '1px solid #e2e8f0', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                    <p>© 2026 Perfect Matrimony App Platform. All rights reserved.</p>
-                    <p style={{ marginTop: '10px' }}>Best Matrimony Website | Premium Matchmaking for Perfect Life Partner</p>
-                </div>
-            </footer>
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div className="landing-page" ref={containerRef}>
+      {/* Scroll progress bar */}
+      <div className="scroll-progress-bar" />
+
+      {/* ═══ Navigation ═══ */}
+      <nav className={`landing-nav ${navScrolled ? 'scrolled' : ''}`}>
+        <Link to="/" className="nav-logo">
+          <img src={logo} alt="Namma Naidu" />
+          <span>
+            <span className="brand-green">Namma</span>{' '}
+            <span className="brand-gold">Naidu</span>
+          </span>
+        </Link>
+
+        <div className={`nav-links ${mobileMenuOpen ? 'open' : ''}`}>
+          <a href="#subcastes" onClick={closeMobile}>Sub-Castes</a>
+          <a href="#how-it-works" onClick={closeMobile}>How It Works</a>
+          <a href="#profiles" onClick={closeMobile}>Profiles</a>
+          <a href="#pricing" onClick={closeMobile}>Pricing</a>
+          <a href="#stories" onClick={closeMobile}>Stories</a>
         </div>
-    );
+
+        <div className="nav-auth">
+          <Link to="/login" className="btn-login">Login</Link>
+          <Link to="/register" className="btn-register">Register Free</Link>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className={`nav-hamburger ${mobileMenuOpen ? 'open' : ''}`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span /><span /><span />
+        </button>
+      </nav>
+
+      {/* ═══ Hero Section ═══ */}
+      <section className="hero-section">
+        <FloatingParticles />
+
+        <div className="kolam-corner top-left"><KolamCornerSVG /></div>
+        <div className="kolam-corner bottom-right"><KolamCornerSVG /></div>
+
+        <div className="hero-content">
+          <div className="hero-badge">
+            <span className="badge-dot" />
+            Trusted by 1 Lakh+ Naidu Families
+          </div>
+          <h1>
+            Find Your <span className="green">Perfect</span>{' '}
+            <span className="gold-text">Life Partner</span>
+          </h1>
+          <p className="hero-desc">
+            South India's most trusted Naidu community matrimony platform.
+            We honour tradition while using modern technology to help you find
+            your soulmate within the Naidu community.
+          </p>
+
+          <div className="hero-cta">
+            <Link to="/register" className="btn-cta-primary">
+              <span>Register Free</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </Link>
+            <a href="#how-it-works" className="btn-cta-secondary">How It Works</a>
+          </div>
+
+          <div className="hero-trust">
+            <div className="trust-avatars">
+              {['P', 'S', 'M', 'K'].map((l, i) => (
+                <div key={i} className="trust-avatar" style={{ zIndex: 4 - i }}>{l}</div>
+              ))}
+            </div>
+            <span>
+              <strong>25,000+</strong> couples matched successfully
+            </span>
+          </div>
+        </div>
+
+        <div className="hero-visual">
+          <div className="hero-image-frame">
+            <img
+              src="https://images.unsplash.com/photo-1583089892943-e02e5b017b6a?auto=format&fit=crop&q=80&w=800"
+              alt="South Indian Wedding Couple"
+            />
+            <div className="hero-image-overlay">
+              <h3>Naidu Soulmates</h3>
+              <p>Where Tradition Meets Modern Matchmaking</p>
+            </div>
+          </div>
+
+          {/* Floating stat chips */}
+          <div className="hero-chip chip-top">
+            <span className="chip-icon">🛡️</span>
+            <div>
+              <strong>100% Verified</strong>
+              <small>Government ID checked</small>
+            </div>
+          </div>
+          <div className="hero-chip chip-bottom">
+            <span className="chip-icon">💍</span>
+            <div>
+              <strong>25K+ Marriages</strong>
+              <small>And counting...</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ Stats Bar ═══ */}
+      <section className="stats-bar">
+        <div className="stat-item">
+          <div className="stat-number" ref={counter1.ref}>{counter1.display}</div>
+          <div className="stat-label">Verified Profiles</div>
+        </div>
+        <div className="stat-divider" />
+        <div className="stat-item">
+          <div className="stat-number" ref={counter2.ref}>{counter2.display}</div>
+          <div className="stat-label">Successful Matches</div>
+        </div>
+        <div className="stat-divider" />
+        <div className="stat-item">
+          <div className="stat-number" ref={counter3.ref}>{counter3.display}</div>
+          <div className="stat-label">Naidu Sub-Castes</div>
+        </div>
+        <div className="stat-divider" />
+        <div className="stat-item">
+          <div className="stat-number" ref={counter4.ref}>{counter4.display}</div>
+          <div className="stat-label">Privacy Protected</div>
+        </div>
+      </section>
+
+      {/* ═══ Naidu Sub-Castes ═══ */}
+      <section className="landing-section bg-soft" id="subcastes">
+        <div className="torana-border" />
+        <div className="section-header gs-reveal">
+          <span className="section-tag">Our Community</span>
+          <h2>
+            Browse by <span className="accent">Naidu</span>{' '}
+            <span className="gold-text">Sub-Caste</span>
+          </h2>
+          <div className="kolam-divider" />
+          <p>Find matches specifically within your sub-community. Each sub-caste has thousands of verified profiles waiting for you.</p>
+        </div>
+
+        <div className="subcaste-grid stagger-children">
+          {subCastes.map((sc) => (
+            <Link to="/register" key={sc.name} className="subcaste-card">
+              <div className="sc-icon">{sc.icon}</div>
+              <div className="sc-name">{sc.name}</div>
+              <div className="sc-count">{sc.count} Profiles</div>
+              <div className="sc-desc">{sc.desc}</div>
+              <div className="sc-arrow">→</div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ How It Works ═══ */}
+      <section className="landing-section" id="how-it-works">
+        <div className="section-header gs-reveal">
+          <span className="section-tag">Simple Process</span>
+          <h2>How <span className="accent">It</span> Works</h2>
+          <div className="kolam-divider" />
+          <p>Three simple steps to find your perfect life partner from the Naidu community.</p>
+        </div>
+
+        <div className="steps-container stagger-children">
+          {[
+            { icon: '📝', num: '01', title: 'Create Your Profile', desc: 'Register for free and fill in your family details, preferences, education, and horoscope information. It takes just 5 minutes.' },
+            { icon: '🔍', num: '02', title: 'Find Your Match', desc: 'Browse verified profiles from your specific Naidu sub-caste. Use smart filters for age, education, profession, and location.' },
+            { icon: '💐', num: '03', title: 'Connect & Marry', desc: 'Send interest, chat securely, and let your families take it forward. We\'ve helped 25,000+ couples find each other.' },
+          ].map((step) => (
+            <div className="step-card" key={step.num}>
+              <div className="step-icon">{step.icon}</div>
+              <div className="step-number">{step.num}</div>
+              <h3>{step.title}</h3>
+              <p>{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ Why Choose Us ═══ */}
+      <section className="landing-section bg-soft">
+        <div className="torana-border" />
+        <div className="section-header gs-reveal">
+          <span className="section-tag">Our Promise</span>
+          <h2>Why Families <span className="accent">Trust</span> Us</h2>
+          <div className="kolam-divider" />
+          <p>Built specifically for the Naidu community with features that matter to your family.</p>
+        </div>
+
+        <div className="features-grid stagger-children">
+          {[
+            { icon: '🛡️', title: '100% Verified Profiles', desc: 'Every profile is manually verified with government ID and phone number. No fake profiles, guaranteed.' },
+            { icon: '🏛️', title: 'Community Specific', desc: 'Exclusively for Naidu families. Filter by sub-caste, gothram, native place, and family values.' },
+            { icon: '🔒', title: 'Privacy First', desc: 'Control who sees your photos and contact details. Advanced privacy controls for your peace of mind.' },
+            { icon: '🤝', title: 'Trusted by Families', desc: 'Over 1 lakh Naidu families registered. South India\'s most trusted community matrimony platform.' },
+            { icon: '📊', title: 'Smart Compatibility', desc: 'Our AI matching engine scores compatibility across 15+ parameters including horoscope, education & values.' },
+            { icon: '💬', title: '24/7 Support', desc: 'Dedicated relationship advisors and customer support available round the clock via chat, email & phone.' },
+          ].map((f) => (
+            <div className="feature-card" key={f.title}>
+              <div className="feature-icon">{f.icon}</div>
+              <h3>{f.title}</h3>
+              <p>{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ Featured Profiles ═══ */}
+      <section className="landing-section" id="profiles">
+        <div className="section-header gs-reveal">
+          <span className="section-tag">Premium Members</span>
+          <h2>Featured <span className="gold-text">Premium</span> Profiles</h2>
+          <div className="kolam-divider" />
+          <p>Hand-picked verified profiles from the Naidu community. Register to see more.</p>
+        </div>
+
+        <div className="profiles-row stagger-children">
+          {mockProfiles.map((p) => (
+            <div className="profile-card" key={p.name}>
+              <div className="profile-badge">{p.match} Match</div>
+              <img src={p.img} alt={p.name} loading="lazy" />
+              <div className="profile-info">
+                <h4>{p.name}, {p.age}</h4>
+                <p>{p.profession} • {p.city}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="section-cta gs-reveal">
+          <Link to="/register" className="btn-cta-primary">
+            <span>View All Profiles</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+          </Link>
+        </div>
+      </section>
+
+      {/* ═══ Success Stories ═══ */}
+      <section className="landing-section bg-cream" id="stories">
+        <div className="section-header gs-reveal">
+          <span className="section-tag">Real Stories</span>
+          <h2>Our <span className="accent">Success</span> Stories</h2>
+          <div className="kolam-divider" />
+          <p>Real couples, real stories from the Naidu community.</p>
+        </div>
+
+        <div className="testimonials-grid stagger-children">
+          {testimonials.map((t) => (
+            <div className="testimonial-card" key={t.names}>
+              <div className="quote-icon">"</div>
+              <div className="stars">{'★'.repeat(t.rating)}</div>
+              <p className="quote">{t.quote}</p>
+              <div className="couple-info">
+                <div className="couple-avatar">{t.initials}</div>
+                <div className="couple-details">
+                  <h4>{t.names}</h4>
+                  <p>{t.detail}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ Pricing ═══ */}
+      <section className="landing-section" id="pricing">
+        <div className="section-header gs-reveal">
+          <span className="section-tag">Plans & Pricing</span>
+          <h2>Membership <span className="gold-text">Plans</span></h2>
+          <div className="kolam-divider" />
+          <p>Choose the plan that fits your matchmaking journey.</p>
+        </div>
+
+        <div className="pricing-grid stagger-children">
+          {pricingPlans.map((plan) => (
+            <div className={`pricing-card ${plan.popular ? 'popular' : ''}`} key={plan.name}>
+              {plan.popular && <div className="popular-badge">Most Popular</div>}
+              <h3>{plan.name}</h3>
+              <div className="price">
+                {plan.price}
+                {plan.period && <span>{plan.period}</span>}
+              </div>
+              <div className="price-sub">{plan.subtitle}</div>
+              <ul className="pricing-features">
+                {plan.features.map((f) => (
+                  <li key={f}><span className="check">✓</span> {f}</li>
+                ))}
+              </ul>
+              <Link to="/register" className="btn-pricing">
+                {plan.popular ? 'Get Started' : 'Choose Plan'}
+              </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ Final CTA ═══ */}
+      <section className="final-cta-section">
+        <div className="final-cta-content gs-scale">
+          <h2>Ready to Find Your <span className="gold-text">Soulmate</span>?</h2>
+          <p>Join 1 lakh+ Naidu families who trust us for their most important decision.</p>
+          <div className="final-cta-buttons">
+            <Link to="/register" className="btn-cta-primary large">
+              <span>Register Free Today</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </Link>
+            <Link to="/login" className="btn-cta-secondary">Already a Member? Login</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ Footer ═══ */}
+      <footer className="landing-footer">
+        <div className="torana-border" />
+        <div className="footer-grid">
+          <div className="footer-brand">
+            <Link to="/" className="nav-logo" style={{ marginBottom: '0.75rem' }}>
+              <img src={logo} alt="Namma Naidu" />
+              <span>
+                <span className="brand-green">Namma</span>{' '}
+                <span className="brand-gold">Naidu</span>
+              </span>
+            </Link>
+            <p>South India's most trusted Naidu community matrimony service. Helping thousands of families find the perfect life partner through tradition, trust, and technology.</p>
+          </div>
+
+          <div className="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><Link to="/login">Member Login</Link></li>
+              <li><Link to="/register">Register Free</Link></li>
+              <li><a href="#how-it-works">How It Works</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+            </ul>
+          </div>
+
+          <div className="footer-links">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#stories">Success Stories</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Careers</a></li>
+            </ul>
+          </div>
+
+          <div className="footer-links">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Use</a></li>
+              <li><a href="#">Security Tips</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <p>&copy; 2026 Namma Naidu Matrimony. All rights reserved.</p>
+          <p>Trusted Naidu Community Matrimony &bull; Premium Matchmaking for Perfect Life Partners</p>
+        </div>
+      </footer>
+    </div>
+  );
 };
 
 export default LandingPage;
-

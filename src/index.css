@@ -2,11 +2,14 @@
 @import "tailwindcss";
 
 :root {
-  --primary: #a413ed;
-  --primary-glow: rgba(164, 19, 237, 0.2);
-  --secondary: #FF930F;
-  --secondary-glow: rgba(255, 147, 15, 0.2);
-  --secondary-gradient: linear-gradient(135deg, #FF930F 0%, #FFF95B 100%);
+  --primary: #1B5E20;
+  --primary-light: #4CAF50;
+  --primary-glow: rgba(27, 94, 32, 0.2);
+  --secondary: #D4A017;
+  --secondary-light: #F9A825;
+  --secondary-glow: rgba(212, 160, 23, 0.2);
+  --secondary-gradient: linear-gradient(135deg, #D4A017 0%, #F9A825 100%);
+  --kumkum: #8B1A1A;
 }
 
 @layer base {
