@@ -163,8 +163,8 @@ const ProfessionalDetails = () => {
             return;
         }
         
-        // Save to localStorage
-        localStorage.setItem('professionalDetails', JSON.stringify({
+        // Save to sessionStorage
+        sessionStorage.setItem('professionalDetails', JSON.stringify({
             country,
             state,
             city,
@@ -176,17 +176,6 @@ const ProfessionalDetails = () => {
             currency,
             income
         }));
-        
-        console.log('Professional Details:', {
-            country,
-            state,
-            city,
-            education,
-            employmentType,
-            occupation,
-            currency,
-            income
-        });
         // Navigate to Additional Details page (Step 4)
         navigate('/additional-details');
     };
