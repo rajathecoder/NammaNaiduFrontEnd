@@ -38,7 +38,7 @@ interface CouponUsage {
 const defaultForm = {
   code: '',
   description: '',
-  discountType: 'percentage' as const,
+  discountType: 'percentage' as 'percentage' | 'fixed',
   discountValue: 0,
   maxDiscount: '',
   minOrderAmount: 0,
@@ -47,7 +47,7 @@ const defaultForm = {
   applicablePlans: '' as string,
   validFrom: '',
   validUntil: '',
-  status: 'active' as const,
+  status: 'active' as 'active' | 'inactive',
 };
 
 const CouponManagement: React.FC = () => {
