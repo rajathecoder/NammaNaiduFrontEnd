@@ -310,7 +310,7 @@ export const exportSubscriptionTransactions = async (
   return response.blob();
 };
 
-// Purchase subscription (Mock)
+// Purchase subscription (Mock - legacy)
 export const purchaseSubscription = async (
   planId: number,
   token: string
@@ -326,6 +326,249 @@ export const purchaseSubscription = async (
     body: JSON.stringify({ planId })
   });
 
+  return response.json();
+};
+
+// ==================== RAZORPAY PAYMENT FLOW ====================
+
+export const createRazorpayOrder = async (
+  planId: number,
+  couponCode?: string,
+  token?: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.SUBSCRIPTION.CREATE_ORDER);
+  const body: any = { planId };
+  if (couponCode) body.couponCode = couponCode;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(body),
+  });
+  return response.json();
+};
+
+export const verifyRazorpayPayment = async (
+  payload: {
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    razorpay_signature: string;
+    transactionId: number;
+  },
+  token?: string
+): Promise<{ success: boolean; message?: string; data?: any }> => {
+  const url = getApiUrl(API_ENDPOINTS.SUBSCRIPTION.VERIFY_PAYMENT);
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  });
+  return response.json();
+};
+
+export const reportPaymentFailed = async (
+  payload: { razorpay_order_id: string; transactionId: number; error?: any },
+  token?: string
+): Promise<{ success: boolean; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.SUBSCRIPTION.PAYMENT_FAILED);
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(payload),
+  });
+  return response.json();
+};
+
+export const applyCoupon = async (
+  couponCode: string,
+  planId: number,
+  token?: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.SUBSCRIPTION.APPLY_COUPON);
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify({ couponCode, planId }),
+  });
+  return response.json();
+};
+
+// ==================== REFERRAL API ====================
+
+export const getReferralInfo = async (
+  token: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.SUBSCRIPTION.REFERRAL);
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+};
+
+export const applyReferralCode = async (
+  referralCode: string,
+  token: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.SUBSCRIPTION.REFERRAL_APPLY);
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ referralCode }),
+  });
+  return response.json();
+};
+
+// ==================== ADMIN COUPON API ====================
+
+export const getAdminCoupons = async (
+  token: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.ADMIN.COUPONS);
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+};
+
+export const createAdminCoupon = async (
+  payload: any,
+  token: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.ADMIN.COUPONS);
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  return response.json();
+};
+
+export const updateAdminCoupon = async (
+  id: number,
+  payload: any,
+  token: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.ADMIN.COUPON_BY_ID(id));
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  return response.json();
+};
+
+export const deleteAdminCoupon = async (
+  id: number,
+  token: string
+): Promise<{ success: boolean; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.ADMIN.COUPON_BY_ID(id));
+  const response = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+};
+
+export const getAdminCouponUsage = async (
+  id: number,
+  token: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.ADMIN.COUPON_USAGE(id));
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+};
+
+// ==================== ADMIN REFERRAL API ====================
+
+export const getAdminReferrals = async (
+  token: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.ADMIN.REFERRALS);
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+};
+
+export const getAdminReferralStats = async (
+  token: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.ADMIN.REFERRAL_STATS);
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+};
+
+// ==================== ADMIN SETTINGS API ====================
+
+export const getAdminSettings = async (
+  token: string
+): Promise<{ success: boolean; data?: any; raw?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.ADMIN.SETTINGS);
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+};
+
+export const updateAdminSettings = async (
+  payload: Record<string, string>,
+  token: string
+): Promise<{ success: boolean; data?: any; message?: string }> => {
+  const url = getApiUrl(API_ENDPOINTS.ADMIN.SETTINGS);
+  const response = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
   return response.json();
 };
 

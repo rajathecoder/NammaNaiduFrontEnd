@@ -76,6 +76,17 @@ export const API_ENDPOINTS = {
   SUBSCRIPTION: {
     STATUS: '/api/subscription/status',
     PURCHASE: '/api/subscription/purchase',
+    CREATE_ORDER: '/api/subscription/create-order',
+    VERIFY_PAYMENT: '/api/subscription/verify-payment',
+    PAYMENT_FAILED: '/api/subscription/payment-failed',
+    APPLY_COUPON: '/api/subscription/apply-coupon',
+    TRANSACTIONS: '/api/subscription/transactions',
+    REFERRAL: '/api/subscription/referral',
+    REFERRAL_APPLY: '/api/subscription/referral/apply',
+  },
+  // Public settings
+  SETTINGS: {
+    REFERRAL: '/api/settings/referral',
   },
   // Messages (PostgreSQL - optional)
   MESSAGES: {
@@ -132,6 +143,15 @@ export const API_ENDPOINTS = {
     SEND_PUSH_NOTIFICATION: '/api/admin/notifications/send-push',
     NOTIFICATION_HISTORY: '/api/admin/notifications/history',
     NOTIFICATION_STATS: '/api/admin/notifications/stats',
+    // Coupon endpoints
+    COUPONS: '/api/admin/coupons',
+    COUPON_BY_ID: (id: number) => `/api/admin/coupons/${id}`,
+    COUPON_USAGE: (id: number) => `/api/admin/coupons/${id}/usage`,
+    // Referral endpoints
+    REFERRALS: '/api/admin/referrals',
+    REFERRAL_STATS: '/api/admin/referrals/stats',
+    // Settings endpoints
+    SETTINGS: '/api/admin/settings',
   },
 };
 

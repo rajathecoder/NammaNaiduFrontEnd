@@ -430,21 +430,32 @@ const NotificationManagement: React.FC = () => {
             {statsLoading && !stats ? (
               <div className="text-center py-12 text-gray-500">Loading stats...</div>
             ) : stats ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {[
-                  { label: 'Total Active Users', value: stats.totalUsers, color: 'bg-blue-50 text-blue-700' },
-                  { label: 'Total Device Tokens', value: stats.totalDeviceTokens, color: 'bg-purple-50 text-purple-700' },
-                  { label: 'Valid Tokens', value: stats.validDeviceTokens, color: 'bg-green-50 text-green-700' },
-                  { label: 'Placeholder Tokens', value: stats.placeholderTokens, color: 'bg-yellow-50 text-yellow-700' },
-                  { label: 'Mobile Tokens', value: stats.mobileTokens, color: 'bg-indigo-50 text-indigo-700' },
-                  { label: 'Web Tokens', value: stats.webTokens, color: 'bg-teal-50 text-teal-700' },
-                ].map((s) => (
-                  <div key={s.label} className={`rounded-xl p-5 ${s.color}`}>
-                    <p className="text-sm font-medium opacity-80">{s.label}</p>
-                    <p className="text-3xl font-bold mt-1">{s.value}</p>
+              <>
+                {stats.validDeviceTokens === 0 && (
+                  <div className="mb-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <p className="font-semibold text-amber-800">No valid FCM tokens found</p>
+                    <p className="text-sm text-amber-700 mt-1">
+                      Push notifications cannot be delivered until users log in from the mobile app (on a real device with Google Play Services)
+                      or allow browser notifications on the website. In-app notifications are still saved and visible when users open the app.
+                    </p>
                   </div>
-                ))}
-              </div>
+                )}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {[
+                    { label: 'Total Active Users', value: stats.totalUsers, color: 'bg-blue-50 text-blue-700' },
+                    { label: 'Total Device Tokens', value: stats.totalDeviceTokens, color: 'bg-purple-50 text-purple-700' },
+                    { label: 'Valid Tokens (Push-ready)', value: stats.validDeviceTokens, color: stats.validDeviceTokens > 0 ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700' },
+                    { label: 'Placeholder Tokens', value: stats.placeholderTokens, color: 'bg-yellow-50 text-yellow-700' },
+                    { label: 'Mobile Tokens', value: stats.mobileTokens, color: 'bg-indigo-50 text-indigo-700' },
+                    { label: 'Web Tokens', value: stats.webTokens, color: 'bg-teal-50 text-teal-700' },
+                  ].map((s) => (
+                    <div key={s.label} className={`rounded-xl p-5 ${s.color}`}>
+                      <p className="text-sm font-medium opacity-80">{s.label}</p>
+                      <p className="text-3xl font-bold mt-1">{s.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </>
             ) : (
               <div className="text-center py-12 text-gray-500">Failed to load stats.</div>
             )}

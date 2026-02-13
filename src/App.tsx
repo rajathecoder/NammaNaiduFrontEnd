@@ -43,6 +43,9 @@ import CMSPage from './admin/pages/CMS/CMSPage';
 import NotificationManagement from './admin/pages/Notifications/NotificationManagement';
 import WebsiteSettings from './admin/pages/Settings/WebsiteSettings';
 import AdminUserManagement from './admin/pages/AdminUsers/AdminUserManagement';
+import CouponManagement from './admin/pages/Coupons/CouponManagement';
+import ReferralManagement from './admin/pages/Referrals/ReferralManagement';
+import ReferralPage from './pages/Referral/ReferralPage';
 
 function App() {
   return (
@@ -74,6 +77,7 @@ function App() {
         <Route path="/partner-preferences" element={<UserProtectedRoute><PartnerPreferences /></UserProtectedRoute>} />
         <Route path="/profile-settings" element={<UserProtectedRoute><ProfileSettings /></UserProtectedRoute>} />
         <Route path="/recommendations" element={<UserProtectedRoute><Recommendations /></UserProtectedRoute>} />
+        <Route path="/referral" element={<UserProtectedRoute><ReferralPage /></UserProtectedRoute>} />
 
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>
@@ -93,6 +97,8 @@ function App() {
           {/* Subscriptions - Super Admin only */}
           <Route path="subscriptions/plans" element={<ProtectedRoute requiredPath="/admin/subscriptions"><AdminSubscriptionPlans /></ProtectedRoute>} />
           <Route path="subscriptions/transactions" element={<ProtectedRoute requiredPath="/admin/subscriptions"><SubscriptionTransactions /></ProtectedRoute>} />
+          <Route path="subscriptions/coupons" element={<ProtectedRoute requiredPath="/admin/subscriptions"><CouponManagement /></ProtectedRoute>} />
+          <Route path="subscriptions/referrals" element={<ProtectedRoute requiredPath="/admin/subscriptions"><ReferralManagement /></ProtectedRoute>} />
 
           {/* Matches - Super Admin and Moderator */}
           <Route path="matches" element={<ProtectedRoute requiredPath="/admin/matches"><MatchesManagement /></ProtectedRoute>} />

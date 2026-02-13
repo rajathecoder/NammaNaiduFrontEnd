@@ -141,6 +141,14 @@ const AdminLayout: React.FC = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
                     Transactions
                   </NavLink>
+                  <NavLink to="/admin/subscriptions/coupons" className={({ isActive }) => `flex items-center gap-2 py-2 px-5 text-gray-600 no-underline transition-all duration-200 text-sm ${isActive ? 'text-[#14b8a6] font-semibold' : 'hover:text-[#14b8a6]'}`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                    Coupons
+                  </NavLink>
+                  <NavLink to="/admin/subscriptions/referrals" className={({ isActive }) => `flex items-center gap-2 py-2 px-5 text-gray-600 no-underline transition-all duration-200 text-sm ${isActive ? 'text-[#14b8a6] font-semibold' : 'hover:text-[#14b8a6]'}`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                    Referrals
+                  </NavLink>
                 </div>
               )}
             </div>

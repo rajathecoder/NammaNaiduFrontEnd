@@ -40,16 +40,22 @@ export const DeviceInfo = {
   },
 
   async getFcmToken(): Promise<string> {
-    // TODO: Implement Firebase Cloud Messaging token retrieval for web
-    // For now, return a placeholder
-    // When Firebase is integrated, use:
-    // import { getMessaging, getToken } from 'firebase/messaging';
-    // const messaging = getMessaging();
-    // const token = await getToken(messaging, { vapidKey: 'YOUR_VAPID_KEY' });
-    // return token || '';
-    
-    // Placeholder - replace with actual FCM token when Firebase is set up
-    return `web_fcm_token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    try {
+      // Import and use real Firebase Messaging
+      const { requestFcmToken } = await import('../services/firebase');
+      const token = await requestFcmToken();
+      
+      if (token) {
+        console.log('Real FCM token obtained for web');
+        return token;
+      }
+      
+      console.warn('Could not get FCM token - notifications may not work');
+      return '';
+    } catch (e) {
+      console.error('Error getting FCM token:', e);
+      return '';
+    }
   }
 };
 

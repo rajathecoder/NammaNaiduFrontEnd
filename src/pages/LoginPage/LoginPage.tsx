@@ -75,6 +75,13 @@ const LoginPage = () => {
     const registerFcmToken = async (accountId: string, token: string) => {
         try {
             const fcmToken = await DeviceInfo.getFcmToken();
+            
+            // Skip if no real token was obtained
+            if (!fcmToken || fcmToken.startsWith('web_fcm_token_')) {
+                console.warn('No real FCM token available, skipping registration');
+                return;
+            }
+
             const deviceModel = DeviceInfo.getDeviceModel();
             const deviceIP = await DeviceInfo.getDeviceIP();
 
@@ -92,6 +99,8 @@ const LoginPage = () => {
                     ip: deviceIP
                 })
             });
+
+            console.log('FCM token registered successfully');
         } catch (error) {
             console.error('Error registering FCM token:', error);
             // Silently fail - don't block login
