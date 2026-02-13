@@ -112,10 +112,8 @@ const BasicDetails = () => {
         // Auto-verify when all 6 digits are entered
         const otpValue = newOtp.join('');
         if (otpValue.length === 6 && !isEmailVerified && !isVerifyingOtp) {
-            // Small delay to ensure the last digit is set in state, then verify
-            setTimeout(() => {
-                handleVerifyOtp(otpValue);
-            }, 200);
+            // Pass the OTP value directly to avoid stale state
+            handleVerifyOtp(otpValue);
         }
     };
 
@@ -169,7 +167,7 @@ const BasicDetails = () => {
 
             console.log('📥 BasicDetails - Verify OTP Response:', JSON.stringify(data, null, 2));
 
-            if (data.success && (data.data?.verified === true || data.response === 'Verified Successfully' || (data.message && data.message.toLowerCase().includes('verified')))) {
+            if (data.success) {
                 setIsEmailVerified(true);
                 setShowOtpFields(false);
                 // Clear OTP fields after successful verification
@@ -186,7 +184,7 @@ const BasicDetails = () => {
                 // Clear OTP on error for retry
                 setOtp(['', '', '', '', '', '']);
                 otpInputRefs[0].current?.focus();
-                alert(data.response || 'Invalid OTP. Please try again.');
+                alert(data.message || data.error || 'Invalid OTP. Please try again.');
             }
         } catch (error) {
             console.error('Error verifying OTP:', error);
@@ -234,21 +232,21 @@ const BasicDetails = () => {
     return (
         <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#fdf4ff] via-white to-[#eef2ff] text-gray-900">
             {/* Header */}
-            <header className="bg-white/90 backdrop-blur border-b border-gray-200 py-4 px-6 md:px-4 shadow-sm">
-                <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-4">
+            <header className="bg-white/90 backdrop-blur border-b border-gray-200 py-3 px-4 sm:py-4 sm:px-6 shadow-sm">
+                <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-3">
                     {/* Left: Logo */}
                     <div className="flex items-center gap-3">
-                        <img src={logoOnly} alt="Namma Naidu Logo" className="h-10 w-auto md:h-9 sm:h-8" />
+                        <img src={logoOnly} alt="Namma Naidu Logo" className="h-8 sm:h-9 md:h-10 w-auto" />
                     </div>
 
                     {/* Right: Help CTA */}
-                    <div className="flex items-center gap-2 text-sm justify-end">
-                        <span className="text-gray-600">Need help?</span>
+                    <div className="flex items-center gap-2 text-xs sm:text-sm justify-end">
+                        <span className="text-gray-600 hidden sm:inline">Need help?</span>
                         <a
                             href="tel:8144998877"
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200"
+                            className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 text-xs sm:text-sm"
                         >
-                            <span className="text-base">📞</span>
+                            <span className="text-sm sm:text-base">📞</span>
                             8144-99-88-77
                         </a>
                     </div>
@@ -257,42 +255,45 @@ const BasicDetails = () => {
 
             {/* Progress Indicator */}
             <div className="bg-white border-b border-gray-200">
-                <div className="max-w-[1200px] mx-auto px-6 py-3 md:px-4">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <span className="w-8 h-8 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white flex items-center justify-center font-semibold">1</span>
-                        <span className="font-semibold text-gray-800">Basic Details</span>
-                        <span className="h-px flex-1 bg-gray-200 mx-2" />
-                        <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold">2</span>
-                        <span className="text-gray-500">Personal & Religious</span>
-                        <span className="h-px flex-1 bg-gray-200 mx-2" />
-                        <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold">3</span>
-                        <span className="text-gray-500">Professional</span>
-                        <span className="h-px flex-1 bg-gray-200 mx-2" />
-                        <span className="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold">4</span>
-                        <span className="text-gray-500">Additional</span>
+                <div className="max-w-[1200px] mx-auto px-3 py-2 sm:px-6 sm:py-3">
+                    <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-600">
+                        <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white flex items-center justify-center font-semibold text-xs sm:text-sm">1</span>
+                        <span className="font-semibold text-gray-800">Basic</span>
+                        <span className="h-px flex-1 bg-gray-200 mx-1 sm:mx-2" />
+                        <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs sm:text-sm">2</span>
+                        <span className="text-gray-500 hidden sm:inline">Personal & Religious</span>
+                        <span className="text-gray-500 sm:hidden">Personal</span>
+                        <span className="h-px flex-1 bg-gray-200 mx-1 sm:mx-2" />
+                        <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs sm:text-sm">3</span>
+                        <span className="text-gray-500 hidden sm:inline">Professional</span>
+                        <span className="text-gray-500 sm:hidden">Prof.</span>
+                        <span className="h-px flex-1 bg-gray-200 mx-1 sm:mx-2" />
+                        <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center font-semibold text-xs sm:text-sm">4</span>
+                        <span className="text-gray-500 hidden sm:inline">Additional</span>
+                        <span className="text-gray-500 sm:hidden">More</span>
                     </div>
                 </div>
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 flex items-center justify-center p-8 md:p-5 sm:p-4">
+            <div className="flex-1 flex items-center justify-center p-3 sm:p-5 md:p-8">
                 <div className="w-full max-w-[760px] flex justify-center">
                     {/* Form Card */}
-                    <div className="w-full bg-white rounded-2xl shadow-xl p-10 md:p-8 sm:p-6 border border-gray-100">
-                        <form onSubmit={handleNext} className="w-full space-y-7">
+                    <div className="w-full bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-10 border border-gray-100">
+                        <form onSubmit={handleNext} className="w-full space-y-4 sm:space-y-5 md:space-y-7">
                             {/* Date of Birth */}
                             <div>
                                 {/* Center: Step + Title */}
                                 <div className="flex flex-col items-center text-center flex-1">
-                                    <p className="m-0 text-sm text-gray-500">Step 1 of 4</p>
-                                    <h3 className="m-0 text-lg font-semibold text-gray-800">Basic Details</h3>
+                                    <p className="m-0 text-xs sm:text-sm text-gray-500">Step 1 of 4</p>
+                                    <h3 className="m-0 text-base sm:text-lg font-semibold text-gray-800">Basic Details</h3>
                                 </div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-3 text-center">Date of birth</label>
-                                <div className="grid grid-cols-3 gap-3">
+                                <label className="block text-xs sm:text-sm font-semibold text-gray-800 mb-2 sm:mb-3 text-center">Date of birth</label>
+                                <div className="grid grid-cols-3 gap-2 sm:gap-3">
                                     <select
                                         value={day}
                                         onChange={(e) => setDay(e.target.value)}
-                                        className="py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
+                                        className="py-2 px-2 sm:py-3 sm:px-3 border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
                                         required
                                     >
                                         <option value="">Day</option>
@@ -303,7 +304,7 @@ const BasicDetails = () => {
                                     <select
                                         value={month}
                                         onChange={(e) => setMonth(e.target.value)}
-                                        className="py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
+                                        className="py-2 px-2 sm:py-3 sm:px-3 border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
                                         required
                                     >
                                         <option value="">Month</option>
@@ -314,7 +315,7 @@ const BasicDetails = () => {
                                     <select
                                         value={year}
                                         onChange={(e) => setYear(e.target.value)}
-                                        className="py-3 px-3 border border-gray-200 rounded-lg text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
+                                        className="py-2 px-2 sm:py-3 sm:px-3 border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-800 bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
                                         required
                                     >
                                         <option value="">Year</option>
@@ -327,7 +328,7 @@ const BasicDetails = () => {
 
                             {/* Email Verification */}
                             <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-3">
+                                <label className="block text-xs sm:text-sm font-semibold text-gray-800 mb-2 sm:mb-3">
                                     Email {isEmailVerified && <span className="text-green-600">✓ Verified</span>}
                                 </label>
                                 <div className="flex gap-2">
@@ -342,14 +343,14 @@ const BasicDetails = () => {
                                             setOtp(['', '', '', '', '', '']);
                                         }}
                                         disabled={isEmailVerified}
-                                        className="flex-1 py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                        className="flex-1 py-2 px-3 sm:py-3 sm:px-4 border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                         required
                                     />
                                     <button
                                         type="button"
                                         onClick={handleSendOtp}
                                         disabled={isEmailVerified || isSendingOtp || !email.trim()}
-                                        className="px-6 py-3 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-lg text-xs sm:text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                                     >
                                         {isSendingOtp ? 'Sending...' : 'Verify'}
                                     </button>
@@ -357,16 +358,16 @@ const BasicDetails = () => {
 
                                 {/* OTP Input Fields - Always show when OTP is sent */}
                                 {showOtpFields && (
-                                    <div className={`mt-4 p-4 rounded-lg border-2 transition-all duration-200 ${
+                                    <div className={`mt-3 sm:mt-4 p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 ${
                                         isEmailVerified 
                                             ? 'bg-green-50 border-green-300' 
                                             : 'bg-gray-50 border-gray-300'
                                     }`}>
-                                        <div className="flex items-center justify-center gap-2 mb-3">
+                                        <div className="flex items-center justify-center gap-2 mb-2 sm:mb-3">
                                             {isEmailVerified && (
-                                                <span className="text-green-600 text-xl">✓</span>
+                                                <span className="text-green-600 text-lg sm:text-xl">✓</span>
                                             )}
-                                            <label className={`block text-sm font-semibold ${
+                                            <label className={`block text-xs sm:text-sm font-semibold ${
                                                 isEmailVerified ? 'text-green-700' : 'text-gray-800'
                                             }`}>
                                                 {isEmailVerified 
@@ -376,7 +377,7 @@ const BasicDetails = () => {
                                         </div>
                                         {!isEmailVerified && (
                                             <>
-                                                <div className="flex justify-center gap-3 mb-4">
+                                                <div className="flex justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
                                                     {otp.map((digit, index) => (
                                                         <input
                                                             key={index}
@@ -395,9 +396,13 @@ const BasicDetails = () => {
                                                                     const newOtp = pastedData.split('');
                                                                     setOtp(newOtp);
                                                                     otpInputRefs[5].current?.focus();
+                                                                    // Auto-verify pasted OTP
+                                                                    if (!isEmailVerified && !isVerifyingOtp) {
+                                                                        handleVerifyOtp(pastedData);
+                                                                    }
                                                                 }
                                                             }}
-                                                            className="w-12 h-12 border-2 border-gray-300 rounded-lg text-center text-xl font-semibold text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
+                                                            className="w-9 h-9 sm:w-12 sm:h-12 border-2 border-gray-300 rounded-lg text-center text-base sm:text-xl font-semibold text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20"
                                                             placeholder="0"
                                                         />
                                                     ))}
@@ -406,11 +411,11 @@ const BasicDetails = () => {
                                                     type="button"
                                                     onClick={() => handleVerifyOtp()}
                                                     disabled={isVerifyingOtp || otp.join('').length !== 6}
-                                                    className="w-full py-3 bg-gradient-to-r from-[#1B5E20] to-[#4CAF50] text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    className="w-full py-2 sm:py-3 bg-gradient-to-r from-[#1B5E20] to-[#4CAF50] text-white border-none rounded-lg text-xs sm:text-sm font-semibold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                                 >
                                                     {isVerifyingOtp ? 'Verifying...' : 'Verify OTP'}
                                                 </button>
-                                                <p className="text-xs text-gray-500 text-center mt-2">
+                                                <p className="text-[10px] sm:text-xs text-gray-500 text-center mt-2">
                                                     OTP will be verified automatically when all 6 digits are entered
                                                 </p>
                                             </>
@@ -421,13 +426,13 @@ const BasicDetails = () => {
 
                             {/* Password */}
                             <div>
-                                <label className="block text-sm font-semibold text-gray-800 mb-3">Create password</label>
+                                <label className="block text-xs sm:text-sm font-semibold text-gray-800 mb-2 sm:mb-3">Create password</label>
                                 <input
                                     type="password"
                                     placeholder="Password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full py-3 px-4 border border-gray-200 rounded-lg text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500"
+                                    className="w-full py-2 px-3 sm:py-3 sm:px-4 border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-800 transition-all duration-200 focus:outline-none focus:border-[#1B5E20] focus:ring-2 focus:ring-[#1B5E20]/20 placeholder:text-gray-500"
                                     minLength={8}
                                     maxLength={20}
                                     required
@@ -437,7 +442,7 @@ const BasicDetails = () => {
                             {/* Next Button */}
                             <button
                                 type="submit"
-                                className="w-full py-4 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-xl text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                                className="w-full py-3 sm:py-4 bg-gradient-to-r from-[#1B5E20] to-[#0D3B13] text-white border-none rounded-xl text-base sm:text-lg font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                             >
                                 Continue
                             </button>
