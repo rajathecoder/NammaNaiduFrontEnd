@@ -104,6 +104,9 @@ export const API_ENDPOINTS = {
     MESSAGES: '/api/chat/messages',
     BLOCK: (id: string) => `/api/chat/conversations/${id}/block`,
     UNBLOCK: (id: string) => `/api/chat/conversations/${id}/unblock`,
+    REPORT: (id: string) => `/api/chat/conversations/${id}/report`,
+    DELETE: (id: string) => `/api/chat/conversations/${id}`,
+    UPLOAD_IMAGE: '/api/chat/upload-image',
   },
   // Device endpoints
   DEVICES: {
@@ -152,6 +155,11 @@ export const API_ENDPOINTS = {
     REFERRAL_STATS: '/api/admin/referrals/stats',
     // Settings endpoints
     SETTINGS: '/api/admin/settings',
+    // Chat management endpoints
+    CHAT_CONVERSATIONS: '/api/admin/chat/conversations',
+    CHAT_CONVERSATION_MESSAGES: (id: string) => `/api/admin/chat/conversations/${id}/messages`,
+    CHAT_REPORTS: '/api/admin/chat/reports',
+    CHAT_REPORT_BY_ID: (id: number) => `/api/admin/chat/reports/${id}`,
   },
 };
 

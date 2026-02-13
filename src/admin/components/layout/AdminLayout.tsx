@@ -212,6 +212,12 @@ const AdminLayout: React.FC = () => {
             </div>
           )}
 
+          {/* Messaging - Super Admin and Moderator */}
+          <NavLink to="/admin/messaging" className={({ isActive }) => `flex items-center gap-3 py-3 px-5 text-gray-600 no-underline transition-all duration-200 text-sm relative ${isActive ? 'bg-[#f0fdfa] text-[#14b8a6] font-semibold before:content-[""] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-[#14b8a6]' : 'hover:bg-gray-50 hover:text-[#14b8a6]'}`}>
+            <span className="text-lg w-5 text-center">💬</span>
+            <span>Messaging</span>
+          </NavLink>
+
           {/* Reports - All roles */}
           {hasAccess(adminRole as any, '/admin/reports') && (
             <NavLink to="/admin/reports" className={({ isActive }) => `flex items-center gap-3 py-3 px-5 text-gray-600 no-underline transition-all duration-200 text-sm relative ${isActive ? 'bg-[#f0fdfa] text-[#14b8a6] font-semibold before:content-[""] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-[#14b8a6]' : 'hover:bg-gray-50 hover:text-[#14b8a6]'}`}>

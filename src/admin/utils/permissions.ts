@@ -27,6 +27,9 @@ export const MENU_PERMISSIONS: MenuPermission[] = [
   // Matches - Super Admin and Moderator only
   { path: '/admin/matches', roles: ['Super Admin', 'Moderator'] },
   
+  // Messaging - Super Admin and Moderator
+  { path: '/admin/messaging', roles: ['Super Admin', 'Moderator'] },
+  
   // Notifications - Super Admin and Moderator only
   { path: '/admin/notifications', roles: ['Super Admin', 'Moderator'] },
   
