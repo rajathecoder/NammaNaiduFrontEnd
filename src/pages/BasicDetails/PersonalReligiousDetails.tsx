@@ -46,8 +46,8 @@ const PersonalReligiousDetails = () => {
             return;
         }
         
-        // Save to localStorage
-        localStorage.setItem('personalReligiousDetails', JSON.stringify({
+        // Save to sessionStorage
+        sessionStorage.setItem('personalReligiousDetails', JSON.stringify({
             height,
             physicalStatus,
             maritalStatus,
@@ -58,18 +58,6 @@ const PersonalReligiousDetails = () => {
             willingToMarryFromAnyCaste,
             dosham
         }));
-        
-        console.log('Personal & Religious Details:', {
-            height,
-            physicalStatus,
-            maritalStatus,
-            religion,
-            caste,
-            subcaste,
-            houseName,
-            willingToMarryFromAnyCaste,
-            dosham
-        });
         // Navigate to Professional Details page
         navigate('/professional-details');
     };
