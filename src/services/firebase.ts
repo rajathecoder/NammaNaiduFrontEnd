@@ -144,9 +144,7 @@ export const requestFcmToken = async (): Promise<string | null> => {
     }
     if (registration) {
       tokenOptions.serviceWorkerRegistration = registration;
-    }
-
-    const token = await getToken(messaging, tokenOptions);
+    }    const token = await getToken(messaging, tokenOptions);
 
     if (token) {
       console.log('FCM Token obtained:', token.substring(0, 20) + '...');
