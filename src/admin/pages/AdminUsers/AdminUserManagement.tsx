@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { isValidPassword } from '../../../utils/validation';
 import {
   getAdminUsers,
   createAdminUser,
@@ -83,8 +84,13 @@ const AdminUserManagement: React.FC = () => {
     e.preventDefault();
 
     // Validate password
-    if (!editingAdmin && formData.password.length < 6) {
-      alert('Password must be at least 6 characters');
+    if (!editingAdmin && !isValidPassword(formData.password)) {
+      alert('Password must be at least 8 characters and include uppercase, lowercase, and a number');
+      return;
+    }
+
+    if (editingAdmin && formData.password && !isValidPassword(formData.password)) {
+      alert('Password must be at least 8 characters and include uppercase, lowercase, and a number');
       return;
     }
 

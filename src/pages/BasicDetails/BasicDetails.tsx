@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logoOnly from '../../assets/images/logoonly.png';
 import { getApiUrl } from '../../config/api.config';
+import { isValidEmail, isValidPassword } from '../../utils/validation';
 
 const BasicDetails = () => {
     const [day, setDay] = useState('');
@@ -38,8 +39,7 @@ const BasicDetails = () => {
         }
 
         // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        if (!isValidEmail(email)) {
             alert('Please enter a valid email address');
             return;
         }
@@ -199,6 +199,11 @@ const BasicDetails = () => {
 
         if (!isEmailVerified) {
             alert('Please verify your email address before continuing');
+            return;
+        }
+
+        if (!isValidPassword(password)) {
+            alert('Password must be at least 8 characters and include uppercase, lowercase, and a number');
             return;
         }
 
