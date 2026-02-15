@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -25,7 +25,13 @@ const Matches = () => {
     const [loading, setLoading] = useState(true);
     const [sentInterests, setSentInterests] = useState<Set<string>>(new Set());
 
-    const handleConnect = async (accountId: string) => {
+    // Ref to keep track of sent interests without triggering re-renders in callbacks
+    const sentInterestsRef = useRef(sentInterests);
+    useEffect(() => {
+        sentInterestsRef.current = sentInterests;
+    }, [sentInterests]);
+
+    const handleConnect = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
@@ -57,18 +63,14 @@ const Matches = () => {
             console.error('Error sending interest:', error);
             alert('An error occurred while sending interest');
         }
-    };
+    }, [navigate]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (accountId: string, isCurrentlyShortlisted: boolean) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
-
-        // Check if currently shortlisted
-        const currentMatch = allMatches.find(m => m.accountId === accountId);
-        const isCurrentlyShortlisted = currentMatch?.shortlisted;
 
         try {
             const method = isCurrentlyShortlisted ? 'DELETE' : 'POST';
@@ -90,7 +92,7 @@ const Matches = () => {
                 const message = isCurrentlyShortlisted ? 'Profile removed from shortlist!' : 'Profile shortlisted!';
                 alert(message);
 
-                // Update the shortlisted status in the UI
+                // Update the shortlisted status in the UI using functional update to avoid dependency on allMatches
                 setAllMatches(prev => prev.map(match =>
                     match.accountId === accountId
                         ? { ...match, shortlisted: !isCurrentlyShortlisted }
@@ -100,7 +102,23 @@ const Matches = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    // Stable handler for card actions
+    const onCardAction = useCallback((profile: MatchProfile, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (sentInterestsRef.current.has(profile.accountId)) {
+            navigate(`/profile/${profile.accountId}`);
+        } else {
+            handleConnect(profile.accountId);
+        }
+    }, [navigate, handleConnect]);
+
+    const onCardFavorite = useCallback((profile: MatchProfile, e: React.MouseEvent) => {
+        e.stopPropagation();
+        // Use the shortlisted property from the profile object passed back from the card
+        handleShortlist(profile.accountId, !!profile.shortlisted);
+    }, [handleShortlist]);
 
     // Fetch matches from API
     useEffect(() => {
@@ -409,18 +427,8 @@ const Matches = () => {
                                     profile={match}
                                     profilePhoto={match.photo1link}
                                     primaryButtonText={sentInterests.has(match.accountId) ? "View Profile" : "Connect"}
-                                    onPrimaryAction={(e) => {
-                                        e.stopPropagation();
-                                        if (sentInterests.has(match.accountId)) {
-                                            navigate(`/profile/${match.accountId}`);
-                                        } else {
-                                            handleConnect(match.accountId);
-                                        }
-                                    }}
-                                    onFavorite={(e) => {
-                                        e.stopPropagation();
-                                        handleShortlist(match.accountId);
-                                    }}
+                                    onPrimaryAction={onCardAction}
+                                    onFavorite={onCardFavorite}
                                     isFavorite={match.shortlisted}
                                 />
                             ))
@@ -470,4 +478,3 @@ const Matches = () => {
 };
 
 export default Matches;
-
