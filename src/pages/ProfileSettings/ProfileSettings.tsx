@@ -14,6 +14,9 @@ const ProfileSettings = () => {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [successMsg, setSuccessMsg] = useState('');
+    const [profilePaused, setProfilePaused] = useState(false);
+    const [verifiedOnlyChat, setVerifiedOnlyChat] = useState(false);
+    const [safetySaving, setSafetySaving] = useState(false);
 
     useEffect(() => {
         fetchProfileData();
@@ -25,12 +28,13 @@ const ProfileSettings = () => {
             if (!auth?.token) return;
             const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${auth.token}` };
 
-            // Fetch both endpoints in parallel
-            const [meRes, profileRes] = await Promise.all([
+            // Fetch all endpoints in parallel
+            const [meRes, profileRes, safetyRes] = await Promise.all([
                 fetch(getApiUrl(API_ENDPOINTS.USERS.ME), { headers }),
                 fetch(getApiUrl(API_ENDPOINTS.USERS.PROFILE_COMPLETE), { headers }),
+                fetch(getApiUrl(API_ENDPOINTS.USERS.SAFETY_SETTINGS), { headers }),
             ]);
-            const [meJson, profileJson] = await Promise.all([meRes.json(), profileRes.json()]);
+            const [meJson, profileJson, safetyJson] = await Promise.all([meRes.json(), profileRes.json(), safetyRes.json()]);
 
             if (meJson.success && meJson.data) {
                 setCompletionPct(meJson.data.profileCompletion ?? 0);
@@ -38,6 +42,10 @@ const ProfileSettings = () => {
             if (profileJson.success && profileJson.data) {
                 setVisibility(profileJson.data.profileVisibility ?? 'members');
                 setProfileStatus(profileJson.data.profileStatus ?? 'draft');
+            }
+            if (safetyJson.success && safetyJson.data) {
+                setProfilePaused(safetyJson.data.profilePaused ?? false);
+                setVerifiedOnlyChat(safetyJson.data.verifiedOnlyChat ?? false);
             }
         } catch (err) {
             console.error('Error loading profile settings:', err);
@@ -93,6 +101,33 @@ const ProfileSettings = () => {
         } finally {
             setIsDeleting(false);
             setShowDeleteConfirm(false);
+        }
+    };
+
+    const handleSafetyToggle = async (field: 'profilePaused' | 'verifiedOnlyChat', value: boolean) => {
+        setSafetySaving(true);
+        setSuccessMsg('');
+        try {
+            const auth = getAuthData();
+            if (!auth?.token) return;
+            const res = await fetch(getApiUrl(API_ENDPOINTS.USERS.SAFETY_SETTINGS), {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${auth.token}` },
+                body: JSON.stringify({ [field]: value }),
+            });
+            const json = await res.json();
+            if (json.success) {
+                if (field === 'profilePaused') setProfilePaused(value);
+                if (field === 'verifiedOnlyChat') setVerifiedOnlyChat(value);
+                setSuccessMsg('Safety settings updated!');
+                setTimeout(() => setSuccessMsg(''), 3000);
+            } else {
+                alert(json.message || 'Failed to update safety settings');
+            }
+        } catch {
+            alert('An error occurred. Please try again.');
+        } finally {
+            setSafetySaving(false);
         }
     };
 
@@ -227,6 +262,59 @@ const ProfileSettings = () => {
                             </svg>
                         </button>
                     </div>
+                </div>
+
+                {/* Safety & Privacy */}
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-1">Safety & Privacy</h2>
+                    <p className="text-sm text-gray-500 mb-4">Control who can see and interact with your profile</p>
+
+                    {/* Pause Profile Toggle */}
+                    <div className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors mb-3">
+                        <div className="flex items-center gap-3">
+                            <span className="text-xl">⏸️</span>
+                            <div>
+                                <div className="font-medium text-gray-800">Pause Profile</div>
+                                <div className="text-xs text-gray-500">Temporarily hide your profile from browse & search</div>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => handleSafetyToggle('profilePaused', !profilePaused)}
+                            disabled={safetySaving}
+                            className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-200 ${profilePaused ? 'bg-[#1B5E20]' : 'bg-gray-300'} disabled:opacity-50`}
+                        >
+                            <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${profilePaused ? 'translate-x-6' : 'translate-x-1'}`} />
+                        </button>
+                    </div>
+
+                    {/* Verified-Only Messaging Toggle */}
+                    <div className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors mb-3">
+                        <div className="flex items-center gap-3">
+                            <span className="text-xl">🛡️</span>
+                            <div>
+                                <div className="font-medium text-gray-800">Verified-Only Messaging</div>
+                                <div className="text-xs text-gray-500">Only verified profiles can start a conversation with you</div>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => handleSafetyToggle('verifiedOnlyChat', !verifiedOnlyChat)}
+                            disabled={safetySaving}
+                            className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-200 ${verifiedOnlyChat ? 'bg-[#1B5E20]' : 'bg-gray-300'} disabled:opacity-50`}
+                        >
+                            <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${verifiedOnlyChat ? 'translate-x-6' : 'translate-x-1'}`} />
+                        </button>
+                    </div>
+
+                    {/* Blocked Users Link */}
+                    <button onClick={() => navigate('/blocked-users')} className="w-full flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors">
+                        <div className="flex items-center gap-3">
+                            <span className="text-xl">🚫</span>
+                            <span className="font-medium text-gray-800">Blocked Users</span>
+                        </div>
+                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
                 </div>
 
                 {/* Delete Account (Danger Zone) */}

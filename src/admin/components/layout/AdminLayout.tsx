@@ -226,12 +226,36 @@ const AdminLayout: React.FC = () => {
             </NavLink>
           )}
 
+          {/* Flagged Users - All roles */}
+          <NavLink to="/admin/flagged-users" className={({ isActive }) => `flex items-center gap-3 py-3 px-5 text-gray-600 no-underline transition-all duration-200 text-sm relative ${isActive ? 'bg-[#f0fdfa] text-[#14b8a6] font-semibold before:content-[""] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-[#14b8a6]' : 'hover:bg-gray-50 hover:text-[#14b8a6]'}`}>
+              <span className="text-lg w-5 text-center">⚠️</span>
+              <span>Flagged Users</span>
+            </NavLink>
+
           {/* CMS - All roles */}
           {hasAccess(adminRole as any, '/admin/cms') && (
-            <NavLink to="/admin/cms" className={({ isActive }) => `flex items-center gap-3 py-3 px-5 text-gray-600 no-underline transition-all duration-200 text-sm relative ${isActive ? 'bg-[#f0fdfa] text-[#14b8a6] font-semibold before:content-[""] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-[#14b8a6]' : 'hover:bg-gray-50 hover:text-[#14b8a6]'}`}>
-              <span className="text-lg w-5 text-center">📝</span>
-              <span>CMS</span>
-            </NavLink>
+            <div className="my-1">
+              <div
+                className={`flex items-center gap-3 py-3 px-5 text-gray-600 cursor-pointer transition-all duration-200 text-sm ${isMenuActive('/admin/cms') ? 'bg-[#f0fdfa] text-[#14b8a6] font-semibold' : 'hover:bg-gray-50 hover:text-[#14b8a6]'}`}
+                onClick={() => toggleMenu('cms')}
+              >
+                <span className="text-lg w-5 text-center">📝</span>
+                <span className="flex-1">CMS</span>
+                <span className="text-xs">{expandedMenus.includes('cms') ? '▲' : '▼'}</span>
+              </div>
+              {expandedMenus.includes('cms') && (
+                <div className="ml-4">
+                  <NavLink to="/admin/cms" end className={({ isActive }) => `flex items-center gap-2 py-2 px-5 text-gray-600 no-underline transition-all duration-200 text-sm ${isActive ? 'text-[#14b8a6] font-semibold' : 'hover:text-[#14b8a6]'}`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                    Pages
+                  </NavLink>
+                  <NavLink to="/admin/cms/success-stories" className={({ isActive }) => `flex items-center gap-2 py-2 px-5 text-gray-600 no-underline transition-all duration-200 text-sm ${isActive ? 'text-[#14b8a6] font-semibold' : 'hover:text-[#14b8a6]'}`}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                    Success Stories
+                  </NavLink>
+                </div>
+              )}
+            </div>
           )}
 
           {/* Notifications - Super Admin and Moderator */}

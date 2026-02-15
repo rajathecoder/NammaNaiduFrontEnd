@@ -517,20 +517,19 @@ const LandingPage: React.FC = () => {
           <div className="footer-links">
             <h4>Company</h4>
             <ul>
-              <li><a href="#">About Us</a></li>
-              <li><a href="#stories">Success Stories</a></li>
-              <li><a href="#">Contact Us</a></li>
-              <li><a href="#">Careers</a></li>
+              <li><Link to="/about-us">About Us</Link></li>
+              <li><Link to="/success-stories">Success Stories</Link></li>
+              <li><Link to="/contact-us">Contact Us</Link></li>
             </ul>
           </div>
 
           <div className="footer-links">
             <h4>Legal</h4>
             <ul>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Use</a></li>
-              <li><a href="#">Security Tips</a></li>
-              <li><a href="#">Cookie Policy</a></li>
+              <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-use">Terms of Use</Link></li>
+              <li><Link to="/security-tips">Security Tips</Link></li>
+              <li><Link to="/cookie-policy">Cookie Policy</Link></li>
             </ul>
           </div>
         </div>

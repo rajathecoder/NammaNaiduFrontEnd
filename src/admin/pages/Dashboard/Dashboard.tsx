@@ -32,6 +32,7 @@ const Dashboard: React.FC = () => {
     reportedProfiles: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [abuseStats, setAbuseStats] = useState({ totalReports: 0, pendingReports: 0, flaggedUsers: 0, blocksToday: 0, reportsToday: 0 });
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -70,6 +71,21 @@ const Dashboard: React.FC = () => {
           }
         } else {
           console.error('Failed to fetch dashboard stats');
+        }
+
+        // Fetch abuse stats
+        try {
+          const abuseRes = await fetch(getApiUrl(API_ENDPOINTS.ADMIN.ABUSE_STATS), {
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          });
+          if (abuseRes.ok) {
+            const abuseData = await abuseRes.json();
+            if (abuseData.success && abuseData.data) {
+              setAbuseStats(abuseData.data);
+            }
+          }
+        } catch (abuseErr) {
+          console.warn('Could not fetch abuse stats:', abuseErr);
         }
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -217,6 +233,30 @@ const Dashboard: React.FC = () => {
             <p className="text-3xl font-bold text-gray-800 mb-1">{stats.reportedProfiles}</p>
             <p className="text-xs text-gray-500">Needs attention</p>
           </div>
+        </div>
+      </div>
+
+      {/* Safety & Abuse Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-orange-400">
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Pending Reports</div>
+          <div className="text-2xl font-bold text-orange-600 mt-1">{abuseStats.pendingReports}</div>
+        </div>
+        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-red-400">
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Reports</div>
+          <div className="text-2xl font-bold text-red-600 mt-1">{abuseStats.totalReports}</div>
+        </div>
+        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-yellow-400">
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Flagged Users</div>
+          <div className="text-2xl font-bold text-yellow-600 mt-1">{abuseStats.flaggedUsers}</div>
+        </div>
+        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-purple-400">
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Blocks Today</div>
+          <div className="text-2xl font-bold text-purple-600 mt-1">{abuseStats.blocksToday}</div>
+        </div>
+        <div className="bg-white rounded-xl p-4 shadow-sm border-l-4 border-blue-400">
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Reports Today</div>
+          <div className="text-2xl font-bold text-blue-600 mt-1">{abuseStats.reportsToday}</div>
         </div>
       </div>
 

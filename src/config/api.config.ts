@@ -70,7 +70,12 @@ export const API_ENDPOINTS = {
       GET: '/api/notifications',
       READ: (id: string | number) => `/api/notifications/${id}/read`,
       READ_ALL: '/api/notifications/read-all',
-    }
+    },
+    // Safety & Abuse endpoints
+    BLOCK_USER: '/api/users/block',
+    BLOCKED_USERS: '/api/users/blocked-users',
+    REPORT_USER: '/api/users/report',
+    SAFETY_SETTINGS: '/api/users/safety-settings',
   },
   // Subscription (authenticated)
   SUBSCRIPTION: {
@@ -116,6 +121,11 @@ export const API_ENDPOINTS = {
   PUBLIC: {
     MASTER: (type: string) => `/api/masters/${type}`,
   },
+  // Public CMS
+  CMS: {
+    PAGE: (slug: string) => `/api/cms/${slug}`,
+    SUCCESS_STORIES: '/api/success-stories',
+  },
   // Admin endpoints
   ADMIN: {
     DASHBOARD: '/api/admin/dashboard',
@@ -160,6 +170,18 @@ export const API_ENDPOINTS = {
     CHAT_CONVERSATION_MESSAGES: (id: string) => `/api/admin/chat/conversations/${id}/messages`,
     CHAT_REPORTS: '/api/admin/chat/reports',
     CHAT_REPORT_BY_ID: (id: number) => `/api/admin/chat/reports/${id}`,
+    // Safety & Abuse admin endpoints
+    REPORTS: '/api/admin/reports',
+    REPORT_BY_ID: (id: number) => `/api/admin/reports/${id}`,
+    FLAGGED_USERS: '/api/admin/flagged-users',
+    FLAGGED_USER: (accountId: string) => `/api/admin/flagged-users/${accountId}`,
+    BLOCKS: '/api/admin/blocks',
+    ABUSE_STATS: '/api/admin/abuse-stats',
+    // CMS admin endpoints
+    CMS_PAGES: '/api/admin/cms',
+    CMS_PAGE: (slug: string) => `/api/admin/cms/${slug}`,
+    SUCCESS_STORIES_ADMIN: '/api/admin/success-stories',
+    SUCCESS_STORY_BY_ID: (id: number) => `/api/admin/success-stories/${id}`,
   },
 };
 

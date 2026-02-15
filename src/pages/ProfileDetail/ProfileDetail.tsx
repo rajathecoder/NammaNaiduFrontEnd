@@ -29,6 +29,12 @@ const ProfileDetail = () => {
     const [isViewingDetails, setIsViewingDetails] = useState(false);
     const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [showSafetyMenu, setShowSafetyMenu] = useState(false);
+    const [showBlockConfirm, setShowBlockConfirm] = useState(false);
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [reportReason, setReportReason] = useState('');
+    const [reportDescription, setReportDescription] = useState('');
+    const [safetyLoading, setSafetyLoading] = useState(false);
 
     // Fetch opposite gender profiles
     const fetchSimilarMatches = async (userId?: number) => {
@@ -286,6 +292,59 @@ const ProfileDetail = () => {
         return photos;
     };
 
+    const handleBlockUser = async () => {
+        if (!targetUserId) return;
+        const authData = getAuthData();
+        if (!authData?.token) return;
+        setSafetyLoading(true);
+        try {
+            const res = await fetch(getApiUrl(API_ENDPOINTS.USERS.BLOCK_USER), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authData.token}` },
+                body: JSON.stringify({ targetAccountId: targetUserId }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert('User blocked successfully. They will no longer appear in your matches.');
+                navigate('/home');
+            } else {
+                alert(data.message || 'Failed to block user');
+            }
+        } catch {
+            alert('Failed to block user. Please try again.');
+        } finally {
+            setSafetyLoading(false);
+            setShowBlockConfirm(false);
+        }
+    };
+
+    const handleReportUser = async () => {
+        if (!targetUserId || !reportReason) return;
+        const authData = getAuthData();
+        if (!authData?.token) return;
+        setSafetyLoading(true);
+        try {
+            const res = await fetch(getApiUrl(API_ENDPOINTS.USERS.REPORT_USER), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authData.token}` },
+                body: JSON.stringify({ targetAccountId: targetUserId, reason: reportReason, description: reportDescription }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert('Report submitted successfully. Our team will review it.');
+                setShowReportModal(false);
+                setReportReason('');
+                setReportDescription('');
+            } else {
+                alert(data.message || 'Failed to submit report');
+            }
+        } catch {
+            alert('Failed to submit report. Please try again.');
+        } finally {
+            setSafetyLoading(false);
+        }
+    };
+
     const handleImageClick = (index: number) => {
         const allPhotos = getAllPhotos();
         if (allPhotos.length > 0) {
@@ -496,7 +555,7 @@ const ProfileDetail = () => {
                     >
                         <span>←</span> All Matches
                     </button>
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 items-center">
                         <button
                             className="w-12 h-12 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-600 font-bold transition-all hover:shadow-lg hover:border-[#1B5E2040] hover:text-[#1B5E20] disabled:opacity-30"
                             onClick={navigateToPreviousProfile}
@@ -511,6 +570,34 @@ const ProfileDetail = () => {
                         >
                             →
                         </button>
+                        {/* Safety: 3-dot menu */}
+                        {!isOwnProfile && (
+                            <div className="relative">
+                                <button
+                                    className="w-12 h-12 bg-white border border-gray-100 rounded-2xl flex items-center justify-center text-gray-500 font-bold transition-all hover:shadow-lg hover:border-red-200 hover:text-red-500"
+                                    onClick={() => setShowSafetyMenu(!showSafetyMenu)}
+                                    title="More options"
+                                >
+                                    ⋮
+                                </button>
+                                {showSafetyMenu && (
+                                    <div className="absolute right-0 top-14 w-48 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden">
+                                        <button
+                                            className="w-full px-4 py-3 text-left text-sm font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2"
+                                            onClick={() => { setShowBlockConfirm(true); setShowSafetyMenu(false); }}
+                                        >
+                                            🚫 Block User
+                                        </button>
+                                        <button
+                                            className="w-full px-4 py-3 text-left text-sm font-semibold text-orange-600 hover:bg-orange-50 flex items-center gap-2 border-t border-gray-50"
+                                            onClick={() => { setShowReportModal(true); setShowSafetyMenu(false); }}
+                                        >
+                                            ⚠️ Report User
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -950,6 +1037,89 @@ const ProfileDetail = () => {
                                 }}
                             >
                                 Upgrade Plan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Block Confirmation Dialog */}
+            {showBlockConfirm && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowBlockConfirm(false)}>
+                    <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">Block {profile?.name}?</h3>
+                        <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                            Blocking this user will:
+                        </p>
+                        <ul className="text-sm text-gray-600 mb-6 space-y-1 list-disc pl-5">
+                            <li>Remove them from your matches and search results</li>
+                            <li>Prevent them from viewing your profile</li>
+                            <li>End any existing conversation</li>
+                        </ul>
+                        <div className="flex gap-3">
+                            <button
+                                className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold text-sm hover:bg-gray-200"
+                                onClick={() => setShowBlockConfirm(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl font-semibold text-sm hover:bg-red-700 disabled:opacity-50"
+                                onClick={handleBlockUser}
+                                disabled={safetyLoading}
+                            >
+                                {safetyLoading ? 'Blocking...' : 'Block User'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Report User Modal */}
+            {showReportModal && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowReportModal(false)}>
+                    <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">Report {profile?.name}</h3>
+                        <div className="mb-4">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">Reason</label>
+                            <select
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent"
+                                value={reportReason}
+                                onChange={e => setReportReason(e.target.value)}
+                            >
+                                <option value="">Select a reason...</option>
+                                <option value="fake_profile">Fake Profile</option>
+                                <option value="harassment">Harassment</option>
+                                <option value="inappropriate">Inappropriate Content</option>
+                                <option value="scam">Scam / Fraud</option>
+                                <option value="underage">Underage User</option>
+                                <option value="spam">Spam</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">Description (optional)</label>
+                            <textarea
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#1B5E20] focus:border-transparent resize-none"
+                                rows={3}
+                                placeholder="Provide additional details..."
+                                value={reportDescription}
+                                onChange={e => setReportDescription(e.target.value)}
+                            />
+                        </div>
+                        <div className="flex gap-3">
+                            <button
+                                className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold text-sm hover:bg-gray-200"
+                                onClick={() => { setShowReportModal(false); setReportReason(''); setReportDescription(''); }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="flex-1 px-4 py-3 bg-orange-600 text-white rounded-xl font-semibold text-sm hover:bg-orange-700 disabled:opacity-50"
+                                onClick={handleReportUser}
+                                disabled={safetyLoading || !reportReason}
+                            >
+                                {safetyLoading ? 'Submitting...' : 'Submit Report'}
                             </button>
                         </div>
                     </div>

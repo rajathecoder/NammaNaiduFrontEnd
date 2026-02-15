@@ -18,17 +18,21 @@ import ChatWindow from './pages/Messages/ChatWindow';
 import Search from './pages/Search/Search';
 import PartnerPreferences from './pages/PartnerPreferences/PartnerPreferences';
 import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
+import BlockedUsers from './pages/BlockedUsers/BlockedUsers';
 import Recommendations from './pages/Recommendations/Recommendations';
 import Matches from './pages/Matches/Matches';
 import Notifications from './pages/Notifications/Notifications';
 import LandingPage from './pages/LandingPage/LandingPage';
+import ContentPage from './pages/CMS/ContentPage';
+import ContactUs from './pages/CMS/ContactUs';
+import SuccessStoriesPage from './pages/CMS/SuccessStoriesPage';
 import UserProtectedRoute from './components/common/UserProtectedRoute';
 import AdminLayout from './admin/components/layout/AdminLayout';
 import ProtectedRoute from './admin/components/common/ProtectedRoute';
 import Dashboard from './admin/pages/Dashboard/Dashboard';
 import AllUsers from './admin/pages/Users/AllUsers';
 import PendingApprovals from './admin/pages/Users/PendingApprovals';
-import BlockedUsers from './admin/pages/Users/BlockedUsers';
+import AdminBlockedUsers from './admin/pages/Users/BlockedUsers';
 import UserProfile from './admin/pages/Users/UserProfile';
 import UserEdit from './admin/pages/Users/UserEdit';
 import PhotoModeration from './admin/pages/PhotoModeration/PhotoModeration';
@@ -37,6 +41,7 @@ import AdminSubscriptionPlans from './admin/pages/Subscriptions/SubscriptionPlan
 import SubscriptionTransactions from './admin/pages/Subscriptions/SubscriptionTransactions';
 import MatchesManagement from './admin/pages/Matches/MatchesManagement';
 import ReportsComplaints from './admin/pages/Reports/ReportsComplaints';
+import FlaggedUsers from './admin/pages/FlaggedUsers/FlaggedUsers';
 import MastersPage from './admin/pages/Masters/MastersPage';
 import ChatLogs from './admin/pages/Messaging/ChatLogs';
 import CMSPage from './admin/pages/CMS/CMSPage';
@@ -46,6 +51,7 @@ import AdminUserManagement from './admin/pages/AdminUsers/AdminUserManagement';
 import CouponManagement from './admin/pages/Coupons/CouponManagement';
 import ReferralManagement from './admin/pages/Referrals/ReferralManagement';
 import ReferralPage from './pages/Referral/ReferralPage';
+import SuccessStoriesAdmin from './admin/pages/CMS/SuccessStoriesAdmin';
 
 function App() {
   return (
@@ -57,6 +63,15 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/verify-otp" element={<OTPPage />} />
+
+        {/* Public CMS pages */}
+        <Route path="/about-us" element={<ContentPage />} />
+        <Route path="/privacy-policy" element={<ContentPage />} />
+        <Route path="/terms-of-use" element={<ContentPage />} />
+        <Route path="/security-tips" element={<ContentPage />} />
+        <Route path="/cookie-policy" element={<ContentPage />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/success-stories" element={<SuccessStoriesPage />} />
 
         {/* Protected user routes */}
         <Route path="/basic-details" element={<UserProtectedRoute><BasicDetails /></UserProtectedRoute>} />
@@ -76,6 +91,7 @@ function App() {
         <Route path="/notifications" element={<UserProtectedRoute><Notifications /></UserProtectedRoute>} />
         <Route path="/partner-preferences" element={<UserProtectedRoute><PartnerPreferences /></UserProtectedRoute>} />
         <Route path="/profile-settings" element={<UserProtectedRoute><ProfileSettings /></UserProtectedRoute>} />
+        <Route path="/blocked-users" element={<UserProtectedRoute><BlockedUsers /></UserProtectedRoute>} />
         <Route path="/recommendations" element={<UserProtectedRoute><Recommendations /></UserProtectedRoute>} />
         <Route path="/referral" element={<UserProtectedRoute><ReferralPage /></UserProtectedRoute>} />
 
@@ -87,7 +103,7 @@ function App() {
           {/* User Management - All roles */}
           <Route path="users/all" element={<ProtectedRoute requiredPath="/admin/users"><AllUsers /></ProtectedRoute>} />
           <Route path="users/pending" element={<ProtectedRoute requiredPath="/admin/users"><PendingApprovals /></ProtectedRoute>} />
-          <Route path="users/blocked" element={<ProtectedRoute requiredPath="/admin/users"><BlockedUsers /></ProtectedRoute>} />
+          <Route path="users/blocked" element={<ProtectedRoute requiredPath="/admin/users"><AdminBlockedUsers /></ProtectedRoute>} />
           <Route path="users/:id" element={<ProtectedRoute requiredPath="/admin/users"><UserProfile /></ProtectedRoute>} />
           <Route path="users/:id/edit" element={<ProtectedRoute requiredPath="/admin/users"><UserEdit /></ProtectedRoute>} />
 
@@ -109,18 +125,15 @@ function App() {
 
           {/* Reports - All roles */}
           <Route path="reports" element={<ProtectedRoute requiredPath="/admin/reports"><ReportsComplaints /></ProtectedRoute>} />
+          <Route path="flagged-users" element={<ProtectedRoute requiredPath="/admin/flagged-users"><FlaggedUsers /></ProtectedRoute>} />
 
           {/* Messaging - Super Admin only */}
           <Route path="messaging" element={<ProtectedRoute requiredPath="/admin/messaging"><ChatLogs /></ProtectedRoute>} />
 
           {/* CMS - All roles */}
-          <Route path="cms/banners" element={<ProtectedRoute requiredPath="/admin/cms"><CMSPage /></ProtectedRoute>} />
-          <Route path="cms/about-us" element={<ProtectedRoute requiredPath="/admin/cms"><CMSPage /></ProtectedRoute>} />
-          <Route path="cms/terms-conditions" element={<ProtectedRoute requiredPath="/admin/cms"><CMSPage /></ProtectedRoute>} />
-          <Route path="cms/privacy-policy" element={<ProtectedRoute requiredPath="/admin/cms"><CMSPage /></ProtectedRoute>} />
-          <Route path="cms/faq" element={<ProtectedRoute requiredPath="/admin/cms"><CMSPage /></ProtectedRoute>} />
-          <Route path="cms/blog" element={<ProtectedRoute requiredPath="/admin/cms"><CMSPage /></ProtectedRoute>} />
           <Route path="cms" element={<ProtectedRoute requiredPath="/admin/cms"><CMSPage /></ProtectedRoute>} />
+          <Route path="cms/pages/:slug" element={<ProtectedRoute requiredPath="/admin/cms"><CMSPage /></ProtectedRoute>} />
+          <Route path="cms/success-stories" element={<ProtectedRoute requiredPath="/admin/cms"><SuccessStoriesAdmin /></ProtectedRoute>} />
 
           {/* Notifications - Super Admin and Moderator */}
           <Route path="notifications" element={<ProtectedRoute requiredPath="/admin/notifications"><NotificationManagement /></ProtectedRoute>} />
