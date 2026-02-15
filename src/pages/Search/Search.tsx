@@ -365,7 +365,7 @@ const Search = () => {
                                     <MatchCard
                                         key={profile.accountId}
                                         profile={profile}
-                                        onPrimaryAction={(e) => {
+                                        onPrimaryAction={(_p, e) => {
                                             e.stopPropagation();
                                             handleAction(profile.accountId);
                                         }}

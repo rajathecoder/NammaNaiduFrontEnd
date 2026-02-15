@@ -318,11 +318,11 @@ const Interests = () => {
                                     profile={interest}
                                     profilePhoto={interest.photo1link}
                                     primaryButtonText={activeTab === 'received' ? "Accept" : "View Profile"}
-                                    onPrimaryAction={(e) => {
+                                    onPrimaryAction={(_p, e) => {
                                         e.stopPropagation();
                                         handleInterestAction(interest.accountId, activeTab === 'received' ? 'accept' : 'view');
                                     }}
-                                    onFavorite={(e) => {
+                                    onFavorite={(_p, e) => {
                                         e.stopPropagation();
                                         handleShortlist(interest.accountId);
                                     }}
