@@ -6,8 +6,8 @@ interface MatchCardProps {
     profile: any;
     profilePhoto?: string;
     primaryButtonText?: string;
-    onPrimaryAction?: (e: React.MouseEvent) => void;
-    onFavorite?: (e: React.MouseEvent) => void;
+    onPrimaryAction?: (profileId: string, e: React.MouseEvent) => void;
+    onFavorite?: (profileId: string, e: React.MouseEvent) => void;
     isFavorite?: boolean;
 }
 
@@ -39,6 +39,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
                     <img
                         src={profilePhoto}
                         alt={profile.name}
+                        loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         onError={(e) => {
                             const target = e.target as HTMLImageElement;
@@ -90,9 +91,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
                         onClick={(e) => {
                             e.stopPropagation();
                             if (onPrimaryAction) {
-                                onPrimaryAction(e);
-                            } else {
-                                // Default connect logic
+                                onPrimaryAction(profile.accountId, e);
                             }
                         }}
                     >
@@ -102,7 +101,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
                         className={`w-9 h-9 backdrop-blur-md border rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-[1.05] active:scale-95 cursor-pointer shadow-lg ${isFavorite ? 'bg-[#1B5E20] border-[#1B5E20] text-white' : 'bg-white/20 border-white/30 text-white hover:bg-white/40'}`}
                         onClick={(e) => {
                             e.stopPropagation();
-                            if (onFavorite) onFavorite(e);
+                            if (onFavorite) onFavorite(profile.accountId, e);
                         }}
                     >
                         <svg className="w-5 h-5" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -116,5 +115,4 @@ const MatchCard: React.FC<MatchCardProps> = ({
 };
 
 
-export default MatchCard;
-
+export default React.memo(MatchCard);

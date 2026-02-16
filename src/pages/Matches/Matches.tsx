@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -25,7 +25,19 @@ const Matches = () => {
     const [loading, setLoading] = useState(true);
     const [sentInterests, setSentInterests] = useState<Set<string>>(new Set());
 
-    const handleConnect = async (accountId: string) => {
+    // Refs for stable access in callbacks
+    const allMatchesRef = useRef(allMatches);
+    const sentInterestsRef = useRef(sentInterests);
+
+    useEffect(() => {
+        allMatchesRef.current = allMatches;
+    }, [allMatches]);
+
+    useEffect(() => {
+        sentInterestsRef.current = sentInterests;
+    }, [sentInterests]);
+
+    const handleConnect = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
@@ -57,17 +69,17 @@ const Matches = () => {
             console.error('Error sending interest:', error);
             alert('An error occurred while sending interest');
         }
-    };
+    }, [navigate]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
 
-        // Check if currently shortlisted
-        const currentMatch = allMatches.find(m => m.accountId === accountId);
+        // Check if currently shortlisted using Ref to avoid dependency on allMatches
+        const currentMatch = allMatchesRef.current.find(m => m.accountId === accountId);
         const isCurrentlyShortlisted = currentMatch?.shortlisted;
 
         try {
@@ -100,7 +112,21 @@ const Matches = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    const handleCardAction = useCallback((profileId: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (sentInterestsRef.current.has(profileId)) {
+            navigate(`/profile/${profileId}`);
+        } else {
+            handleConnect(profileId);
+        }
+    }, [navigate, handleConnect]);
+
+    const handleCardFavorite = useCallback((profileId: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleShortlist(profileId);
+    }, [handleShortlist]);
 
     // Fetch matches from API
     useEffect(() => {
@@ -409,18 +435,8 @@ const Matches = () => {
                                     profile={match}
                                     profilePhoto={match.photo1link}
                                     primaryButtonText={sentInterests.has(match.accountId) ? "View Profile" : "Connect"}
-                                    onPrimaryAction={(e) => {
-                                        e.stopPropagation();
-                                        if (sentInterests.has(match.accountId)) {
-                                            navigate(`/profile/${match.accountId}`);
-                                        } else {
-                                            handleConnect(match.accountId);
-                                        }
-                                    }}
-                                    onFavorite={(e) => {
-                                        e.stopPropagation();
-                                        handleShortlist(match.accountId);
-                                    }}
+                                    onPrimaryAction={handleCardAction}
+                                    onFavorite={handleCardFavorite}
                                     isFavorite={match.shortlisted}
                                 />
                             ))

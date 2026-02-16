@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -31,8 +31,17 @@ const Interests = () => {
     const [loading, setLoading] = useState(true);
     const [shortlistedProfiles, setShortlistedProfiles] = useState<Set<string>>(new Set());
 
+    // Refs for stable access in callbacks
+    const interestsByOtherRef = useRef(interestsByOther);
+    const shortlistedProfilesRef = useRef(shortlistedProfiles);
+    const activeTabRef = useRef(activeTab);
 
-    const handleInterestAction = async (accountId: string, action: 'accept' | 'view') => {
+    useEffect(() => { interestsByOtherRef.current = interestsByOther; }, [interestsByOther]);
+    useEffect(() => { shortlistedProfilesRef.current = shortlistedProfiles; }, [shortlistedProfiles]);
+    useEffect(() => { activeTabRef.current = activeTab; }, [activeTab]);
+
+
+    const handleInterestAction = useCallback(async (accountId: string, action: 'accept' | 'view') => {
         if (action === 'view') {
             navigate(`/profile/${accountId}`);
             return;
@@ -60,8 +69,8 @@ const Interests = () => {
 
             const data = await response.json();
             if (data.success) {
-                // Find the profile in interestsByOther
-                const acceptedProfile = interestsByOther.find(p => p.accountId === accountId);
+                // Find the profile in interestsByOther using Ref
+                const acceptedProfile = interestsByOtherRef.current.find(p => p.accountId === accountId);
 
                 if (acceptedProfile) {
                     // Remove from interestsByOther
@@ -88,16 +97,16 @@ const Interests = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [navigate]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
 
-        const isShortlisted = shortlistedProfiles.has(accountId);
+        const isShortlisted = shortlistedProfilesRef.current.has(accountId);
         const method = isShortlisted ? 'DELETE' : 'POST';
 
         try {
@@ -128,7 +137,18 @@ const Interests = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    const handleCardAction = useCallback((profileId: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        const action = activeTabRef.current === 'received' ? 'accept' : 'view';
+        handleInterestAction(profileId, action);
+    }, [handleInterestAction]);
+
+    const handleCardShortlist = useCallback((profileId: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleShortlist(profileId);
+    }, [handleShortlist]);
 
     const fetchShortlistedProfiles = async () => {
         const authData = getAuthData();
@@ -318,14 +338,8 @@ const Interests = () => {
                                     profile={interest}
                                     profilePhoto={interest.photo1link}
                                     primaryButtonText={activeTab === 'received' ? "Accept" : "View Profile"}
-                                    onPrimaryAction={(e) => {
-                                        e.stopPropagation();
-                                        handleInterestAction(interest.accountId, activeTab === 'received' ? 'accept' : 'view');
-                                    }}
-                                    onFavorite={(e) => {
-                                        e.stopPropagation();
-                                        handleShortlist(interest.accountId);
-                                    }}
+                                    onPrimaryAction={handleCardAction}
+                                    onFavorite={handleCardShortlist}
                                     isFavorite={shortlistedProfiles.has(interest.accountId)}
                                 />
                             ))}
