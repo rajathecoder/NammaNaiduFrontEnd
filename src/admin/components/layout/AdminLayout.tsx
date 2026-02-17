@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import logoImage from '../../../assets/images/logoonly.png';
 import { getCurrentAdminRole, hasAccess } from '../../utils/permissions';
+import SimpleSpinner from '../../../components/common/SimpleSpinner';
 
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -329,7 +330,9 @@ const AdminLayout: React.FC = () => {
 
         <main className="flex-1 overflow-y-auto bg-gray-50">
           <div className="p-6">
-            <Outlet />
+            <Suspense fallback={<div className="flex justify-center items-center h-64"><SimpleSpinner fullScreen={false} /></div>}>
+              <Outlet />
+            </Suspense>
           </div>
         </main>
       </div>
@@ -338,4 +341,3 @@ const AdminLayout: React.FC = () => {
 };
 
 export default AdminLayout;
-
