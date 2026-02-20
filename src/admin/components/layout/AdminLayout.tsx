@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import SimpleSpinner from '../../../components/common/SimpleSpinner';
 import logoImage from '../../../assets/images/logoonly.png';
 import { getCurrentAdminRole, hasAccess } from '../../utils/permissions';
 
@@ -329,7 +330,9 @@ const AdminLayout: React.FC = () => {
 
         <main className="flex-1 overflow-y-auto bg-gray-50">
           <div className="p-6">
-            <Outlet />
+            <Suspense fallback={<div className="flex justify-center p-10"><SimpleSpinner /></div>}>
+              <Outlet />
+            </Suspense>
           </div>
         </main>
       </div>
