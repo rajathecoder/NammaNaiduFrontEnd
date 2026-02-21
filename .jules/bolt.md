@@ -1,0 +1,3 @@
+## 2024-02-23 - Heavy 3D Libraries in Landing Page
+**Learning:** The `LandingPage` component was synchronously importing `FloatingParticles`, which in turn imported `three` and `@react-three/fiber`. Even if `App.tsx` had used lazy loading for routes (it didn't), the Landing Page's synchronous dependency on these libraries would have bloated the initial bundle for that specific route.
+**Action:** When optimizing LCP for pages with heavy visual effects (like Three.js), ensure the heavy components themselves are lazy loaded (`React.lazy`) and wrapped in `Suspense`, not just the page route. This decouples the core page load from the heavy assets.
