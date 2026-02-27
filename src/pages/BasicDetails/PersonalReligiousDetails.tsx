@@ -46,8 +46,8 @@ const PersonalReligiousDetails = () => {
             return;
         }
         
-        // Save to localStorage
-        localStorage.setItem('personalReligiousDetails', JSON.stringify({
+        // Save to sessionStorage (more secure for sensitive PII)
+        sessionStorage.setItem('personalReligiousDetails', JSON.stringify({
             height,
             physicalStatus,
             maritalStatus,
