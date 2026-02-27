@@ -33,10 +33,10 @@ const AdditionalDetails = () => {
         setIsSubmitting(true);
 
         try {
-            // Collect all data from localStorage
-            const basicDetails = JSON.parse(localStorage.getItem('basicDetails') || '{}');
-            const personalReligiousDetails = JSON.parse(localStorage.getItem('personalReligiousDetails') || '{}');
-            const professionalDetails = JSON.parse(localStorage.getItem('professionalDetails') || '{}');
+            // Collect all data from sessionStorage
+            const basicDetails = JSON.parse(sessionStorage.getItem('basicDetails') || '{}');
+            const personalReligiousDetails = JSON.parse(sessionStorage.getItem('personalReligiousDetails') || '{}');
+            const professionalDetails = JSON.parse(sessionStorage.getItem('professionalDetails') || '{}');
 
             // Prepare API payload
             const payload = {
@@ -95,10 +95,10 @@ const AdditionalDetails = () => {
                     });
                 }
 
-                // Clear localStorage data
-                localStorage.removeItem('basicDetails');
-                localStorage.removeItem('personalReligiousDetails');
-                localStorage.removeItem('professionalDetails');
+                // Clear sessionStorage data
+                sessionStorage.removeItem('basicDetails');
+                sessionStorage.removeItem('personalReligiousDetails');
+                sessionStorage.removeItem('professionalDetails');
 
                 // Navigate to success screen
                 navigate('/registration-success');

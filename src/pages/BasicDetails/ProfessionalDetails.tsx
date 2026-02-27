@@ -163,8 +163,8 @@ const ProfessionalDetails = () => {
             return;
         }
         
-        // Save to localStorage
-        localStorage.setItem('professionalDetails', JSON.stringify({
+        // Save to sessionStorage (more secure for sensitive PII)
+        sessionStorage.setItem('professionalDetails', JSON.stringify({
             country,
             state,
             city,
