@@ -1,0 +1,4 @@
+## 2024-03-21 - [High Priority] Prevented XSS in CMS Rendering
+**Vulnerability:** Several CMS pages (`ContentPage`, `ContactUs`, `CMSPage`) rendered dynamic HTML content directly using `dangerouslySetInnerHTML`. Since this content is likely user-provided or edited via the CMS, it posed a high risk for Cross-Site Scripting (XSS) attacks if malicious scripts were injected into the content.
+**Learning:** `dangerouslySetInnerHTML` should never be used with dynamic or external content without strict sanitization. Relying on the backend to sanitize input is a defense-in-depth failure; the frontend must also protect itself.
+**Prevention:** Created a reusable `<SanitizedHTML />` component wrapping `dompurify` to safely sanitize all HTML strings on the client side before rendering. This component was substituted in all vulnerable locations.
