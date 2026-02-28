@@ -116,5 +116,6 @@ const MatchCard: React.FC<MatchCardProps> = ({
 };
 
 
-export default MatchCard;
+// Use React.memo to prevent unnecessary re-renders when parent components map over lists.
+export default React.memo(MatchCard);
 
