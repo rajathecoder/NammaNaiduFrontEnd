@@ -1,0 +1,3 @@
+## 2024-05-18 - Missing React.memo on Frequently Rendered List Components
+**Learning:** List components like `MatchCard` are often rendered multiple times inside large parent components (`HomePage`, `Matches`, `Interests`, `Search`), which can lead to significant re-rendering overhead when the parent's state updates (e.g., polling, user interactions). Additionally, missing `loading="lazy"` on heavy list images further impacts performance.
+**Action:** Always verify if list items or grid elements are wrapped in `React.memo` and use `loading="lazy"` for images within lists to optimize both CPU usage and network requests.
