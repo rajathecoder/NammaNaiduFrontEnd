@@ -39,6 +39,8 @@ const MatchCard: React.FC<MatchCardProps> = ({
                     <img
                         src={profilePhoto}
                         alt={profile.name}
+                        {/* ⚡ Bolt: Added loading="lazy" to defer loading off-screen images in long lists */}
+                        loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         onError={(e) => {
                             const target = e.target as HTMLImageElement;
@@ -116,5 +118,6 @@ const MatchCard: React.FC<MatchCardProps> = ({
 };
 
 
-export default MatchCard;
+// ⚡ Bolt: Wrapped MatchCard with React.memo to prevent unnecessary re-renders when parent list state updates
+export default React.memo(MatchCard);
 
