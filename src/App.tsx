@@ -1,62 +1,65 @@
+import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import RegisterPage from './pages/RegisterPage/RegisterPage';
-import LoginPage from './pages/LoginPage/LoginPage';
-import ForgotPasswordPage from './pages/ForgotPassword/ForgotPasswordPage';
-import OTPPage from './pages/OTPPage/OTPPage';
-import BasicDetails from './pages/BasicDetails/BasicDetails';
-import PersonalReligiousDetails from './pages/BasicDetails/PersonalReligiousDetails';
-import ProfessionalDetails from './pages/BasicDetails/ProfessionalDetails';
-import AdditionalDetails from './pages/BasicDetails/AdditionalDetails';
-import RegistrationSuccess from './pages/RegistrationSuccess/RegistrationSuccess';
-import SubscriptionPlans from './pages/SubscriptionPlans/SubscriptionPlans';
-import HomePage from './pages/HomePage/HomePage';
-import MyProfile from './pages/MyProfile/MyProfile';
-import ProfileDetail from './pages/ProfileDetail/ProfileDetail';
-import Interests from './pages/Interests/Interests';
-import ConversationsList from './pages/Messages/ConversationsList';
-import ChatWindow from './pages/Messages/ChatWindow';
-import Search from './pages/Search/Search';
-import PartnerPreferences from './pages/PartnerPreferences/PartnerPreferences';
-import ProfileSettings from './pages/ProfileSettings/ProfileSettings';
-import BlockedUsers from './pages/BlockedUsers/BlockedUsers';
-import Recommendations from './pages/Recommendations/Recommendations';
-import Matches from './pages/Matches/Matches';
-import Notifications from './pages/Notifications/Notifications';
-import LandingPage from './pages/LandingPage/LandingPage';
-import ContentPage from './pages/CMS/ContentPage';
-import ContactUs from './pages/CMS/ContactUs';
-import SuccessStoriesPage from './pages/CMS/SuccessStoriesPage';
+import Loading from './components/common/Loading';
+const RegisterPage = React.lazy(() => import('./pages/RegisterPage/RegisterPage'));
+const LoginPage = React.lazy(() => import('./pages/LoginPage/LoginPage'));
+const ForgotPasswordPage = React.lazy(() => import('./pages/ForgotPassword/ForgotPasswordPage'));
+const OTPPage = React.lazy(() => import('./pages/OTPPage/OTPPage'));
+const BasicDetails = React.lazy(() => import('./pages/BasicDetails/BasicDetails'));
+const PersonalReligiousDetails = React.lazy(() => import('./pages/BasicDetails/PersonalReligiousDetails'));
+const ProfessionalDetails = React.lazy(() => import('./pages/BasicDetails/ProfessionalDetails'));
+const AdditionalDetails = React.lazy(() => import('./pages/BasicDetails/AdditionalDetails'));
+const RegistrationSuccess = React.lazy(() => import('./pages/RegistrationSuccess/RegistrationSuccess'));
+const SubscriptionPlans = React.lazy(() => import('./pages/SubscriptionPlans/SubscriptionPlans'));
+const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
+const MyProfile = React.lazy(() => import('./pages/MyProfile/MyProfile'));
+const ProfileDetail = React.lazy(() => import('./pages/ProfileDetail/ProfileDetail'));
+const Interests = React.lazy(() => import('./pages/Interests/Interests'));
+const ConversationsList = React.lazy(() => import('./pages/Messages/ConversationsList'));
+const ChatWindow = React.lazy(() => import('./pages/Messages/ChatWindow'));
+const Search = React.lazy(() => import('./pages/Search/Search'));
+const PartnerPreferences = React.lazy(() => import('./pages/PartnerPreferences/PartnerPreferences'));
+const ProfileSettings = React.lazy(() => import('./pages/ProfileSettings/ProfileSettings'));
+const BlockedUsers = React.lazy(() => import('./pages/BlockedUsers/BlockedUsers'));
+const Recommendations = React.lazy(() => import('./pages/Recommendations/Recommendations'));
+const Matches = React.lazy(() => import('./pages/Matches/Matches'));
+const Notifications = React.lazy(() => import('./pages/Notifications/Notifications'));
+const LandingPage = React.lazy(() => import('./pages/LandingPage/LandingPage'));
+const ContentPage = React.lazy(() => import('./pages/CMS/ContentPage'));
+const ContactUs = React.lazy(() => import('./pages/CMS/ContactUs'));
+const SuccessStoriesPage = React.lazy(() => import('./pages/CMS/SuccessStoriesPage'));
 import UserProtectedRoute from './components/common/UserProtectedRoute';
 import AdminLayout from './admin/components/layout/AdminLayout';
 import ProtectedRoute from './admin/components/common/ProtectedRoute';
-import Dashboard from './admin/pages/Dashboard/Dashboard';
-import AllUsers from './admin/pages/Users/AllUsers';
-import PendingApprovals from './admin/pages/Users/PendingApprovals';
-import AdminBlockedUsers from './admin/pages/Users/BlockedUsers';
-import UserProfile from './admin/pages/Users/UserProfile';
-import UserEdit from './admin/pages/Users/UserEdit';
-import PhotoModeration from './admin/pages/PhotoModeration/PhotoModeration';
+const Dashboard = React.lazy(() => import('./admin/pages/Dashboard/Dashboard'));
+const AllUsers = React.lazy(() => import('./admin/pages/Users/AllUsers'));
+const PendingApprovals = React.lazy(() => import('./admin/pages/Users/PendingApprovals'));
+const AdminBlockedUsers = React.lazy(() => import('./admin/pages/Users/BlockedUsers'));
+const UserProfile = React.lazy(() => import('./admin/pages/Users/UserProfile'));
+const UserEdit = React.lazy(() => import('./admin/pages/Users/UserEdit'));
+const PhotoModeration = React.lazy(() => import('./admin/pages/PhotoModeration/PhotoModeration'));
 
-import AdminSubscriptionPlans from './admin/pages/Subscriptions/SubscriptionPlans';
-import SubscriptionTransactions from './admin/pages/Subscriptions/SubscriptionTransactions';
-import MatchesManagement from './admin/pages/Matches/MatchesManagement';
-import ReportsComplaints from './admin/pages/Reports/ReportsComplaints';
-import FlaggedUsers from './admin/pages/FlaggedUsers/FlaggedUsers';
-import MastersPage from './admin/pages/Masters/MastersPage';
-import ChatLogs from './admin/pages/Messaging/ChatLogs';
-import CMSPage from './admin/pages/CMS/CMSPage';
-import NotificationManagement from './admin/pages/Notifications/NotificationManagement';
-import WebsiteSettings from './admin/pages/Settings/WebsiteSettings';
-import AdminUserManagement from './admin/pages/AdminUsers/AdminUserManagement';
-import CouponManagement from './admin/pages/Coupons/CouponManagement';
-import ReferralManagement from './admin/pages/Referrals/ReferralManagement';
-import ReferralPage from './pages/Referral/ReferralPage';
-import SuccessStoriesAdmin from './admin/pages/CMS/SuccessStoriesAdmin';
+const AdminSubscriptionPlans = React.lazy(() => import('./admin/pages/Subscriptions/SubscriptionPlans'));
+const SubscriptionTransactions = React.lazy(() => import('./admin/pages/Subscriptions/SubscriptionTransactions'));
+const MatchesManagement = React.lazy(() => import('./admin/pages/Matches/MatchesManagement'));
+const ReportsComplaints = React.lazy(() => import('./admin/pages/Reports/ReportsComplaints'));
+const FlaggedUsers = React.lazy(() => import('./admin/pages/FlaggedUsers/FlaggedUsers'));
+const MastersPage = React.lazy(() => import('./admin/pages/Masters/MastersPage'));
+const ChatLogs = React.lazy(() => import('./admin/pages/Messaging/ChatLogs'));
+const CMSPage = React.lazy(() => import('./admin/pages/CMS/CMSPage'));
+const NotificationManagement = React.lazy(() => import('./admin/pages/Notifications/NotificationManagement'));
+const WebsiteSettings = React.lazy(() => import('./admin/pages/Settings/WebsiteSettings'));
+const AdminUserManagement = React.lazy(() => import('./admin/pages/AdminUsers/AdminUserManagement'));
+const CouponManagement = React.lazy(() => import('./admin/pages/Coupons/CouponManagement'));
+const ReferralManagement = React.lazy(() => import('./admin/pages/Referrals/ReferralManagement'));
+const ReferralPage = React.lazy(() => import('./pages/Referral/ReferralPage'));
+const SuccessStoriesAdmin = React.lazy(() => import('./admin/pages/CMS/SuccessStoriesAdmin'));
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
+      <Suspense fallback={<Loading fullScreen={true} />}>
+        <Routes>
         {/* Public routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -145,6 +148,7 @@ function App() {
           <Route path="admin-users" element={<ProtectedRoute requiredPath="/admin/admin-users"><AdminUserManagement /></ProtectedRoute>} />
         </Route>
       </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }
