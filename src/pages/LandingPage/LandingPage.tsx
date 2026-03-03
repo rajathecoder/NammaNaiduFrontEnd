@@ -1,8 +1,9 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import FloatingParticles from './FloatingParticles';
 import logo from '../../assets/images/logoonly.png';
 import './LandingPage.css';
+
+const FloatingParticles = lazy(() => import('./FloatingParticles'));
 
 /* ═══════════════════════════════════════════════════
    Mock Data
@@ -213,7 +214,9 @@ const LandingPage: React.FC = () => {
 
       {/* ═══ Hero Section ═══ */}
       <section className="hero-section">
-        <FloatingParticles />
+        <Suspense fallback={null}>
+          <FloatingParticles />
+        </Suspense>
 
         <div className="kolam-corner top-left"><KolamCornerSVG /></div>
         <div className="kolam-corner bottom-right"><KolamCornerSVG /></div>

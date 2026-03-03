@@ -1,0 +1,3 @@
+## 2025-02-18 - Lazy Loading Heavy 3D Assets
+**Learning:** `three.js` and `@react-three/fiber` add almost 1MB of unminified payload to the initial bundle if statically imported, severely hurting FCP (First Contentful Paint) in lightweight pages like Landing Pages. Standard `React.lazy()` with `<Suspense>` is highly effective at splitting this without breaking rendering.
+**Action:** Always dynamically import components dependent on heavy 3D or visual libraries (like `three` or `lottie-react`) when they are not strictly critical for the initial paint or above-the-fold content. Wrap them in a `<Suspense>` boundary with a `null` or lightweight fallback.
