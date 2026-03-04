@@ -1,0 +1,4 @@
+## 2024-05-18 - [XSS] Unsanitized HTML rendering in CMS components
+**Vulnerability:** CMS page content rendered directly to DOM via `dangerouslySetInnerHTML` without proper sanitization. The vulnerability affected multiple components: `CMSPage.tsx`, `ContentPage.tsx`, and `ContactUs.tsx`.
+**Learning:** Rendering user-defined HTML content without proper sanitization opens a severe Cross-Site Scripting (XSS) vulnerability. An attacker with CMS access could inject malicious scripts.
+**Prevention:** Avoid `dangerouslySetInnerHTML` for raw content. Ensure all dynamic HTML is passed through a sanitizer (like DOMPurify) prior to rendering. A reusable `SanitizedHTML` component was introduced in `src/components/common/SanitizedHTML.tsx` to standardize this practice.

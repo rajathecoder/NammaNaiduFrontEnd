@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api.config';
 import logo from '../../assets/images/logoonly.png';
+import SanitizedHTML from '../../components/common/SanitizedHTML';
 import './CMSPublic.css';
 
 interface PageData {
@@ -76,9 +77,9 @@ const ContactUs = () => {
 
           {/* CMS content section */}
           {!loading && page?.content && (
-            <div
+            <SanitizedHTML
               className="cms-html-content contact-intro"
-              dangerouslySetInnerHTML={{ __html: page.content }}
+              html={page.content}
             />
           )}
 
