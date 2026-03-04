@@ -36,7 +36,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
             {/* Background Image / Placeholder */}
             <div className="absolute inset-0 bg-gray-200">
                 {profilePhoto ? (
-                    <img
+                    <img loading="lazy"
                         src={profilePhoto}
                         alt={profile.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -62,7 +62,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
             {/* Verified Badge - Glassy look */}
             {profile.profileveriffied === 1 && (
                 <div className="absolute top-4 right-4 bg-white/30 backdrop-blur-md px-2 py-1 rounded-full flex items-center gap-1.5 border border-white/40 z-10 shadow-sm">
-                    <img src={verifiedBadge} alt="Verified" className="w-3 h-3 drop-shadow-md" />
+                    <img loading="lazy" src={verifiedBadge} alt="Verified" className="w-3 h-3 drop-shadow-md" />
                     <span className="text-[8px] font-bold text-white uppercase tracking-wider drop-shadow-sm">Verified</span>
                 </div>
             )}
@@ -116,5 +116,14 @@ const MatchCard: React.FC<MatchCardProps> = ({
 };
 
 
-export default MatchCard;
+/**
+ * ⚡ Bolt Performance Optimization:
+ * What: Wrapped the component in React.memo() and added `loading="lazy"` to images.
+ * Why: MatchCard is rendered frequently in lists (HomePage, Matches, Search).
+ *      When parent lists re-render, all cards re-rendered unnecessarily.
+ * Impact: Prevents unnecessary re-renders when parent states change but props remain identical.
+ *         Lazy loading images defers loading offscreen assets, improving initial page load time
+ *         and reducing memory usage.
+ */
+export default React.memo(MatchCard);
 
