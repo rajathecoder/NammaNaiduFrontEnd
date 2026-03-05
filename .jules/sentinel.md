@@ -1,0 +1,4 @@
+## 2024-05-20 - [Hardcoded Firebase Secrets Removed]
+**Vulnerability:** Found hardcoded Firebase project configuration secrets (apiKey, projectId, etc.) being used as fallbacks if environment variables weren't present in `src/services/firebase.ts`.
+**Learning:** Hardcoded configuration data in client-side code poses a severe security risk, allowing attackers potential unauthenticated access to the backend systems and potentially exposing production/staging databases to unauthorized read/write access. Relying on fallbacks in the codebase bypasses intended secure environment management.
+**Prevention:** Strictly enforce injection of configuration secrets from environment variables (e.g., via `import.meta.env` in Vite) during the build process, and implement robust validation (like a `getRequiredEnv` helper) that fails fast if the necessary configuration is not found, thereby ensuring no hardcoded strings leak into the code.
