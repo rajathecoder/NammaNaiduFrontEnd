@@ -1,0 +1,4 @@
+
+## 2025-03-03 - [Fix N+1 query API issue by utilizing association data]
+**Learning:** An N+1 query issue in the frontend was caused by individually fetching photos for each user profile inside `HomePage.tsx` and `useHomePageData.ts`. It turned out that the main response payload for `getOppositeGenderProfiles` already included the `personPhoto.photo1` association, meaning the extra requests were entirely unnecessary. This bottleneck caused significant frontend slowness as it fired individual HTTP requests per profile returned.
+**Action:** Always check the full structure of API payloads and their associated objects before implementing loops that fire network requests. If data like photos or relations is already embedded in the parent object (e.g. `profile.personPhoto.photo1`), extract it directly rather than making redundant follow-up calls.

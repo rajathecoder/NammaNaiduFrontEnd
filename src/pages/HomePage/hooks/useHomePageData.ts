@@ -81,45 +81,15 @@ export const useHomePageData = () => {
             const profiles = response.data || [];
             setOppositeGenderProfiles(profiles);
 
-            // Fetch photos for each profile
-            if (authData?.token) {
-                const photoPromises = profiles.map(async (profile: UserProfile) => {
-                    try {
-                        const photoResponse = await fetch(
-                            getApiUrl(API_ENDPOINTS.USERS.GET_PHOTOS(profile.accountId)),
-                            {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${authData.token}`
-                                }
-                            }
-                        );
-
-                        if (photoResponse.ok) {
-                            const photoData = await photoResponse.json();
-                            if (photoData.success && photoData.data) {
-                                return {
-                                    accountId: profile.accountId,
-                                    photo1link: photoData.data.personphoto?.[0]?.photo1link || null
-                                };
-                            }
-                        }
-                    } catch (error) {
-                        console.error(`Error fetching photos for ${profile.accountId}:`, error);
-                    }
-                    return { accountId: profile.accountId, photo1link: null };
-                });
-
-                const photos = await Promise.all(photoPromises);
-                const photosMap: Record<string, { photo1link?: string }> = {};
-                photos.forEach(photo => {
-                    if (photo.photo1link) {
-                        photosMap[photo.accountId] = { photo1link: photo.photo1link };
-                    }
-                });
-                setProfilePhotos(photosMap);
-            }
+            // Extract photos from profile data (optimized: no N+1 requests)
+            const photosMap: Record<string, { photo1link?: string }> = {};
+            profiles.forEach((profile: any) => {
+                const photo1link = profile.personPhoto?.photo1;
+                if (photo1link) {
+                    photosMap[profile.accountId] = { photo1link };
+                }
+            });
+            setProfilePhotos(photosMap);
         } catch (error) {
             console.error('Error fetching opposite gender profiles:', error);
         } finally {
