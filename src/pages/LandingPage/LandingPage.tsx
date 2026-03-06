@@ -1,8 +1,12 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import FloatingParticles from './FloatingParticles';
 import logo from '../../assets/images/logoonly.png';
 import './LandingPage.css';
+
+// ⚡ Bolt: Lazy load the heavy Three.js dependencies (~900kB chunk)
+// This optimization drastically improves the initial page load time and First Contentful Paint.
+// By wrapping it in React.lazy and Suspense, we prevent it from blocking the main thread during the initial render.
+const FloatingParticles = lazy(() => import('./FloatingParticles'));
 
 /* ═══════════════════════════════════════════════════
    Mock Data
@@ -213,7 +217,9 @@ const LandingPage: React.FC = () => {
 
       {/* ═══ Hero Section ═══ */}
       <section className="hero-section">
-        <FloatingParticles />
+        <Suspense fallback={null}>
+          <FloatingParticles />
+        </Suspense>
 
         <div className="kolam-corner top-left"><KolamCornerSVG /></div>
         <div className="kolam-corner bottom-right"><KolamCornerSVG /></div>
