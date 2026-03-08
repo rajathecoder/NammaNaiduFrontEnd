@@ -36,7 +36,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
             {/* Background Image / Placeholder */}
             <div className="absolute inset-0 bg-gray-200">
                 {profilePhoto ? (
-                    <img
+                    <img loading="lazy"
                         src={profilePhoto}
                         alt={profile.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -116,5 +116,5 @@ const MatchCard: React.FC<MatchCardProps> = ({
 };
 
 
-export default MatchCard;
+export default React.memo(MatchCard);
 
