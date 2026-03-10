@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -25,7 +25,15 @@ const Matches = () => {
     const [loading, setLoading] = useState(true);
     const [sentInterests, setSentInterests] = useState<Set<string>>(new Set());
 
-    const handleConnect = async (accountId: string) => {
+    // Ref to track sentInterests without triggering re-renders in callbacks
+    const sentInterestsRef = useRef(sentInterests);
+
+    // Update ref when state changes
+    useEffect(() => {
+        sentInterestsRef.current = sentInterests;
+    }, [sentInterests]);
+
+    const handleConnect = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
@@ -57,18 +65,14 @@ const Matches = () => {
             console.error('Error sending interest:', error);
             alert('An error occurred while sending interest');
         }
-    };
+    }, [navigate]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (accountId: string, isCurrentlyShortlisted: boolean) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
-
-        // Check if currently shortlisted
-        const currentMatch = allMatches.find(m => m.accountId === accountId);
-        const isCurrentlyShortlisted = currentMatch?.shortlisted;
 
         try {
             const method = isCurrentlyShortlisted ? 'DELETE' : 'POST';
@@ -100,7 +104,22 @@ const Matches = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    // Stable callback for card action
+    const handleCardAction = useCallback((profile: any) => {
+        const accountId = profile.accountId;
+        if (sentInterestsRef.current.has(accountId)) {
+            navigate(`/profile/${accountId}`);
+        } else {
+            handleConnect(accountId);
+        }
+    }, [navigate, handleConnect]);
+
+    // Stable callback for favorite action
+    const handleCardFavorite = useCallback((profile: any) => {
+        handleShortlist(profile.accountId, !!profile.shortlisted);
+    }, [handleShortlist]);
 
     // Fetch matches from API
     useEffect(() => {
@@ -409,18 +428,8 @@ const Matches = () => {
                                     profile={match}
                                     profilePhoto={match.photo1link}
                                     primaryButtonText={sentInterests.has(match.accountId) ? "View Profile" : "Connect"}
-                                    onPrimaryAction={(e) => {
-                                        e.stopPropagation();
-                                        if (sentInterests.has(match.accountId)) {
-                                            navigate(`/profile/${match.accountId}`);
-                                        } else {
-                                            handleConnect(match.accountId);
-                                        }
-                                    }}
-                                    onFavorite={(e) => {
-                                        e.stopPropagation();
-                                        handleShortlist(match.accountId);
-                                    }}
+                                    onPrimaryAction={handleCardAction}
+                                    onFavorite={handleCardFavorite}
                                     isFavorite={match.shortlisted}
                                 />
                             ))
@@ -470,4 +479,3 @@ const Matches = () => {
 };
 
 export default Matches;
-
