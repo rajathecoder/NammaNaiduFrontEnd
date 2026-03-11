@@ -1,0 +1,4 @@
+## 2024-05-18 - [Preventing XSS in React via SanitizedHTML]
+**Vulnerability:** Found `dangerouslySetInnerHTML` being used directly to render dynamic CMS content (like Pages and Contact Us text) without any sanitization in `src/admin/pages/CMS/CMSPage.tsx`, `src/pages/CMS/ContentPage.tsx`, and `src/pages/CMS/ContactUs.tsx`.
+**Learning:** Raw dynamic HTML content from an API is an XSS vector if not sanitized, regardless of whether it originates from a trusted CMS backend, as the CMS could be compromised. React's `dangerouslySetInnerHTML` name serves as a warning, and it should never be given unfiltered user input. The best practice for this codebase is to centralize sanitization into a single reusable component powered by DOMPurify.
+**Prevention:** Always use the new `src/components/common/SanitizedHTML.tsx` component instead of `dangerouslySetInnerHTML` when rendering dynamic HTML strings to prevent XSS. Ensure `dompurify` is installed and properly configured.
