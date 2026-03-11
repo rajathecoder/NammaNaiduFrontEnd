@@ -4,6 +4,7 @@ import Lottie from 'lottie-react';
 import marriageCoupleAnimation from '../../assets/images/MarriageCouplehugging.json';
 import logoOnly from '../../assets/images/logoonly.png';
 import { getApiUrl } from '../../config/api.config';
+import { isValidName, isValidMobile } from '../../utils/validation';
 
 const RegisterPage = () => {
     const [profileFor, setProfileFor] = useState('Myself');
@@ -23,16 +24,20 @@ const RegisterPage = () => {
             return;
         }
 
+        if (!isValidName(name)) {
+            alert('Please enter a valid name (letters and spaces only, 2-50 characters)');
+            return;
+        }
+
+        const normalizedMobile = mobile.replace(/\D/g, '');
+        if (!isValidMobile(normalizedMobile)) {
+            alert('Please enter a valid 10-digit mobile number');
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
-            const normalizedMobile = mobile.replace(/\D/g, '');
-            if (!normalizedMobile) {
-                alert('Please enter a valid mobile number');
-                setIsSubmitting(false);
-                return;
-            }
-
             // Prepare payload for new OTP API
             const mobileno = `${countryCode}${normalizedMobile}`;
             const payload = {
