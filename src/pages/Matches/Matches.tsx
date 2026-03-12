@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -129,7 +129,7 @@ const Matches = () => {
                         }
                     );
 
-                    let shortlistedIds = new Set();
+                    const shortlistedIds = new Set();
                     if (shortlistResponse.ok) {
                         const dl = await shortlistResponse.json();
                         if (dl.success && dl.data) {
@@ -207,8 +207,12 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization: Memoized profile filtering
+    // What: Wrapped the array filtering logic in a useMemo hook
+    // Why: To prevent O(N) recalculations of the filtered list on every render (e.g. when changing pages)
+    // Impact: Reduces CPU usage and improves rendering performance during pagination or unrelated state updates
+    // Measurement: React Profiler will show reduced render times when clicking pagination buttons
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,9 +234,7 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
+    }, [allMatches, selectedFilter]);
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
