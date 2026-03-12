@@ -1,0 +1,4 @@
+## 2024-05-20 - Hardcoded API Key Fallbacks
+**Vulnerability:** Found hardcoded fallback strings for sensitive third-party integrations, specifically Firebase configuration keys and Razorpay key ID (`import.meta.env.VITE_KEY || 'hardcoded_value'`).
+**Learning:** These fallback keys existed presumably to allow developers to run the application without setting up environment variables locally. However, this is a critical anti-pattern because it leaks actual production/development API keys in the client-side source code repository and bundle.
+**Prevention:** Never use hardcoded strings as fallbacks for environment variables containing secrets. Fail fast if required environment variables are missing during development. Document required environment variables clearly in a `.env.example` file instead of providing default keys in code.
