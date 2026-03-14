@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,10 +207,13 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization:
+    // What: Wrap getFilteredProfiles execution in useMemo.
+    // Why: Prevents O(N) recalculations of array filtering on unrelated state updates like currentPage changes.
+    // Impact: Avoids unnecessary re-evaluation of filtering logic which is costly for large lists of match profiles.
+    // Measurement: React DevTools Profiler will show reduced render time when navigating between pages.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
-            // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
             fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
 
@@ -224,20 +227,25 @@ const Matches = () => {
         }
 
         if (selectedFilter === 'shortlisted-by-you') {
-            // Filter profiles that are shortlisted
             return allMatches.filter(match => match.shortlisted === true);
         }
 
-        // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    // ⚡ Bolt Performance Optimization:
+    // What: Wrap currentProfiles slicing in useMemo.
+    // Why: Avoids recreating a new array slice on every render, keeping children identity stable when relevant pagination state hasn't changed.
+    // Impact: Further prevents potential unnecessary re-renders of child MatchCard components.
+    // Measurement: React DevTools Profiler will show fewer component updates on unrelated state changes.
+    const currentProfiles = useMemo(() => {
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
