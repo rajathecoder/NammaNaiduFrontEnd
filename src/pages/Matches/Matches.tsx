@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,10 +207,13 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization:
+    // What: Wrapped filtered profiles calculation in useMemo.
+    // Why: Prevent O(N) array filtering on every render (e.g., when currentPage changes).
+    // Impact: Reduces CPU cycles during pagination or other unrelated state updates.
+    // Measurement: React DevTools profiler will show faster render times when paginating.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
-            // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
             fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
 
@@ -224,20 +227,24 @@ const Matches = () => {
         }
 
         if (selectedFilter === 'shortlisted-by-you') {
-            // Filter profiles that are shortlisted
             return allMatches.filter(match => match.shortlisted === true);
         }
 
-        // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    // ⚡ Bolt Performance Optimization:
+    // What: Wrapped array slicing in useMemo.
+    // Why: Prevent generating a new array reference on every render, allowing downstream components (if memoized) to avoid re-renders.
+    // Impact: Minor memory savings and prevents unnecessary downstream renders.
+    const currentProfiles = useMemo(() => {
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
