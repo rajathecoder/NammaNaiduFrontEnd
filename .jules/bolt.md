@@ -1,0 +1,3 @@
+## 2024-03-24 - O(N) Filtering Recalculations in List Views
+**Learning:** In list views with pagination (like `Matches.tsx`), calculating the filtered list directly in the component body causes an O(N) recalculation on every render. Because the pagination state (`currentPage`) triggers a re-render, the entire list is re-filtered every time the user changes pages, even though the filter criteria haven't changed.
+**Action:** Always wrap list filtering logic in `useMemo` hooks with strict dependencies (e.g., `[allData, filterCriteria]`). Additionally, wrap the pagination slice operation itself in a separate `useMemo` so it only recalculates when the filtered data or pagination indices change.
