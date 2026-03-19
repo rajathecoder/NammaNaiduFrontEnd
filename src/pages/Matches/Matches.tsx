@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,8 +207,12 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization: Memoize list filtering and pagination calculations
+    // What: Wrapped `filteredProfiles` and `currentProfiles` in `useMemo` hooks.
+    // Why: `Matches.tsx` recalculates filters (an O(N) operation over `allMatches`) and array slices on *every* render. This means pagination clicks (updating `currentPage`) or state changes (like adding a user to `sentInterests`) needlessly rerun the O(N) filtering logic.
+    // Impact: Eliminates O(N) array filtering calculations when state changes unrelated to the filters occur. O(1) retrieval instead of O(N) for those updates.
+    // Measurement: React Profiler will show zero time spent in filtering functions during pagination navigation or liking a profile.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +234,17 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    // ⚡ Bolt Performance Optimization: Memoize the pagination slice to prevent unnecessary array reallocation
+    const currentProfiles = useMemo(() => {
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
