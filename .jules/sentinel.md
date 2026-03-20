@@ -1,0 +1,4 @@
+## 2024-05-19 - XSS Vulnerability in CMS Content Rendering
+**Vulnerability:** CMS page content (HTML) was rendered directly using `dangerouslySetInnerHTML` in `CMSPage.tsx`, `ContentPage.tsx`, and `ContactUs.tsx` without sanitization.
+**Learning:** This existed because the CMS system stores raw HTML content, and standard React escaping was deliberately bypassed to render it, overlooking the risk of a compromised admin account or stored XSS payload executing malicious scripts on client devices.
+**Prevention:** Always use a sanitization library like `dompurify` when rendering raw HTML from a database. A wrapper component (`SanitizedHTML.tsx`) should be enforced across the codebase to ensure `dangerouslySetInnerHTML` is never used directly with unvalidated input.
