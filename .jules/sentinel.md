@@ -1,0 +1,4 @@
+## 2025-02-17 - Hardcoded API Keys and Security Configurations
+**Vulnerability:** Found hardcoded fallback values for `VITE_FIREBASE_API_KEY`, other Firebase keys, and `VITE_RAZORPAY_KEY_ID` directly in source code instead of relying strictly on environment variables.
+**Learning:** Developers likely added fallback keys for ease of local testing, but this exposes sensitive credentials in version control and production bundles if environment variables fail to load.
+**Prevention:** Strictly enforce `import.meta.env` checks without `|| 'fallback'` for sensitive credentials. Introduce explicit runtime validation to throw clear errors when required environment variables are missing so applications fail securely rather than using insecure defaults. Add placeholders to `.env.example` to guide developers setting up their environment.
