@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -208,7 +208,12 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    const filteredProfiles = useMemo(() => {
+        // ⚡ Bolt Performance Optimization:
+        // What: Wrapped array filtering operation in useMemo
+        // Why: To prevent O(N) recalculations triggered by unrelated state updates like pagination changes
+        // Impact: Reduces CPU cycles during re-renders
+        // Measurement: React Profiler will show faster commit times when clicking pagination buttons
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +235,20 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
+    }, [allMatches, selectedFilter]);
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    const currentProfiles = useMemo(() => {
+        // ⚡ Bolt Performance Optimization:
+        // What: Wrapped array slicing operation in useMemo
+        // Why: Avoids unnecessary array copy and slicing on every re-render (e.g. state changes not related to pagination)
+        // Impact: Further reduces array operations on render
+        // Measurement: React Profiler checks for render phase performance
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
