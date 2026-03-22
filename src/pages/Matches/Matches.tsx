@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -208,7 +208,11 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    const filteredProfiles = useMemo(() => {
+        // ⚡ Bolt Performance Optimization: Memoize filtered profiles to prevent O(N) recalculations
+        // when unrelated state (like pagination/currentPage) changes.
+        // Impact: Avoids unnecessary array iterations and object creation on every render.
+        // Measurement: Time component render duration with and without memoization during pagination.
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +234,17 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
+    }, [allMatches, selectedFilter]);
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    // ⚡ Bolt Performance Optimization: Memoize the paginated slice
+    // Impact: Prevents unnecessary array slicing on re-renders where pagination state hasn't changed
+    const currentProfiles = useMemo(() =>
+        filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile),
+    [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
