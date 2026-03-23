@@ -79,7 +79,8 @@ export const clearAuthData = (): void => {
   localStorage.removeItem('basicDetails');
   localStorage.removeItem('personalReligiousDetails');
   localStorage.removeItem('professionalDetails');
-  localStorage.removeItem('registrationData');
+  sessionStorage.removeItem('registrationData');
+  sessionStorage.removeItem('otpFlow');
 };
 
 /**
