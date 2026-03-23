@@ -55,8 +55,9 @@ const RegisterPage = () => {
             console.log('📥 RegisterPage - OTP Response:', JSON.stringify(data, null, 2));
 
             if (data.success !== false && (data.status !== false)) {
-                localStorage.setItem('otpFlow', 'register');
-                localStorage.setItem('registrationData', JSON.stringify({
+                // Security: Store sensitive registration flow data in sessionStorage instead of localStorage
+                sessionStorage.setItem('otpFlow', 'register');
+                sessionStorage.setItem('registrationData', JSON.stringify({
                     name,
                     gender,
                     mobile: normalizedMobile,
