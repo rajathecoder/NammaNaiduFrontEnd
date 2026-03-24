@@ -18,8 +18,6 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
-
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
     if (window.Razorpay) {
@@ -113,6 +111,12 @@ const SubscriptionPlans = () => {
     if (!authData?.token) {
       navigate('/login');
       return;
+    }
+
+    const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID;
+    if (!RAZORPAY_KEY) {
+      alert('Payment configuration is missing. Please try again later.');
+      throw new Error('Critical Security Error: Missing VITE_RAZORPAY_KEY_ID environment variable.');
     }
 
     const scriptLoaded = await loadRazorpayScript();
