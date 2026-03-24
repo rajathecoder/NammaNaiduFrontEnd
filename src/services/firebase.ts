@@ -11,13 +11,28 @@ import type { Firestore } from 'firebase/firestore';
 import type { Messaging } from 'firebase/messaging';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyDBJgZO200L2KrfS4tKtE5VyTKKUZrULvk',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'nammamatrimonyapp.firebaseapp.com',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'nammamatrimonyapp',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:171195418276:web:b31ecb170ecfa29c4b4831',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '171195418276',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'nammamatrimonyapp.firebasestorage.app',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
 };
+
+const requiredKeys: (keyof typeof firebaseConfig)[] = [
+  'apiKey',
+  'authDomain',
+  'projectId',
+  'appId',
+  'messagingSenderId',
+  'storageBucket'
+];
+
+for (const key of requiredKeys) {
+  if (!firebaseConfig[key]) {
+    throw new Error(`Critical Security Error: Missing required Firebase configuration for ${key}`);
+  }
+}
 
 // VAPID key for web push - get this from Firebase Console > Project Settings > Cloud Messaging > Web Push certificates
 const VAPID_KEY = import.meta.env.VITE_FIREBASE_VAPID_KEY || '';
