@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -208,7 +208,12 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization: Memoized array filtering to prevent O(N) recalculations
+    // What: Wrapped the filter operations in a useMemo hook
+    // Why: Prevents expensive array iterations on every render, especially when unrelated state (like pagination or selected profile) changes
+    // Impact: Avoids O(N) filtering operations when current page or other unrelated state updates
+    // Measurement: React Profiler will show Matches component taking less time to render during pagination changes
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,9 +235,7 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
+    }, [allMatches, selectedFilter]);
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
