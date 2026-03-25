@@ -1,0 +1,4 @@
+## 2024-05-14 - Fix XSS Vulnerability in CMS Pages
+**Vulnerability:** CMS Pages (`ContentPage.tsx`, `ContactUs.tsx`, `CMSPage.tsx`) directly rendered dynamic and user-editable HTML content using React's `dangerouslySetInnerHTML` without proper sanitization.
+**Learning:** Even internal CMS functionality needs strict input/output validation, as compromised admin credentials could lead to stored XSS attacks against public visitors. Direct use of `dangerouslySetInnerHTML` is a critical security anti-pattern if content isn't 100% trusted and sanitized.
+**Prevention:** Establish a project-wide `SanitizedHTML` component powered by a robust library like DOMPurify. Always use this wrapper component to render dynamic HTML instead of exposing `dangerouslySetInnerHTML` directly in features.
