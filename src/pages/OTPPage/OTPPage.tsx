@@ -26,8 +26,8 @@ const OTPPage = () => {
     const navigate = useNavigate();
     
     useEffect(() => {
-        const registrationData = JSON.parse(localStorage.getItem('registrationData') || '{}');
-        const storedFlow = localStorage.getItem('otpFlow');
+        const registrationData = JSON.parse(sessionStorage.getItem('registrationData') || '{}');
+        const storedFlow = sessionStorage.getItem('otpFlow');
         if (storedFlow === 'register') {
             setOtpFlow('register');
         } else if (storedFlow === 'login') {
@@ -123,7 +123,7 @@ const OTPPage = () => {
         setIsVerifying(true);
         
         try {
-            const registrationData = JSON.parse(localStorage.getItem('registrationData') || '{}');
+            const registrationData = JSON.parse(sessionStorage.getItem('registrationData') || '{}');
 
             if (!registrationData.mobile && !phoneInput) {
                 alert('Please enter your mobile number to receive OTP.');
@@ -186,8 +186,8 @@ const OTPPage = () => {
                     });
                 }
 
-                localStorage.removeItem('registrationData');
-                localStorage.removeItem('otpFlow');
+                sessionStorage.removeItem('registrationData');
+                sessionStorage.removeItem('otpFlow');
 
                 if (data.data.isNewUser) {
                     navigate('/basic-details');
@@ -263,7 +263,7 @@ const OTPPage = () => {
 
         setIsSendingOtp(true);
         try {
-            const registrationData = JSON.parse(localStorage.getItem('registrationData') || '{}');
+            const registrationData = JSON.parse(sessionStorage.getItem('registrationData') || '{}');
             const rawMobile = registrationData.mobile || phoneInput;
             const code = registrationData.countryCode || countryCode;
 
