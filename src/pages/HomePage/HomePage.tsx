@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -12,7 +12,7 @@ import FamilyDetailsModal from './components/FamilyDetailsModal';
 import PhotoUploadModal from './components/PhotoUploadModal';
 import HobbiesModal from './components/HobbiesModal/HobbiesModal';
 import { useImageUtils } from './hooks/useImageUtils';
-import MatchCard from './components/MatchCard';
+import MatchCard, { type MatchCardProfile } from './components/MatchCard';
 import type { FamilyData, Sibling } from './types';
 
 
@@ -25,6 +25,17 @@ const HomePage = () => {
     const [profilePhotos, setProfilePhotos] = useState<Record<string, { photo1link?: string }>>({});
     const [sentInterests, setSentInterests] = useState<Set<string>>(new Set());
     const [shortlistedProfiles, setShortlistedProfiles] = useState<Set<string>>(new Set());
+    const sentInterestsRef = useRef(sentInterests);
+    const shortlistedProfilesRef = useRef(shortlistedProfiles);
+
+    useEffect(() => {
+        sentInterestsRef.current = sentInterests;
+    }, [sentInterests]);
+
+    useEffect(() => {
+        shortlistedProfilesRef.current = shortlistedProfiles;
+    }, [shortlistedProfiles]);
+
     const [showHoroscopeModal, setShowHoroscopeModal] = useState(false);
     const [horoscopeData, setHoroscopeData] = useState({
         rasi: '',
@@ -614,7 +625,7 @@ const HomePage = () => {
         }
     };
 
-    const handleConnect = async (accountId: string) => {
+    const handleConnect = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
@@ -646,16 +657,16 @@ const HomePage = () => {
             console.error('Error sending interest:', error);
             alert('An error occurred while sending interest');
         }
-    };
+    }, [navigate]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
 
-        const isShortlisted = shortlistedProfiles.has(accountId);
+        const isShortlisted = shortlistedProfilesRef.current.has(accountId);
         const method = isShortlisted ? 'DELETE' : 'POST';
 
         try {
@@ -687,7 +698,21 @@ const HomePage = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    const handlePrimaryAction = useCallback((profile: MatchCardProfile, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (sentInterestsRef.current.has(profile.accountId)) {
+            navigate(`/profile/${profile.accountId}`);
+        } else {
+            handleConnect(profile.accountId);
+        }
+    }, [navigate, handleConnect]);
+
+    const handleFavoriteAction = useCallback((profile: any, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleShortlist(profile.accountId);
+    }, [handleShortlist]);
 
     const fetchShortlistedProfiles = async () => {
         const authData = getAuthData();
@@ -1290,18 +1315,8 @@ const HomePage = () => {
                                         profile={profile}
                                         profilePhoto={profilePhotos[profile.accountId]?.photo1link}
                                         primaryButtonText={sentInterests.has(profile.accountId) ? "View Profile" : "Connect"}
-                                        onPrimaryAction={(e) => {
-                                            e.stopPropagation();
-                                            if (sentInterests.has(profile.accountId)) {
-                                                navigate(`/profile/${profile.accountId}`);
-                                            } else {
-                                                handleConnect(profile.accountId);
-                                            }
-                                        }}
-                                        onFavorite={(e) => {
-                                            e.stopPropagation();
-                                            handleShortlist(profile.accountId);
-                                        }}
+                                        onPrimaryAction={handlePrimaryAction}
+                                        onFavorite={handleFavoriteAction}
                                         isFavorite={shortlistedProfiles.has(profile.accountId)}
                                     />
                                 ))}
@@ -1338,18 +1353,8 @@ const HomePage = () => {
                                         profile={profile}
                                         profilePhoto={profilePhotos[profile.accountId]?.photo1link}
                                         primaryButtonText={sentInterests.has(profile.accountId) ? "View Profile" : "Connect"}
-                                        onPrimaryAction={(e) => {
-                                            e.stopPropagation();
-                                            if (sentInterests.has(profile.accountId)) {
-                                                navigate(`/profile/${profile.accountId}`);
-                                            } else {
-                                                handleConnect(profile.accountId);
-                                            }
-                                        }}
-                                        onFavorite={(e) => {
-                                            e.stopPropagation();
-                                            handleShortlist(profile.accountId);
-                                        }}
+                                        onPrimaryAction={handlePrimaryAction}
+                                        onFavorite={handleFavoriteAction}
                                         isFavorite={shortlistedProfiles.has(profile.accountId)}
                                     />
                                 ))}

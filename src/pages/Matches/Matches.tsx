@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
 import { getOppositeGenderProfiles, type UserProfile } from '../../services/api/user.api';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { getAuthData } from '../../utils/auth';
-import MatchCard from '../HomePage/components/MatchCard';
+import MatchCard, { type MatchCardProfile } from '../HomePage/components/MatchCard';
 
 interface MatchProfile extends UserProfile {
     photo1link?: string;
@@ -24,8 +24,13 @@ const Matches = () => {
     const [allMatches, setAllMatches] = useState<MatchProfile[]>([]);
     const [loading, setLoading] = useState(true);
     const [sentInterests, setSentInterests] = useState<Set<string>>(new Set());
+    const sentInterestsRef = useRef(sentInterests);
 
-    const handleConnect = async (accountId: string) => {
+    useEffect(() => {
+        sentInterestsRef.current = sentInterests;
+    }, [sentInterests]);
+
+    const handleConnect = useCallback(async (accountId: string) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
@@ -57,18 +62,18 @@ const Matches = () => {
             console.error('Error sending interest:', error);
             alert('An error occurred while sending interest');
         }
-    };
+    }, [navigate]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (profile: MatchCardProfile) => {
+        const accountId = profile.accountId;
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
 
-        // Check if currently shortlisted
-        const currentMatch = allMatches.find(m => m.accountId === accountId);
-        const isCurrentlyShortlisted = currentMatch?.shortlisted;
+        // Check if currently shortlisted from the profile object passed
+        const isCurrentlyShortlisted = profile.shortlisted;
 
         try {
             const method = isCurrentlyShortlisted ? 'DELETE' : 'POST';
@@ -100,7 +105,21 @@ const Matches = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    const handlePrimaryAction = useCallback((profile: MatchCardProfile, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (sentInterestsRef.current.has(profile.accountId)) {
+            navigate(`/profile/${profile.accountId}`);
+        } else {
+            handleConnect(profile.accountId);
+        }
+    }, [navigate, handleConnect]);
+
+    const handleFavoriteAction = useCallback((profile: any, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleShortlist(profile);
+    }, [handleShortlist]);
 
     // Fetch matches from API
     useEffect(() => {
@@ -409,18 +428,8 @@ const Matches = () => {
                                     profile={match}
                                     profilePhoto={match.photo1link}
                                     primaryButtonText={sentInterests.has(match.accountId) ? "View Profile" : "Connect"}
-                                    onPrimaryAction={(e) => {
-                                        e.stopPropagation();
-                                        if (sentInterests.has(match.accountId)) {
-                                            navigate(`/profile/${match.accountId}`);
-                                        } else {
-                                            handleConnect(match.accountId);
-                                        }
-                                    }}
-                                    onFavorite={(e) => {
-                                        e.stopPropagation();
-                                        handleShortlist(match.accountId);
-                                    }}
+                                    onPrimaryAction={handlePrimaryAction}
+                                    onFavorite={handleFavoriteAction}
                                     isFavorite={match.shortlisted}
                                 />
                             ))
