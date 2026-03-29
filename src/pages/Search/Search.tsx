@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Header from '../../components/layout/Header';
 import { getApiUrl, API_ENDPOINTS } from '../../config/api.config';
 import { getAuthData } from '../../utils/auth';
@@ -119,7 +119,16 @@ const Search = () => {
         }
     };
 
-    const handleAction = (accountId: string) => navigate(`/profile/${accountId}`);
+    const handleAction = useCallback((accountId: string) => navigate(`/profile/${accountId}`), [navigate]);
+
+    const handleCardPrimaryAction = useCallback((profile: any, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleAction(profile.accountId);
+    }, [handleAction]);
+
+    const handleCardFavorite = useCallback(() => {
+        // No-op for now as in original code
+    }, []);
 
     return (
         <div className="min-h-screen bg-[#f8f9fa]">
@@ -365,12 +374,9 @@ const Search = () => {
                                     <MatchCard
                                         key={profile.accountId}
                                         profile={profile}
-                                        onPrimaryAction={(e) => {
-                                            e.stopPropagation();
-                                            handleAction(profile.accountId);
-                                        }}
+                                        onPrimaryAction={handleCardPrimaryAction}
                                         primaryButtonText="View Profile"
-                                        onFavorite={() => { }}
+                                        onFavorite={handleCardFavorite}
                                         isFavorite={false}
                                     />
                                 ))}

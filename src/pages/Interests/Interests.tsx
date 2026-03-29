@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -32,9 +32,9 @@ const Interests = () => {
     const [shortlistedProfiles, setShortlistedProfiles] = useState<Set<string>>(new Set());
 
 
-    const handleInterestAction = async (accountId: string, action: 'accept' | 'view') => {
+    const handleInterestAction = useCallback(async (profile: InterestProfile, action: 'accept' | 'view') => {
         if (action === 'view') {
-            navigate(`/profile/${accountId}`);
+            navigate(`/profile/${profile.accountId}`);
             return;
         }
 
@@ -54,50 +54,41 @@ const Interests = () => {
                 },
                 body: JSON.stringify({
                     actionType: 'accept',
-                    targetUserId: accountId,
+                    targetUserId: profile.accountId,
                 }),
             });
 
             const data = await response.json();
             if (data.success) {
-                // Find the profile in interestsByOther
-                const acceptedProfile = interestsByOther.find(p => p.accountId === accountId);
+                // Remove from interestsByOther
+                setInterestsByOther(prev => prev.filter(p => p.accountId !== profile.accountId));
 
-                if (acceptedProfile) {
-                    // Remove from interestsByOther
-                    setInterestsByOther(prev => prev.filter(p => p.accountId !== accountId));
+                // Add to interestsByMe (if not already there)
+                setInterestsByMe(prev => {
+                    const exists = prev.some(p => p.accountId === profile.accountId);
+                    if (exists) return prev;
+                    return [profile, ...prev];
+                });
 
-                    // Add to interestsByMe (if not already there)
-                    setInterestsByMe(prev => {
-                        const exists = prev.some(p => p.accountId === accountId);
-                        if (exists) return prev;
-                        return [acceptedProfile, ...prev];
-                    });
+                // Switch to "Interest by Me" tab
+                setActiveTab('sent');
 
-                    // Switch to "Interest by Me" tab
-                    setActiveTab('sent');
-
-                    alert('Interest accepted successfully!');
-                } else {
-                    // Fallback if profile not found in list for some reason
-                    window.location.reload();
-                }
+                alert('Interest accepted successfully!');
             }
         } catch (error) {
             console.error('Error accepting interest:', error);
         } finally {
             setLoading(false);
         }
-    };
+    }, [navigate]);
 
-    const handleShortlist = async (accountId: string) => {
+    const handleShortlist = useCallback(async (accountId: string, isShortlisted: boolean) => {
         const authData = getAuthData();
         if (!authData?.token) {
             navigate('/login');
             return;
         }
 
-        const isShortlisted = shortlistedProfiles.has(accountId);
         const method = isShortlisted ? 'DELETE' : 'POST';
 
         try {
@@ -128,7 +119,17 @@ const Interests = () => {
         } catch (error) {
             console.error('Error updating shortlist status:', error);
         }
-    };
+    }, [navigate]);
+
+    const handleCardPrimaryAction = useCallback((profile: any, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleInterestAction(profile, activeTab === 'received' ? 'accept' : 'view');
+    }, [activeTab, handleInterestAction]);
+
+    const handleCardFavorite = useCallback((profile: any, e: React.MouseEvent) => {
+        e.stopPropagation();
+        handleShortlist(profile.accountId, shortlistedProfiles.has(profile.accountId));
+    }, [handleShortlist, shortlistedProfiles]);
 
     const fetchShortlistedProfiles = async () => {
         const authData = getAuthData();
@@ -318,14 +319,8 @@ const Interests = () => {
                                     profile={interest}
                                     profilePhoto={interest.photo1link}
                                     primaryButtonText={activeTab === 'received' ? "Accept" : "View Profile"}
-                                    onPrimaryAction={(e) => {
-                                        e.stopPropagation();
-                                        handleInterestAction(interest.accountId, activeTab === 'received' ? 'accept' : 'view');
-                                    }}
-                                    onFavorite={(e) => {
-                                        e.stopPropagation();
-                                        handleShortlist(interest.accountId);
-                                    }}
+                                    onPrimaryAction={handleCardPrimaryAction}
+                                    onFavorite={handleCardFavorite}
                                     isFavorite={shortlistedProfiles.has(interest.accountId)}
                                 />
                             ))}
