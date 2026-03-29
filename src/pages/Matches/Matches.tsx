@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -208,36 +208,51 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
-        if (selectedFilter === 'newly-joined') {
-            // Filter profiles created in the last 5 days
-            const fiveDaysAgo = new Date();
-            fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+    // ⚡ Bolt Performance Optimization:
+    // What: Wrap filtered profiles calculation in useMemo
+    // Why: Prevents recalculation of filtered array when unrelated state (like pagination) changes
+    // Impact: Avoids O(N) filtering operations on every render, significant for large match lists
+    // Measurement: React DevTools profiler will show reduced render time when changing pages
+    const filteredProfiles = useMemo(() => {
+        const getFilteredProfiles = () => {
+            if (selectedFilter === 'newly-joined') {
+                // Filter profiles created in the last 5 days
+                const fiveDaysAgo = new Date();
+                fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
 
-            return allMatches.filter(match => {
-                if (match.createdAt) {
-                    const createdDate = new Date(match.createdAt);
-                    return createdDate >= fiveDaysAgo;
-                }
-                return false;
-            });
-        }
+                return allMatches.filter(match => {
+                    if (match.createdAt) {
+                        const createdDate = new Date(match.createdAt);
+                        return createdDate >= fiveDaysAgo;
+                    }
+                    return false;
+                });
+            }
 
-        if (selectedFilter === 'shortlisted-by-you') {
-            // Filter profiles that are shortlisted
-            return allMatches.filter(match => match.shortlisted === true);
-        }
+            if (selectedFilter === 'shortlisted-by-you') {
+                // Filter profiles that are shortlisted
+                return allMatches.filter(match => match.shortlisted === true);
+            }
 
-        // Add other filters here if needed
-        return allMatches;
-    };
+            // Add other filters here if needed
+            return allMatches;
+        };
+        return getFilteredProfiles();
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    // ⚡ Bolt Performance Optimization:
+    // What: Wrap sliced current profiles calculation in useMemo
+    // Why: Avoids re-slicing the array if the pagination hasn't changed
+    // Impact: Minor performance improvement for list rendering by reusing the array reference
+    // Measurement: Memory and array slice operations are reduced when irrelevant states change
+    const currentProfiles = useMemo(() => {
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
