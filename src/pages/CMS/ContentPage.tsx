@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api.config';
 import logo from '../../assets/images/logoonly.png';
+import SanitizedHTML from '../../components/common/SanitizedHTML';
 import './CMSPublic.css';
 
 interface PageData {
@@ -84,9 +85,9 @@ const ContentPage = () => {
           <article className="cms-article">
             <h1>{page.title}</h1>
             {page.content ? (
-              <div
+              <SanitizedHTML
+                html={page.content}
                 className="cms-html-content"
-                dangerouslySetInnerHTML={{ __html: page.content }}
               />
             ) : (
               <p className="cms-empty">This page has no content yet. Please check back later.</p>
