@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,10 +207,13 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization: Memoized filtered profiles to prevent O(N) recalculations
+    // What: Wrapped array filtering in a useMemo hook dependent on allMatches and selectedFilter.
+    // Why: The original list component calculated filteredProfiles on every re-render, even when just paginating, causing unnecessary CPU overhead for large lists.
+    // Impact: Eliminates redundant array filtering when changing pages, improving pagination performance.
+    // Measurement: React Profiler will show reduced render time during pagination updates.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
-            // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
             fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
 
@@ -224,20 +227,37 @@ const Matches = () => {
         }
 
         if (selectedFilter === 'shortlisted-by-you') {
-            // Filter profiles that are shortlisted
             return allMatches.filter(match => match.shortlisted === true);
         }
 
-        // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
-    const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    // ⚡ Bolt Performance Optimization: Memoized current profiles for pagination
+    // What: Wrapped pagination slicing in a separate useMemo hook.
+    // Why: Separating pagination from filtering ensures that filtering only re-runs when the filter changes, not when the page changes.
+    // Impact: Smooth and efficient pagination without re-filtering the entire list.
+    const {
+        totalProfiles,
+        totalPages,
+        indexOfLastProfile,
+        indexOfFirstProfile,
+        currentProfiles
+    } = useMemo(() => {
+        const totalProf = filteredProfiles.length;
+        const totalPgs = Math.ceil(totalProf / profilesPerPage);
+        const idxLast = currentPage * profilesPerPage;
+        const idxFirst = idxLast - profilesPerPage;
+        const currProfs = filteredProfiles.slice(idxFirst, idxLast);
+
+        return {
+            totalProfiles: totalProf,
+            totalPages: totalPgs,
+            indexOfLastProfile: idxLast,
+            indexOfFirstProfile: idxFirst,
+            currentProfiles: currProfs
+        };
+    }, [filteredProfiles, currentPage, profilesPerPage]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
