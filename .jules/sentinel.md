@@ -1,0 +1,4 @@
+## 2025-02-19 - Plaintext Password Storage in LocalStorage
+**Vulnerability:** The application was storing user registration details, including the plaintext password, in `localStorage` (`basicDetails` key). This data persisted even after the browser was closed, exposing sensitive user credentials to anyone with access to the browser's local storage or via XSS attacks. Additionally, the password was being logged to the console.
+**Learning:** Developers often use `localStorage` for multi-step form persistence without considering the security implications of storing sensitive data like passwords. `localStorage` is persistent and not cleared automatically.
+**Prevention:** Use `sessionStorage` for temporary data that should be cleared when the session ends. Ideally, keep sensitive state in memory (React Context/Redux). Always remove `console.log` statements logging sensitive data.
