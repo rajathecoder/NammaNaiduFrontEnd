@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+
 // Firebase Messaging Service Worker
 // This runs in the background to receive push notifications when the tab is not focused
 

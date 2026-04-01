@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -129,7 +129,7 @@ const Matches = () => {
                         }
                     );
 
-                    let shortlistedIds = new Set();
+                    const shortlistedIds = new Set();
                     if (shortlistResponse.ok) {
                         const dl = await shortlistResponse.json();
                         if (dl.success && dl.data) {
@@ -207,37 +207,50 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization: Memoize filtering and pagination calculations
+    // What: Wrapped array filtering and pagination slicing in useMemo.
+    // Why: Prevents O(N) recalculations and array slicing on unrelated re-renders (e.g. state updates like pagination or interactions).
+    // Impact: Avoids unnecessary computations on large arrays during state changes, reducing component render time.
+    // Measurement: React Profiler will show reduced render time for the Matches component when state changes.
+    const {
+        filteredProfiles,
+        totalProfiles,
+        totalPages,
+        indexOfLastProfile,
+        indexOfFirstProfile,
+        currentProfiles
+    } = useMemo(() => {
+        let filtered = allMatches;
+
         if (selectedFilter === 'newly-joined') {
-            // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
             fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
-
-            return allMatches.filter(match => {
+            filtered = allMatches.filter(match => {
                 if (match.createdAt) {
                     const createdDate = new Date(match.createdAt);
                     return createdDate >= fiveDaysAgo;
                 }
                 return false;
             });
+        } else if (selectedFilter === 'shortlisted-by-you') {
+            filtered = allMatches.filter(match => match.shortlisted === true);
         }
 
-        if (selectedFilter === 'shortlisted-by-you') {
-            // Filter profiles that are shortlisted
-            return allMatches.filter(match => match.shortlisted === true);
-        }
+        const total = filtered.length;
+        const pages = Math.ceil(total / profilesPerPage);
+        const lastIndex = currentPage * profilesPerPage;
+        const firstIndex = lastIndex - profilesPerPage;
+        const current = filtered.slice(firstIndex, lastIndex);
 
-        // Add other filters here if needed
-        return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
-    const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+        return {
+            filteredProfiles: filtered,
+            totalProfiles: total,
+            totalPages: pages,
+            indexOfLastProfile: lastIndex,
+            indexOfFirstProfile: firstIndex,
+            currentProfiles: current
+        };
+    }, [allMatches, selectedFilter, currentPage, profilesPerPage]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
