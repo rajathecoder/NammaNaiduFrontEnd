@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,37 +207,48 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // Calculate pagination with filtering and memoize to avoid O(N) recalculations
+    const {
+        totalProfiles,
+        totalPages,
+        indexOfLastProfile,
+        indexOfFirstProfile,
+        currentProfiles
+    } = useMemo(() => {
+        let filteredProfiles = allMatches;
+
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
             fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
 
-            return allMatches.filter(match => {
+            filteredProfiles = allMatches.filter(match => {
                 if (match.createdAt) {
                     const createdDate = new Date(match.createdAt);
                     return createdDate >= fiveDaysAgo;
                 }
                 return false;
             });
-        }
-
-        if (selectedFilter === 'shortlisted-by-you') {
+        } else if (selectedFilter === 'shortlisted-by-you') {
             // Filter profiles that are shortlisted
-            return allMatches.filter(match => match.shortlisted === true);
+            filteredProfiles = allMatches.filter(match => match.shortlisted === true);
         }
-
         // Add other filters here if needed
-        return allMatches;
-    };
 
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
-    const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+        const totalProfiles = filteredProfiles.length;
+        const totalPages = Math.ceil(totalProfiles / profilesPerPage);
+        const indexOfLastProfile = currentPage * profilesPerPage;
+        const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
+        const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+        return {
+            totalProfiles,
+            totalPages,
+            indexOfLastProfile,
+            indexOfFirstProfile,
+            currentProfiles
+        };
+    }, [allMatches, selectedFilter, currentPage, profilesPerPage]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
