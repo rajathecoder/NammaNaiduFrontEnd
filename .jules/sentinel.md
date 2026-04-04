@@ -1,0 +1,4 @@
+## 2024-04-04 - Exposed Fallback Secrets in Frontend Config
+**Vulnerability:** Critical fallback API keys (Firebase API Key and Razorpay Key) were hardcoded within the frontend source code (e.g., `firebaseConfig`, `RAZORPAY_KEY`) using the fallback `|| 'fallback_secret'` syntax.
+**Learning:** Even though the project intended to use `import.meta.env` for security, relying on hardcoded fallbacks meant those string literals were baked directly into the transpiled production bundle. This inherently defeats the purpose of managing secrets via environment variables in the first place and risks key theft or unauthorized access.
+**Prevention:** Strictly enforce `import.meta.env` without string fallbacks for any critical configurations or API keys. Implement clear, runtime checks during initialization processes (e.g., before initializing Firebase or processing payments) to fail securely with an explicit error or alert if keys are missing from the build environment.
