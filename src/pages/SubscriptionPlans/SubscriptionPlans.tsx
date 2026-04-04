@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -118,6 +118,11 @@ const SubscriptionPlans = () => {
     const scriptLoaded = await loadRazorpayScript();
     if (!scriptLoaded) {
       alert('Razorpay SDK failed to load. Please check your internet connection.');
+      return;
+    }
+
+    if (!RAZORPAY_KEY) {
+      alert('Payment configuration is missing. Please try again later.');
       return;
     }
 
