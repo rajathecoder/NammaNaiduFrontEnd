@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,10 +207,13 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization: Memoized Filtering
+    // What: Wrapped the filter calculation in a useMemo hook.
+    // Why: Prevents expensive array filtering operations from re-running on every component render (e.g., when currentPage changes).
+    // Impact: Avoids O(N) recalculations on unrelated state updates.
+    // Measurement: React Profiler will show reduced render time when clicking pagination buttons.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
-            // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
             fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
 
@@ -224,20 +227,28 @@ const Matches = () => {
         }
 
         if (selectedFilter === 'shortlisted-by-you') {
-            // Filter profiles that are shortlisted
             return allMatches.filter(match => match.shortlisted === true);
         }
 
-        // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
+
+    // ⚡ Bolt Performance Optimization: Memoized Pagination Slicing
+    // What: Extracted array slicing logic into a separate useMemo hook.
+    // Why: Prevents creating a new sliced array reference unless the page, filter result, or items per page change.
+    // Impact: Avoids unnecessary array slicing.
+    // Measurement: Less memory allocation during render, slight rendering speedup.
+    const currentProfiles = useMemo(() => {
+        const indexOfLastProfile = currentPage * profilesPerPage;
+        const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, currentPage, profilesPerPage]);
+
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
