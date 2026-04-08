@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,8 +207,8 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization: Memoize array filtering to prevent O(N) recalculations on unrelated state changes
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +230,24 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
-    const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    // ⚡ Bolt Performance Optimization: Memoize pagination slicing to prevent recalculations
+    const { totalProfiles, totalPages, indexOfLastProfile, indexOfFirstProfile, currentProfiles } = useMemo(() => {
+        const total = filteredProfiles.length;
+        const pages = Math.ceil(total / profilesPerPage);
+        const last = currentPage * profilesPerPage;
+        const first = last - profilesPerPage;
+        const current = filteredProfiles.slice(first, last);
+
+        return {
+            totalProfiles: total,
+            totalPages: pages,
+            indexOfLastProfile: last,
+            indexOfFirstProfile: first,
+            currentProfiles: current
+        };
+    }, [filteredProfiles, currentPage, profilesPerPage]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
