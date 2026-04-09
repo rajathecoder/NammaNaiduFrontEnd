@@ -39,6 +39,12 @@ const MatchCard: React.FC<MatchCardProps> = ({
                     <img
                         src={profilePhoto}
                         alt={profile.name}
+                        // ⚡ Bolt Performance Optimization:
+                        // What: Added loading="lazy" to profile images.
+                        // Why: MatchCards are frequently rendered in long lists and grids below the fold. Eager loading all images causes unnecessary network requests, increasing initial load time and bandwidth usage.
+                        // Impact: Reduces initial network payload and speeds up LCP (Largest Contentful Paint) by only loading images as they approach the viewport.
+                        // Measurement: Compare Network tab image requests before/after optimization during initial page load and scroll.
+                        loading="lazy"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         onError={(e) => {
                             const target = e.target as HTMLImageElement;
