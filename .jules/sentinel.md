@@ -1,0 +1,4 @@
+## 2025-02-24 - Critical Secrets Fallback Pattern
+**Vulnerability:** Critical configuration keys (Firebase API key, auth domains, and Razorpay Key) were hardcoded directly in the client-side code as default fallbacks (`|| 'AIzaSy...'`) instead of failing securely when environment variables were missing.
+**Learning:** This pattern exposes critical secrets in production bundles if environment variables are ever misconfigured or accidentally omitted during the CI/CD pipeline, putting the application at high risk of unauthorized access or billing abuse.
+**Prevention:** Instead of providing hardcoded string fallbacks, access environment variables strictly (e.g., `import.meta.env.KEY`) and implement explicit runtime checks that throw errors or show user-facing alerts (failing securely) when critical configuration values are missing.
