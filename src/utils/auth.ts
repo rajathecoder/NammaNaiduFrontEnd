@@ -76,10 +76,11 @@ export const clearAuthData = (): void => {
   localStorage.removeItem('userId');
   localStorage.removeItem('accountId');
   localStorage.removeItem('userInfo');
-  localStorage.removeItem('basicDetails');
-  localStorage.removeItem('personalReligiousDetails');
-  localStorage.removeItem('professionalDetails');
-  localStorage.removeItem('registrationData');
+  sessionStorage.removeItem('basicDetails');
+  sessionStorage.removeItem('personalReligiousDetails');
+  sessionStorage.removeItem('professionalDetails');
+  sessionStorage.removeItem('registrationData');
+  sessionStorage.removeItem('otpFlow');
 };
 
 /**

@@ -202,8 +202,8 @@ const BasicDetails = () => {
             return;
         }
 
-        // Save to localStorage
-        localStorage.setItem('basicDetails', JSON.stringify({
+        // Save to sessionStorage
+        sessionStorage.setItem('basicDetails', JSON.stringify({
             day,
             month,
             year,
