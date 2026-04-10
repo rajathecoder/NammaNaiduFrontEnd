@@ -1,0 +1,4 @@
+## 2024-05-18 - Registration PII Exposure in Local Storage
+**Vulnerability:** Personally Identifiable Information (PII) including emails, phone numbers, passwords, and demographic details collected during the multi-step registration flow (`basicDetails`, `personalReligiousDetails`, `professionalDetails`, `registrationData`) were being persisted indefinitely in `localStorage`.
+**Learning:** `localStorage` is completely inappropriate for sensitive, multi-step form state because it persists across sessions and tabs indefinitely, maximizing the exposure window for XSS attacks or physical device access.
+**Prevention:** Always use `sessionStorage` or in-memory state management (like React Context or Redux) for sensitive multi-step form data. Reserve `localStorage` strictly for persistent, non-sensitive tokens where the long-term persistence is an explicit requirement.
