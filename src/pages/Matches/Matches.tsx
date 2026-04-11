@@ -148,8 +148,8 @@ const Matches = () => {
                             age = new Date().getFullYear() - birthYear;
                         }
 
-                        // Map photo from personPhoto association
-                        const photo1link = profile.personPhoto?.photo1;
+                        // Map photo from personPhoto association (from Matches.tsx)
+                        const photo1link = profile.personPhoto?.photo1link;
 
                         return {
                             ...profile,

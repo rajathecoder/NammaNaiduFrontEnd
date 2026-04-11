@@ -9,6 +9,10 @@ export interface UserProfile {
   gender?: string;
   userCode: string;
   basicDetail?: BasicDetail;
+  personPhoto?: {
+    photo1link?: string;
+    [key: string]: any;
+  };
   [key: string]: any;
 }
 
