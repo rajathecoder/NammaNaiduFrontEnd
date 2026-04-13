@@ -1,8 +1,14 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
-import FloatingParticles from './FloatingParticles';
 import logo from '../../assets/images/logoonly.png';
 import './LandingPage.css';
+
+// ⚡ Bolt Performance Optimization: Lazy load heavy 3D components
+// What: Move FloatingParticles and its three.js dependencies into a separate chunk.
+// Why: three.js + @react-three/fiber is a huge dependency (>900KB) that slows down initial page load.
+// Impact: Reduces initial bundle size significantly, improving Time to Interactive (TTI).
+// Measurement: Verify network tab to see three.js loaded asynchronously after the main bundle.
+const FloatingParticles = lazy(() => import('./FloatingParticles'));
 
 /* ═══════════════════════════════════════════════════
    Mock Data
@@ -213,7 +219,9 @@ const LandingPage: React.FC = () => {
 
       {/* ═══ Hero Section ═══ */}
       <section className="hero-section">
-        <FloatingParticles />
+        <Suspense fallback={null}>
+          <FloatingParticles />
+        </Suspense>
 
         <div className="kolam-corner top-left"><KolamCornerSVG /></div>
         <div className="kolam-corner bottom-right"><KolamCornerSVG /></div>
