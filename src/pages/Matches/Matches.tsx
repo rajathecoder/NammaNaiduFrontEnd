@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,8 +207,12 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization:
+    // What: Separated and memoized array filtering and pagination slicing using useMemo hooks.
+    // Why: Prevents expensive O(N) recalculations of filtered arrays when only pagination state (currentPage) changes, and avoids slicing recalculations on unrelated renders.
+    // Impact: Reduces main thread blocking during pagination clicks or unrelated state changes, particularly for large lists of matches.
+    // Measurement: Observe reduced JS execution time and fewer array allocation drops in React DevTools Profiler during pagination transitions.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +234,16 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    const currentProfiles = useMemo(() => {
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
