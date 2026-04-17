@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -208,7 +208,12 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization:
+    // What: Wrapped filtering and pagination slicing logic in `useMemo` hooks.
+    // Why: Prevents expensive O(N) array recalculations and slicing on every render unless filter/page dependencies change.
+    // Impact: Improves rendering performance when navigating pages or typing in search bars by isolating list computations.
+    // Measurement: React Profiler will show reduced render times when state changes unassociated with filtering/pagination occur.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +235,17 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [selectedFilter, allMatches]);
 
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
-    const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    const { totalProfiles, totalPages, indexOfLastProfile, indexOfFirstProfile, currentProfiles } = useMemo(() => {
+        const totalProfiles = filteredProfiles.length;
+        const totalPages = Math.ceil(totalProfiles / profilesPerPage);
+        const indexOfLastProfile = currentPage * profilesPerPage;
+        const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
+        const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+        return { totalProfiles, totalPages, indexOfLastProfile, indexOfFirstProfile, currentProfiles };
+    }, [filteredProfiles, currentPage, profilesPerPage]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
