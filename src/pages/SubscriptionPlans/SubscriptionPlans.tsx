@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -108,6 +108,12 @@ const SubscriptionPlans = () => {
 
   const confirmPayment = async () => {
     if (!selectedPlan) return;
+
+    if (!RAZORPAY_KEY) {
+      console.error('Payment gateway configuration missing.');
+      alert('Payment service is temporarily unavailable. Please try again later.');
+      return;
+    }
 
     const authData = getAuthData();
     if (!authData?.token) {
