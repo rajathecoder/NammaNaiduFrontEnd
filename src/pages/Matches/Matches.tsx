@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -129,7 +129,7 @@ const Matches = () => {
                         }
                     );
 
-                    let shortlistedIds = new Set();
+                    const shortlistedIds = new Set();
                     if (shortlistResponse.ok) {
                         const dl = await shortlistResponse.json();
                         if (dl.success && dl.data) {
@@ -207,8 +207,12 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization:
+    // What: Memoized the filtering and pagination logic.
+    // Why: `Matches.tsx` previously recalculated array filters (`O(N)`) and slice on every render, even when just switching pages or interacting.
+    // Impact: Avoids unnecessary list regeneration on unchanged inputs.
+    // Measurement: Compare React DevTools render times when clicking 'Next Page' before and after.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +234,29 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
-    const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    const {
+        currentProfiles,
+        totalProfiles,
+        totalPages,
+        indexOfFirstProfile,
+        indexOfLastProfile
+    } = useMemo(() => {
+        const total = filteredProfiles.length;
+        const pages = Math.ceil(total / profilesPerPage);
+        const lastIndex = currentPage * profilesPerPage;
+        const firstIndex = lastIndex - profilesPerPage;
+        const profiles = filteredProfiles.slice(firstIndex, lastIndex);
+
+        return {
+            currentProfiles: profiles,
+            totalProfiles: total,
+            totalPages: pages,
+            indexOfFirstProfile: firstIndex,
+            indexOfLastProfile: lastIndex
+        };
+    }, [filteredProfiles, currentPage, profilesPerPage]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
