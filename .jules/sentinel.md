@@ -1,0 +1,4 @@
+## 2025-05-18 - Hardcoded Fallback API Keys in Configuration
+**Vulnerability:** CRITICAL hardcoded API keys and secrets were present as fallback values in `src/services/firebase.ts` and `src/pages/SubscriptionPlans/SubscriptionPlans.tsx` (e.g., `import.meta.env.VITE_FIREBASE_API_KEY || "AIza..."`).
+**Learning:** Hardcoded fallbacks undermine the purpose of environment variables. If `import.meta.env` keys are missing or misconfigured in production, the application silently defaults to exposing these static keys to the client bundles, risking severe credential leakage.
+**Prevention:** Always use strict environment variable access (e.g., `import.meta.env.KEY`) without string fallbacks for secrets. Implement explicit runtime validation checks to fail securely and throw generic errors if critical configuration values are missing, preventing the application from initializing with exposed keys.
