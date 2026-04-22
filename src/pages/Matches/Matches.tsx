@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,8 +207,11 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization: Memoize array filtering
+    // Why: Prevents expensive O(N) recalculation of filtered profiles on every render (e.g., during pagination).
+    // Impact: Reduces CPU time by only recalculating when allMatches or selectedFilter changes.
+    // Measurement: Verify pagination changes don't trigger the filter function.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +233,25 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
-    const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    // ⚡ Bolt Performance Optimization: Memoize pagination slicing
+    // Why: Prevents redundant array slicing when other state changes.
+    // Impact: Reduces garbage collection pressure and CPU overhead from unnecessary slice operations.
+    // Measurement: Check rendering performance for list updates.
+    const { totalProfiles, totalPages, indexOfLastProfile, indexOfFirstProfile, currentProfiles } = useMemo(() => {
+        const total = filteredProfiles.length;
+        const pages = Math.ceil(total / profilesPerPage);
+        const last = currentPage * profilesPerPage;
+        const first = last - profilesPerPage;
+        return {
+            totalProfiles: total,
+            totalPages: pages,
+            indexOfLastProfile: last,
+            indexOfFirstProfile: first,
+            currentProfiles: filteredProfiles.slice(first, last)
+        };
+    }, [filteredProfiles, currentPage, profilesPerPage]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
