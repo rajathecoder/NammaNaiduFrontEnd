@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import SanitizedHTML from '../../../components/common/SanitizedHTML';
 import { apiClient } from '../../../services/apiClient';
 import { API_ENDPOINTS } from '../../../config/api.config';
 
@@ -285,9 +286,9 @@ const CMSPage: React.FC = () => {
               <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
                 👁️ Live Preview
               </h3>
-              <div
+              <SanitizedHTML
                 className="prose max-w-none border border-gray-100 rounded-lg p-4 bg-gray-50"
-                dangerouslySetInnerHTML={{ __html: content }}
+                html={content}
               />
             </div>
           )}
