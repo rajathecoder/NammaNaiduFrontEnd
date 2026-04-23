@@ -164,7 +164,7 @@ const ProfessionalDetails = () => {
         }
         
         // Save to localStorage
-        localStorage.setItem('professionalDetails', JSON.stringify({
+        sessionStorage.setItem('professionalDetails', JSON.stringify({
             country,
             state,
             city,
