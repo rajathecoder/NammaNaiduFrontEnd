@@ -203,7 +203,7 @@ const BasicDetails = () => {
         }
 
         // Save to localStorage
-        localStorage.setItem('basicDetails', JSON.stringify({
+        sessionStorage.setItem('basicDetails', JSON.stringify({
             day,
             month,
             year,
