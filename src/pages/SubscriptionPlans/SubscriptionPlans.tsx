@@ -18,7 +18,13 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
+const getRazorpayKey = () => {
+  const key = import.meta.env.VITE_RAZORPAY_KEY_ID;
+  if (!key) {
+    throw new Error('Razorpay key is not configured.');
+  }
+  return key;
+};
 
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -141,7 +147,7 @@ const SubscriptionPlans = () => {
 
       // Step 2: Open Razorpay checkout
       const options = {
-        key: RAZORPAY_KEY,
+        key: getRazorpayKey(),
         amount: amount, // amount in paise from server
         currency: currency || 'INR',
         name: 'Namma Naidu',
