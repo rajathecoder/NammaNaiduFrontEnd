@@ -10,13 +10,20 @@ import type { ConfirmationResult, User } from 'firebase/auth';
 import type { Firestore } from 'firebase/firestore';
 import type { Messaging } from 'firebase/messaging';
 
+const requireEnv = (name: string, value: string | undefined): string => {
+  if (!value) {
+    throw new Error(`Configuration Error: Missing required environment variable ${name}`);
+  }
+  return value;
+};
+
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyDBJgZO200L2KrfS4tKtE5VyTKKUZrULvk',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'nammamatrimonyapp.firebaseapp.com',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'nammamatrimonyapp',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:171195418276:web:b31ecb170ecfa29c4b4831',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '171195418276',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'nammamatrimonyapp.firebasestorage.app',
+  apiKey: requireEnv('VITE_FIREBASE_API_KEY', import.meta.env.VITE_FIREBASE_API_KEY),
+  authDomain: requireEnv('VITE_FIREBASE_AUTH_DOMAIN', import.meta.env.VITE_FIREBASE_AUTH_DOMAIN),
+  projectId: requireEnv('VITE_FIREBASE_PROJECT_ID', import.meta.env.VITE_FIREBASE_PROJECT_ID),
+  appId: requireEnv('VITE_FIREBASE_APP_ID', import.meta.env.VITE_FIREBASE_APP_ID),
+  messagingSenderId: requireEnv('VITE_FIREBASE_MESSAGING_SENDER_ID', import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID),
+  storageBucket: requireEnv('VITE_FIREBASE_STORAGE_BUCKET', import.meta.env.VITE_FIREBASE_STORAGE_BUCKET),
 };
 
 // VAPID key for web push - get this from Firebase Console > Project Settings > Cloud Messaging > Web Push certificates
