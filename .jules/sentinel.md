@@ -1,0 +1,4 @@
+## 2026-04-27 - Static Analysis Bypass via Vite `import.meta.env` Fallbacks
+**Vulnerability:** Hardcoded API key fallbacks (e.g., `import.meta.env.KEY || 'secret'`) in Vite projects.
+**Learning:** Vite statically embeds `import.meta.env` values into the client-side bundle at build time. If an environment variable is missing during the build, the fallback string is directly compiled into the minified source code, permanently exposing the secret to the client. This bypasses static analysis tools that only check for raw strings, as the fallback looks like standard defensive programming.
+**Prevention:** Never use hardcoded inline string fallbacks for secrets in Vite frontend projects. Always assign the `import.meta.env` value directly and perform a strict runtime check that fails securely (e.g., throwing an error) if the value is falsy.
