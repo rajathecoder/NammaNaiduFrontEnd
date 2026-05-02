@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { getApiUrl } from '../../../config/api.config';
 
 interface Photo {
@@ -133,7 +133,7 @@ const PendingApprovals: React.FC = () => {
     };
 
   // Determine user status based on verification fields
-  const getUserStatus = (user: UserData): 'pending' | 'approved' | 'rejected' => {
+  const getUserStatus = useCallback((user: UserData): 'pending' | 'approved' | 'rejected' => {
     // If either profile or proof is rejected (2), it's rejected
     if (user.profileverified === 2 || user.proofverified === 2) {
       return 'rejected';
@@ -144,19 +144,33 @@ const PendingApprovals: React.FC = () => {
     }
     // Otherwise it's pending (0 or partial verification)
     return 'pending';
-  };
+  }, []);
 
-  // Filter users based on selected tab
-  const filteredUsers = users.filter(user => {
-    if (filter === 'all') return true;
-    const status = getUserStatus(user);
-    return status === filter;
-  });
+  // ⚡ Bolt Performance Optimization:
+  // What: Wrap list filtering in useMemo
+  // Why: Prevent O(N) recalculations on every render when unrelated state changes
+  // Impact: Reduces CPU time during renders when the filter criteria haven't changed
+  // Measurement: Verify faster render times when toggling unrelated UI state
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => {
+      if (filter === 'all') return true;
+      const status = getUserStatus(user);
+      return status === filter;
+    });
+  }, [users, filter, getUserStatus]); // getUserStatus is a pure function depending on user
 
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const totalPages = useMemo(() => Math.ceil(filteredUsers.length / itemsPerPage), [filteredUsers.length, itemsPerPage]);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+  // ⚡ Bolt Performance Optimization:
+  // What: Wrap list pagination in useMemo
+  // Why: Prevent unnecessary array slice operations on every render
+  // Impact: Reduces CPU time during renders
+  // Measurement: Verify faster render times when toggling unrelated UI state
+  const paginatedUsers = useMemo(() => {
+    return filteredUsers.slice(startIndex, endIndex);
+  }, [filteredUsers, startIndex, endIndex]);
 
   // Get profile photos only (photo1-5, excluding proof)
   const getProfilePhotos = (photos: Photo[]): Photo[] => {

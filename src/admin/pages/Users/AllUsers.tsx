@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../services/api/admin.api';
 import { getApiUrl } from '../../../config/api.config';
@@ -141,20 +141,27 @@ const AllUsers: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = 
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.mobile && user.mobile.includes(searchTerm)) ||
-      (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (user.userCode && user.userCode.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-    const matchesStatus = filterStatus === 'all' || 
-      (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
-      (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
-    const matchesGender = filterGender === 'all' || user.gender === filterGender;
-    
-    return matchesSearch && matchesStatus && matchesGender;
-  });
+  // ⚡ Bolt Performance Optimization:
+  // What: Wrap list filtering in useMemo
+  // Why: Prevent O(N) recalculations on every render when unrelated state changes
+  // Impact: Reduces CPU time during renders when the filter criteria haven't changed
+  // Measurement: Verify faster render times when toggling unrelated UI state
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => {
+      const matchesSearch =
+        user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.mobile && user.mobile.includes(searchTerm)) ||
+        (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.userCode && user.userCode.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      const matchesStatus = filterStatus === 'all' ||
+        (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
+        (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
+      const matchesGender = filterGender === 'all' || user.gender === filterGender;
+
+      return matchesSearch && matchesStatus && matchesGender;
+    });
+  }, [users, searchTerm, filterStatus, filterGender]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -162,10 +169,18 @@ const AllUsers: React.FC = () => {
   }, [filterStatus, filterGender, searchTerm]);
 
   // Calculate pagination
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const totalPages = useMemo(() => Math.ceil(filteredUsers.length / itemsPerPage), [filteredUsers.length, itemsPerPage]);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+  // ⚡ Bolt Performance Optimization:
+  // What: Wrap list pagination in useMemo
+  // Why: Prevent unnecessary array slice operations on every render
+  // Impact: Reduces CPU time during renders
+  // Measurement: Verify faster render times when toggling unrelated UI state
+  const paginatedUsers = useMemo(() => {
+    return filteredUsers.slice(startIndex, endIndex);
+  }, [filteredUsers, startIndex, endIndex]);
 
   // Helper function to get verification status badge
   const getVerificationStatus = (status: number | undefined): React.JSX.Element => {
