@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 interface BlockedUser {
@@ -77,21 +77,36 @@ const BlockedUsers: React.FC = () => {
     }
   };
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.userCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.mobile.includes(searchTerm) ||
-    user.email?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // ⚡ Bolt Performance Optimization:
+  // What: Wrap list filtering in useMemo
+  // Why: Prevent O(N) recalculations on every render when unrelated state changes
+  // Impact: Reduces CPU time during renders when the filter criteria haven't changed
+  // Measurement: Verify faster render times when toggling unrelated UI state
+  const filteredUsers = useMemo(() => {
+    return users.filter(user =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.userCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.mobile.includes(searchTerm) ||
+      user.email?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [users, searchTerm]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm]);
 
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const totalPages = useMemo(() => Math.ceil(filteredUsers.length / itemsPerPage), [filteredUsers.length, itemsPerPage]);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+  // ⚡ Bolt Performance Optimization:
+  // What: Wrap list pagination in useMemo
+  // Why: Prevent unnecessary array slice operations on every render
+  // Impact: Reduces CPU time during renders
+  // Measurement: Verify faster render times when toggling unrelated UI state
+  const paginatedUsers = useMemo(() => {
+    return filteredUsers.slice(startIndex, endIndex);
+  }, [filteredUsers, startIndex, endIndex]);
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-[400px] text-lg text-gray-600">Loading blocked users...</div>;
