@@ -18,7 +18,14 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
+const requireEnvVar = (val: string | undefined | boolean): string => {
+  if (!val) {
+    throw new Error('Configuration error: Missing required service credentials');
+  }
+  return String(val);
+};
+
+const RAZORPAY_KEY = requireEnvVar(import.meta.env.VITE_RAZORPAY_KEY_ID);
 
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
