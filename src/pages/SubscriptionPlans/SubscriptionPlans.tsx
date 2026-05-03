@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -75,6 +75,11 @@ const SubscriptionPlans = () => {
       navigate('/login');
       return;
     }
+
+    if (!RAZORPAY_KEY) {
+      alert('Payment configuration is missing. Please contact support.');
+      return;
+    }
     setSelectedPlan(plan);
     setCouponCode('');
     setCouponResult(null);
@@ -112,6 +117,11 @@ const SubscriptionPlans = () => {
     const authData = getAuthData();
     if (!authData?.token) {
       navigate('/login');
+      return;
+    }
+
+    if (!RAZORPAY_KEY) {
+      alert('Payment configuration is missing. Please contact support.');
       return;
     }
 

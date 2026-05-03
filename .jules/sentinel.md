@@ -1,0 +1,4 @@
+## 2024-05-18 - Hardcoded Configuration Fallbacks within Client-Side Variables
+**Vulnerability:** Found hardcoded API keys and configuration secrets (e.g. Firebase config, Razorpay key) embedded directly as string fallbacks inside the client-side code whenever `import.meta.env` vars were missing.
+**Learning:** Due to how Vite statically bundles `import.meta.env`, any hardcoded fallback strings in the source code will literally be packaged and shipped in the minified frontend payload to all clients if the environment variables are absent during the build.
+**Prevention:** Strictly enforce environment variable usage for all secrets without any inline static string fallbacks. Implement explicit runtime validation checks instead that fail fast securely and genericly when required keys are missing.
