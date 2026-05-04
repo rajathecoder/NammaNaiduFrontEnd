@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 interface Match {
   id: number;
@@ -96,24 +96,41 @@ const MatchesManagement: React.FC = () => {
     fetchMatches();
   }, []);
 
-  const filteredMatches = matches.filter(m => {
-    const matchesSearch =
-      m.userA.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userB.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userA.userCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userB.userCode.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || m.status === filterStatus;
-    return matchesSearch && matchesStatus;
-  });
+  // ⚡ Bolt Performance Optimization:
+  // What: Wrap list filtering in useMemo
+  // Why: Prevent O(N) recalculations of the entire list on every render
+  // Impact: Reduces CPU time during unrelated component updates (like hovering, simple state changes)
+  // Measurement: Verify functionality remains identical, while filtering operations run less frequently.
+  const filteredMatches = useMemo(() => {
+    return matches.filter(m => {
+      const matchesSearch =
+        m.userA.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.userB.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.userA.userCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.userB.userCode.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus = filterStatus === 'all' || m.status === filterStatus;
+      return matchesSearch && matchesStatus;
+    });
+  }, [matches, searchTerm, filterStatus]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [filterStatus, searchTerm]);
 
-  const totalPages = Math.ceil(filteredMatches.length / itemsPerPage);
+  const totalPages = useMemo(() => Math.ceil(filteredMatches.length / itemsPerPage), [filteredMatches.length, itemsPerPage]);
+
+  // ⚡ Bolt Performance Optimization:
+  // What: Wrap list slicing/pagination in useMemo
+  // Why: Prevent new array allocation on every render
+  // Impact: Reduces garbage collection overhead and re-renders of child list components
+  const paginatedMatches = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredMatches.slice(startIndex, endIndex);
+  }, [filteredMatches, currentPage, itemsPerPage]);
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedMatches = filteredMatches.slice(startIndex, endIndex);
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-[400px] text-lg text-gray-600">Loading matches...</div>;
