@@ -1,0 +1,4 @@
+## 2025-05-05 - Vite bundle embeds inline fallbacks
+**Vulnerability:** Found hardcoded fallback secrets for API and service keys in `src/services/firebase.ts` and `src/pages/SubscriptionPlans/SubscriptionPlans.tsx` through inline fallbacks for `import.meta.env.*`.
+**Learning:** Vite statically replaces `import.meta.env.*` expressions during build. If inline fallbacks are used (`import.meta.env.KEY || 'secret_fallback'`), those fallbacks are hardcoded directly into the minified client bundle if the environment variable is not present, publicly exposing the fallback secrets to end users.
+**Prevention:** Never use inline string fallbacks for sensitive environment variables in Vite applications. Always strictly validate their existence via runtime checks (e.g. `if (!import.meta.env.KEY) throw new Error(...)`) and ensure sensitive values are passed exclusively through environment configuration.

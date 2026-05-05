@@ -18,7 +18,14 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
+const requireEnv = (key: string, value: string | undefined): string => {
+  if (!value) {
+    throw new Error(`Critical configuration missing: ${key}`);
+  }
+  return value;
+};
+
+const RAZORPAY_KEY = requireEnv('VITE_RAZORPAY_KEY_ID', import.meta.env.VITE_RAZORPAY_KEY_ID);
 
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
