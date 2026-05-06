@@ -10,15 +10,6 @@ import type { ConfirmationResult, User } from 'firebase/auth';
 import type { Firestore } from 'firebase/firestore';
 import type { Messaging } from 'firebase/messaging';
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyDBJgZO200L2KrfS4tKtE5VyTKKUZrULvk',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'nammamatrimonyapp.firebaseapp.com',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'nammamatrimonyapp',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:171195418276:web:b31ecb170ecfa29c4b4831',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '171195418276',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'nammamatrimonyapp.firebasestorage.app',
-};
-
 // VAPID key for web push - get this from Firebase Console > Project Settings > Cloud Messaging > Web Push certificates
 const VAPID_KEY = import.meta.env.VITE_FIREBASE_VAPID_KEY || '';
 
@@ -27,6 +18,28 @@ let recaptchaVerifier: RecaptchaVerifier | null = null;
 
 const ensureFirebaseApp = () => {
   if (!getApps().length) {
+    // 🛡️ Security: Explicitly validate all environment variables at runtime
+    // Avoids inline hardcoded secrets which get bundled by Vite
+    const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+    const authDomain = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN;
+    const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID;
+    const appId = import.meta.env.VITE_FIREBASE_APP_ID;
+    const messagingSenderId = import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
+    const storageBucket = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
+
+    if (!apiKey || !authDomain || !projectId || !appId || !messagingSenderId || !storageBucket) {
+      console.error('Firebase configuration is incomplete.');
+      throw new Error('Application configuration is missing or invalid.');
+    }
+
+    const firebaseConfig = {
+      apiKey,
+      authDomain,
+      projectId,
+      appId,
+      messagingSenderId,
+      storageBucket,
+    };
     initializeApp(firebaseConfig);
   }
 };

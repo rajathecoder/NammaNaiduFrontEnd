@@ -18,8 +18,6 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
-
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
     if (window.Razorpay) {
@@ -138,6 +136,13 @@ const SubscriptionPlans = () => {
       }
 
       const { razorpayOrderId, transactionId, amount, currency } = orderRes.data;
+
+      // 🛡️ Security: Explicitly validate the key at runtime
+      const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID;
+      if (!RAZORPAY_KEY) {
+        console.error('Razorpay key is missing.');
+        throw new Error('Application configuration is missing or invalid.');
+      }
 
       // Step 2: Open Razorpay checkout
       const options = {

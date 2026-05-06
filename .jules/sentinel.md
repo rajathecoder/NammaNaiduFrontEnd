@@ -1,0 +1,4 @@
+## 2024-05-18 - Prevent Secret Leakage via Inline Env Fallbacks in Vite
+**Vulnerability:** Inline environment variable fallbacks (e.g., `import.meta.env.KEY || 'secret_fallback'`) are statically embedded by Vite directly into the compiled client-side bundle if the environment variable is missing during build time. This leaks internal fallback keys (like test API keys or default project IDs) in the public minified JS.
+**Learning:** Vite's static replacement of `import.meta.env` breaks standard JS dynamic evaluation. When an env var is missing, it evaluates to `undefined`, meaning the literal string fallback in the source code gets shipped in production bundles as the hardcoded result.
+**Prevention:** Always use strict runtime validation to enforce the presence of `import.meta.env` variables. Assign the value to a variable, check it, and throw a generic error if it's missing, completely removing hardcoded strings from the frontend source code.
