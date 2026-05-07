@@ -1,0 +1,4 @@
+## 2025-02-27 - Statically Embedded Vite Fallback Secrets
+**Vulnerability:** Hardcoded API keys used as fallback values in `import.meta.env` statements were exposed in the frontend bundle.
+**Learning:** Vite statically analyzes and embeds `import.meta.env` values at build time. When a fallback value is used inline (e.g. `import.meta.env.KEY || 'secret_fallback'`), and the env var is missing during build, Vite literally embeds that fallback directly into the minified Javascript chunk, exposing it to anyone analyzing the source.
+**Prevention:** Never use inline fallbacks for sensitive environment variables in Vite projects. Always strictly type and declare them without defaults, and use a separate runtime validation function (like `ensureFirebaseApp`) that checks for the existence of the expected values and explicitly throws a generic error (fail secure) if they are missing.
