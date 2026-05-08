@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { getApiUrl } from '../../../config/api.config';
 
 interface Photo {
@@ -83,18 +83,34 @@ const PhotoModeration: React.FC = () => {
     }
   };
 
-  const filteredPhotos = photos.filter(photo => 
-    filter === 'all' || photo.status === filter
-  );
+  // ⚡ Bolt Performance Optimization: Memoized filtered photos and status counts
+  // to prevent expensive O(N) array recalculations during re-renders caused by
+  // checkbox selections or modal interactions.
+  const filteredPhotos = useMemo(() => {
+    return photos.filter(photo => filter === 'all' || photo.status === filter);
+  }, [photos, filter]);
+
+  const { paginatedPhotos, totalPages, startIndex, endIndex } = useMemo(() => {
+    const total = Math.ceil(filteredPhotos.length / itemsPerPage);
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return {
+      paginatedPhotos: filteredPhotos.slice(start, end),
+      totalPages: total,
+      startIndex: start,
+      endIndex: end
+    };
+  }, [filteredPhotos, currentPage, itemsPerPage]);
+
+  const statusCounts = useMemo(() => ({
+    pending: photos.filter(p => p.status === 'pending').length,
+    approved: photos.filter(p => p.status === 'approved').length,
+    rejected: photos.filter(p => p.status === 'rejected').length
+  }), [photos]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [filter]);
-
-  const totalPages = Math.ceil(filteredPhotos.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedPhotos = filteredPhotos.slice(startIndex, endIndex);
 
   const toggleSelectPhoto = (photoId: string) => {
     setSelectedPhotos(prev =>
@@ -275,19 +291,19 @@ const PhotoModeration: React.FC = () => {
           className={`flex-1 py-2 px-4 rounded-md font-semibold transition-all duration-200 ${filter === 'pending' ? 'bg-[#14b8a6] text-white' : 'bg-transparent text-gray-600 hover:bg-gray-100'}`}
           onClick={() => setFilter('pending')}
         >
-          Pending ({photos.filter(p => p.status === 'pending').length})
+          Pending ({statusCounts.pending})
         </button>
         <button
           className={`flex-1 py-2 px-4 rounded-md font-semibold transition-all duration-200 ${filter === 'approved' ? 'bg-[#14b8a6] text-white' : 'bg-transparent text-gray-600 hover:bg-gray-100'}`}
           onClick={() => setFilter('approved')}
         >
-          Approved ({photos.filter(p => p.status === 'approved').length})
+          Approved ({statusCounts.approved})
         </button>
         <button
           className={`flex-1 py-2 px-4 rounded-md font-semibold transition-all duration-200 ${filter === 'rejected' ? 'bg-[#14b8a6] text-white' : 'bg-transparent text-gray-600 hover:bg-gray-100'}`}
           onClick={() => setFilter('rejected')}
         >
-          Rejected ({photos.filter(p => p.status === 'rejected').length})
+          Rejected ({statusCounts.rejected})
         </button>
       </div>
 
