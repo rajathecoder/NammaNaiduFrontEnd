@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -129,7 +129,7 @@ const Matches = () => {
                         }
                     );
 
-                    let shortlistedIds = new Set();
+                    const shortlistedIds = new Set();
                     if (shortlistResponse.ok) {
                         const dl = await shortlistResponse.json();
                         if (dl.success && dl.data) {
@@ -208,36 +208,57 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
-        if (selectedFilter === 'newly-joined') {
-            // Filter profiles created in the last 5 days
-            const fiveDaysAgo = new Date();
-            fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+    // ⚡ Bolt Performance Optimization:
+    // What: Memoized list filtering and pagination calculations.
+    // Why: Prevent O(N) recalculations of array filtering and slicing on every single render (e.g., when unrelated state changes).
+    // Impact: Significantly reduces main thread blocking during re-renders, especially with large sets of profile matches.
+    // Measurement: React DevTools Profiler will show reduced render times for the Matches component when state not related to filtering/pagination changes.
+    const {
+        totalProfiles,
+        totalPages,
+        indexOfLastProfile,
+        indexOfFirstProfile,
+        currentProfiles
+    } = useMemo(() => {
+        const getFilteredProfiles = () => {
+            if (selectedFilter === 'newly-joined') {
+                // Filter profiles created in the last 5 days
+                const fiveDaysAgo = new Date();
+                fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
 
-            return allMatches.filter(match => {
-                if (match.createdAt) {
-                    const createdDate = new Date(match.createdAt);
-                    return createdDate >= fiveDaysAgo;
-                }
-                return false;
-            });
-        }
+                return allMatches.filter(match => {
+                    if (match.createdAt) {
+                        const createdDate = new Date(match.createdAt);
+                        return createdDate >= fiveDaysAgo;
+                    }
+                    return false;
+                });
+            }
 
-        if (selectedFilter === 'shortlisted-by-you') {
-            // Filter profiles that are shortlisted
-            return allMatches.filter(match => match.shortlisted === true);
-        }
+            if (selectedFilter === 'shortlisted-by-you') {
+                // Filter profiles that are shortlisted
+                return allMatches.filter(match => match.shortlisted === true);
+            }
 
-        // Add other filters here if needed
-        return allMatches;
-    };
+            // Add other filters here if needed
+            return allMatches;
+        };
 
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
-    const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+        const filtered = getFilteredProfiles();
+        const total = filtered.length;
+        const pages = Math.ceil(total / profilesPerPage);
+        const lastIndex = currentPage * profilesPerPage;
+        const firstIndex = lastIndex - profilesPerPage;
+        const current = filtered.slice(firstIndex, lastIndex);
+
+        return {
+            totalProfiles: total,
+            totalPages: pages,
+            indexOfLastProfile: lastIndex,
+            indexOfFirstProfile: firstIndex,
+            currentProfiles: current
+        };
+    }, [allMatches, selectedFilter, currentPage, profilesPerPage]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
