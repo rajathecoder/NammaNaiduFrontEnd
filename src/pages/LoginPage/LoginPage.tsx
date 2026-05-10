@@ -219,8 +219,11 @@ const LoginPage = () => {
                                     <button
                                         type="button"
                                         onClick={() => {
+                                            sessionStorage.removeItem('registrationData');
+                                            sessionStorage.setItem('otpFlow', 'login');
+                                            // Clear legacy items
                                             localStorage.removeItem('registrationData');
-                                            localStorage.setItem('otpFlow', 'login');
+                                            localStorage.removeItem('otpFlow');
                                             navigate('/verify-otp');
                                         }}
                                         className="text-[#1B5E20] no-underline text-xs transition-colors duration-300 hover:text-[#0D3B13] hover:underline"

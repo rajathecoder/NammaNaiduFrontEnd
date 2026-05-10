@@ -1,0 +1,4 @@
+## 2023-10-27 - Storing PII and Flow States in SessionStorage
+**Vulnerability:** The registration flow was storing user PII (like mobile number, name, gender) and authentication flow states (`otpFlow`) in `localStorage`. This allowed sensitive data to persist indefinitely on the user's device across sessions, increasing the risk of exposure if the device is shared or compromised.
+**Learning:** Temporary states and intermediate sensitive data during multi-step flows (like OTP verification) should always be stored in `sessionStorage` to ensure they are automatically cleared when the session ends.
+**Prevention:** Enforce the use of `sessionStorage` for all temporary flow states and intermediate user data. Additionally, always explicitly clear legacy `localStorage` keys when migrating to `sessionStorage` to remove any lingering insecure data.
