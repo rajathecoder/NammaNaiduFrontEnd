@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../services/api/admin.api';
 import { getApiUrl } from '../../../config/api.config';
@@ -141,31 +141,51 @@ const AllUsers: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = 
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.mobile && user.mobile.includes(searchTerm)) ||
-      (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (user.userCode && user.userCode.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-    const matchesStatus = filterStatus === 'all' || 
-      (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
-      (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
-    const matchesGender = filterGender === 'all' || user.gender === filterGender;
-    
-    return matchesSearch && matchesStatus && matchesGender;
-  });
+  // ⚡ Bolt Performance Optimization: Memoize array filtering to prevent O(N) recalculations on every render
+  // What: Wrap `filteredUsers` in useMemo.
+  // Why: Filtering a potentially large array of users on every render is an expensive operation that blocks the main thread.
+  // Impact: Prevents recalculation of filters unless dependencies (users, search, filters) change.
+  // Measurement: Verify functionality and performance via profiling.
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => {
+      const matchesSearch =
+        user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.mobile && user.mobile.includes(searchTerm)) ||
+        (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (user.userCode && user.userCode.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      const matchesStatus = filterStatus === 'all' ||
+        (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
+        (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
+      const matchesGender = filterGender === 'all' || user.gender === filterGender;
+
+      return matchesSearch && matchesStatus && matchesGender;
+    });
+  }, [users, searchTerm, filterStatus, filterGender]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [filterStatus, filterGender, searchTerm]);
 
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+  // ⚡ Bolt Performance Optimization: Memoize pagination slicing to prevent array instantiations on re-renders
+  // What: Wrap pagination logic in useMemo.
+  // Why: Creating a new slice of the array on every render creates unnecessary memory allocations and object references.
+  // Impact: Prevents array allocations when components re-render for unrelated reasons (e.g., hover states).
+  // Measurement: Verify functionality and pagination updates.
+  const { totalPages, startIndex, endIndex, paginatedUsers } = useMemo(() => {
+    const calculatedTotalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+    const calculatedStartIndex = (currentPage - 1) * itemsPerPage;
+    const calculatedEndIndex = calculatedStartIndex + itemsPerPage;
+    const slicedUsers = filteredUsers.slice(calculatedStartIndex, calculatedEndIndex);
+
+    return {
+      totalPages: calculatedTotalPages,
+      startIndex: calculatedStartIndex,
+      endIndex: calculatedEndIndex,
+      paginatedUsers: slicedUsers
+    };
+  }, [filteredUsers, currentPage, itemsPerPage]);
 
   // Helper function to get verification status badge
   const getVerificationStatus = (status: number | undefined): React.JSX.Element => {
