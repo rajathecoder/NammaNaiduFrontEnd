@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { getApiUrl } from '../../../config/api.config';
 
 interface Photo {
@@ -133,7 +133,7 @@ const PendingApprovals: React.FC = () => {
     };
 
   // Determine user status based on verification fields
-  const getUserStatus = (user: UserData): 'pending' | 'approved' | 'rejected' => {
+  const getUserStatus = useCallback((user: UserData): 'pending' | 'approved' | 'rejected' => {
     // If either profile or proof is rejected (2), it's rejected
     if (user.profileverified === 2 || user.proofverified === 2) {
       return 'rejected';
@@ -144,19 +144,39 @@ const PendingApprovals: React.FC = () => {
     }
     // Otherwise it's pending (0 or partial verification)
     return 'pending';
-  };
+  }, []);
 
-  // Filter users based on selected tab
-  const filteredUsers = users.filter(user => {
-    if (filter === 'all') return true;
-    const status = getUserStatus(user);
-    return status === filter;
-  });
+  // ⚡ Bolt Performance Optimization: Memoize array filtering to prevent O(N) recalculations on every render
+  // What: Wrap `filteredUsers` in useMemo.
+  // Why: Filtering a potentially large array of users on every render is an expensive operation that blocks the main thread.
+  // Impact: Prevents recalculation of filters unless dependencies (users, filter) change.
+  // Measurement: Verify functionality and performance via profiling.
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => {
+      if (filter === 'all') return true;
+      const status = getUserStatus(user);
+      return status === filter;
+    });
+  }, [users, filter, getUserStatus]);
 
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+  // ⚡ Bolt Performance Optimization: Memoize pagination slicing to prevent array instantiations on re-renders
+  // What: Wrap pagination logic in useMemo.
+  // Why: Creating a new slice of the array on every render creates unnecessary memory allocations and object references.
+  // Impact: Prevents array allocations when components re-render for unrelated reasons.
+  // Measurement: Verify functionality and pagination updates.
+  const { totalPages, startIndex, endIndex, paginatedUsers } = useMemo(() => {
+    const calculatedTotalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+    const calculatedStartIndex = (currentPage - 1) * itemsPerPage;
+    const calculatedEndIndex = calculatedStartIndex + itemsPerPage;
+    const slicedUsers = filteredUsers.slice(calculatedStartIndex, calculatedEndIndex);
+
+    return {
+      totalPages: calculatedTotalPages,
+      startIndex: calculatedStartIndex,
+      endIndex: calculatedEndIndex,
+      paginatedUsers: slicedUsers
+    };
+  }, [filteredUsers, currentPage, itemsPerPage]);
 
   // Get profile photos only (photo1-5, excluding proof)
   const getProfilePhotos = (photos: Photo[]): Photo[] => {

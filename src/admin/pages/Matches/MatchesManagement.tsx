@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 interface Match {
   id: number;
@@ -96,24 +96,45 @@ const MatchesManagement: React.FC = () => {
     fetchMatches();
   }, []);
 
-  const filteredMatches = matches.filter(m => {
-    const matchesSearch =
-      m.userA.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userB.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userA.userCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userB.userCode.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || m.status === filterStatus;
-    return matchesSearch && matchesStatus;
-  });
+  // ⚡ Bolt Performance Optimization: Memoize array filtering to prevent O(N) recalculations on every render
+  // What: Wrap `filteredMatches` in useMemo.
+  // Why: Filtering a potentially large array of matches on every render is an expensive operation that blocks the main thread.
+  // Impact: Prevents recalculation of filters unless dependencies (matches, search, status) change.
+  // Measurement: Verify functionality and performance via profiling.
+  const filteredMatches = useMemo(() => {
+    return matches.filter(m => {
+      const matchesSearch =
+        m.userA.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.userB.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.userA.userCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.userB.userCode.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus = filterStatus === 'all' || m.status === filterStatus;
+      return matchesSearch && matchesStatus;
+    });
+  }, [matches, searchTerm, filterStatus]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [filterStatus, searchTerm]);
 
-  const totalPages = Math.ceil(filteredMatches.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedMatches = filteredMatches.slice(startIndex, endIndex);
+  // ⚡ Bolt Performance Optimization: Memoize pagination slicing to prevent array instantiations on re-renders
+  // What: Wrap pagination logic in useMemo.
+  // Why: Creating a new slice of the array on every render creates unnecessary memory allocations and object references.
+  // Impact: Prevents array allocations when components re-render for unrelated reasons.
+  // Measurement: Verify functionality and pagination updates.
+  const { totalPages, startIndex, endIndex, paginatedMatches } = useMemo(() => {
+    const calculatedTotalPages = Math.ceil(filteredMatches.length / itemsPerPage);
+    const calculatedStartIndex = (currentPage - 1) * itemsPerPage;
+    const calculatedEndIndex = calculatedStartIndex + itemsPerPage;
+    const slicedMatches = filteredMatches.slice(calculatedStartIndex, calculatedEndIndex);
+
+    return {
+      totalPages: calculatedTotalPages,
+      startIndex: calculatedStartIndex,
+      endIndex: calculatedEndIndex,
+      paginatedMatches: slicedMatches
+    };
+  }, [filteredMatches, currentPage, itemsPerPage]);
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-[400px] text-lg text-gray-600">Loading matches...</div>;
