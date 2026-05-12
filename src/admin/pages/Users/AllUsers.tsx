@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../services/api/admin.api';
 import { getApiUrl } from '../../../config/api.config';
@@ -141,20 +141,28 @@ const AllUsers: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = 
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.mobile && user.mobile.includes(searchTerm)) ||
-      (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (user.userCode && user.userCode.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-    const matchesStatus = filterStatus === 'all' || 
-      (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
-      (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
-    const matchesGender = filterGender === 'all' || user.gender === filterGender;
-    
-    return matchesSearch && matchesStatus && matchesGender;
-  });
+  // ⚡ Bolt Performance Optimization:
+  // What: Wrapped array filtering in useMemo and extracted searchTerm.toLowerCase() outside the filter loop.
+  // Why: Prevents O(N) filtering operations on every render (e.g. during pagination or when other unrelated states change) and avoids redundant string allocations inside the loop.
+  // Impact: Reduces re-renders and CPU usage during pagination, and speeds up the search filter, especially when the users list is large.
+  // Measurement: Verify pagination feels snappy, without causing lag. Profiling should show fewer string operations during render.
+  const filteredUsers = useMemo(() => {
+    const searchLower = searchTerm.toLowerCase();
+    return users.filter(user => {
+      const matchesSearch =
+        user.name?.toLowerCase().includes(searchLower) ||
+        (user.mobile && user.mobile.includes(searchTerm)) ||
+        (user.email && user.email.toLowerCase().includes(searchLower)) ||
+        (user.userCode && user.userCode.toLowerCase().includes(searchLower));
+
+      const matchesStatus = filterStatus === 'all' ||
+        (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
+        (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
+      const matchesGender = filterGender === 'all' || user.gender === filterGender;
+
+      return matchesSearch && matchesStatus && matchesGender;
+    });
+  }, [users, searchTerm, filterStatus, filterGender]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
