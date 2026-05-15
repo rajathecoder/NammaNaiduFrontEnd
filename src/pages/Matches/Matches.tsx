@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -208,7 +208,12 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Performance Optimization:
+    // What: Memoized array filtering logic using useMemo.
+    // Why: Prevents expensive O(N) array filtering operations on every re-render (e.g., when updating `sentInterests` or `currentPage`).
+    // Impact: Avoids redundant object instantiations and unnecessary garbage collection overhead per iteration.
+    // Measurement: React devtools profiler will show significantly reduced render times for <Matches /> when changing pages.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +235,21 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    // ⚡ Bolt Performance Optimization:
+    // What: Memoized the pagination slicing.
+    // Why: Preserves array reference equality of `currentProfiles` if `filteredProfiles` and `currentPage` haven't changed.
+    // Impact: Helps avoid unnecessary re-renders of child `MatchCard` components if React.memo is ever added, and skips slice overhead.
+    // Measurement: Compare allocation timeline before and after changing unrelated state.
+    const currentProfiles = useMemo(() => {
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
