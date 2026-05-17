@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,8 +207,9 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // Memoize the filtered profiles array so we don't recalculate on every render
+    // This prevents O(N) array filtering recalculations unless the filter or source data changes.
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +231,19 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
+    // Derived values for pagination
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    // Memoize the current page's sliced profiles
+    // This separates pagination from filtering, meaning changing pages won't trigger re-filtering.
+    const currentProfiles = useMemo(() => {
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
