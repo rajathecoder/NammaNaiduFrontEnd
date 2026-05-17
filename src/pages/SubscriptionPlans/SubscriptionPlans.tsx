@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -138,6 +138,13 @@ const SubscriptionPlans = () => {
       }
 
       const { razorpayOrderId, transactionId, amount, currency } = orderRes.data;
+
+      // Validate razorpay key is available before attempting to open checkout
+      if (!RAZORPAY_KEY) {
+        alert('Payment gateway configuration error. Please try again later.');
+        setProcessingPayment(false);
+        return;
+      }
 
       // Step 2: Open Razorpay checkout
       const options = {
