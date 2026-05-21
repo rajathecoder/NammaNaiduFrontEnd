@@ -1,0 +1,3 @@
+## 2024-05-21 - Separating Pagination from Filtering in Memoization
+**Learning:** When optimizing list views with pagination, wrapping both filtering and pagination logic in a single `useMemo` block creates a performance anti-pattern. Changes to `currentPage` will inadvertently force a re-evaluation of the expensive array `.filter()` logic, defeating the purpose of memoization for O(N) operations.
+**Action:** Always separate list data operations into two sequential `useMemo` hooks: one for calculating the `filteredData` (dependent on the raw array and filter conditions), and a second for deriving the `paginatedData` (dependent only on the `filteredData` array reference and `currentPage`).

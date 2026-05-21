@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -208,7 +208,7 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +230,23 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
-    const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    const { totalProfiles, totalPages, indexOfLastProfile, indexOfFirstProfile, currentProfiles } = useMemo(() => {
+        const totalProfilesCount = filteredProfiles.length;
+        const totalPagesCount = Math.ceil(totalProfilesCount / profilesPerPage);
+        const lastProfileIndex = currentPage * profilesPerPage;
+        const firstProfileIndex = lastProfileIndex - profilesPerPage;
+        const currentProfilesList = filteredProfiles.slice(firstProfileIndex, lastProfileIndex);
+
+        return {
+            totalProfiles: totalProfilesCount,
+            totalPages: totalPagesCount,
+            indexOfLastProfile: lastProfileIndex,
+            indexOfFirstProfile: firstProfileIndex,
+            currentProfiles: currentProfilesList,
+        };
+    }, [filteredProfiles, currentPage]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
