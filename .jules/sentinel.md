@@ -1,0 +1,4 @@
+## 2025-05-22 - Static Bundling of Inline Fallback Secrets in Vite
+**Vulnerability:** Inline string fallbacks for environment variables (e.g., `import.meta.env.KEY || 'secret_fallback'`) are statically bundled and exposed directly in the minified frontend client if the environment variable is missing at build time.
+**Learning:** Vite's static replacement of `import.meta.env` causes any logic like `|| 'string'` to evaluate and permanently embed the fallback string into the production bundle when the environment variable evaluates to undefined during the build process.
+**Prevention:** Avoid inline string fallbacks for sensitive keys when reading environment variables. Instead, use strict runtime validation checks (e.g., `if (!key) { throw new Error(...) }`) to fail securely without embedding secrets.
