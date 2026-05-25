@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 interface Match {
   id: number;
@@ -96,24 +96,34 @@ const MatchesManagement: React.FC = () => {
     fetchMatches();
   }, []);
 
-  const filteredMatches = matches.filter(m => {
-    const matchesSearch =
-      m.userA.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userB.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userA.userCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userB.userCode.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || m.status === filterStatus;
-    return matchesSearch && matchesStatus;
-  });
+  const filteredMatches = useMemo(() => {
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return matches.filter(m => {
+      const matchesSearch =
+        m.userA.name.toLowerCase().includes(lowerSearchTerm) ||
+        m.userB.name.toLowerCase().includes(lowerSearchTerm) ||
+        m.userA.userCode.toLowerCase().includes(lowerSearchTerm) ||
+        m.userB.userCode.toLowerCase().includes(lowerSearchTerm);
+      const matchesStatus = filterStatus === 'all' || m.status === filterStatus;
+      return matchesSearch && matchesStatus;
+    });
+  }, [matches, searchTerm, filterStatus]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [filterStatus, searchTerm]);
 
-  const totalPages = Math.ceil(filteredMatches.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedMatches = filteredMatches.slice(startIndex, endIndex);
+  const { totalPages, paginatedMatches, startIndex, endIndex } = useMemo(() => {
+    const total = Math.ceil(filteredMatches.length / itemsPerPage);
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return {
+      totalPages: total,
+      paginatedMatches: filteredMatches.slice(start, end),
+      startIndex: start,
+      endIndex: end
+    };
+  }, [filteredMatches, currentPage]);
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-[400px] text-lg text-gray-600">Loading matches...</div>;
