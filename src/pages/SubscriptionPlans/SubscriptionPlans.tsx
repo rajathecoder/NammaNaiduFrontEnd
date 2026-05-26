@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SFL6TaKyiOGNBI';
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || '';
 
 const loadRazorpayScript = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -138,6 +138,12 @@ const SubscriptionPlans = () => {
       }
 
       const { razorpayOrderId, transactionId, amount, currency } = orderRes.data;
+
+      if (!RAZORPAY_KEY) {
+        console.error('CRITICAL: Razorpay key is missing from environment variables.');
+        alert('Payment configuration is missing. Please contact support.');
+        return;
+      }
 
       // Step 2: Open Razorpay checkout
       const options = {
