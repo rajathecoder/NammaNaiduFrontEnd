@@ -1,0 +1,3 @@
+## 2024-05-18 - Memoized Array Filtering and Pagination in React Lists
+**Learning:** In list views like `Matches`, array filtering and pagination slicing can be expensive O(N) operations. If left inline, these operations will recalculate on every component render, leading to unnecessary CPU overhead and potential frame drops when scrolling or interacting with unrelated state.
+**Action:** Always wrap array filtering and pagination calculations in `useMemo` hooks with strict dependency arrays. This caches the results and ensures the expensive transformations are only executed when the underlying data or filter parameters change.
