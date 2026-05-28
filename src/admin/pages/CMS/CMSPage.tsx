@@ -1,3 +1,4 @@
+import { sanitizeHTML } from '../../../utils/sanitize';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { apiClient } from '../../../services/apiClient';
@@ -287,7 +288,7 @@ const CMSPage: React.FC = () => {
               </h3>
               <div
                 className="prose max-w-none border border-gray-100 rounded-lg p-4 bg-gray-50"
-                dangerouslySetInnerHTML={{ __html: content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHTML(content) }}
               />
             </div>
           )}
