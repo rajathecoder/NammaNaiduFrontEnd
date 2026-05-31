@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../services/api/admin.api';
 import { getApiUrl } from '../../../config/api.config';
@@ -141,20 +141,23 @@ const AllUsers: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = 
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.mobile && user.mobile.includes(searchTerm)) ||
-      (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (user.userCode && user.userCode.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-    const matchesStatus = filterStatus === 'all' || 
-      (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
-      (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
-    const matchesGender = filterGender === 'all' || user.gender === filterGender;
-    
-    return matchesSearch && matchesStatus && matchesGender;
-  });
+  const filteredUsers = useMemo(() => {
+    const term = searchTerm.toLowerCase();
+    return users.filter(user => {
+      const matchesSearch =
+        user.name?.toLowerCase().includes(term) ||
+        (user.mobile && user.mobile.includes(searchTerm)) ||
+        (user.email && user.email.toLowerCase().includes(term)) ||
+        (user.userCode && user.userCode.toLowerCase().includes(term));
+
+      const matchesStatus = filterStatus === 'all' ||
+        (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
+        (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
+      const matchesGender = filterGender === 'all' || user.gender === filterGender;
+
+      return matchesSearch && matchesStatus && matchesGender;
+    });
+  }, [users, searchTerm, filterStatus, filterGender]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
