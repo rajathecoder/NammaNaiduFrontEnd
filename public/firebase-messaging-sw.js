@@ -5,13 +5,14 @@
 importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js');
 
+const params = new URLSearchParams(self.location.search);
 firebase.initializeApp({
-  apiKey: 'AIzaSyDBJgZO200L2KrfS4tKtE5VyTKKUZrULvk',
-  authDomain: 'nammamatrimonyapp.firebaseapp.com',
-  projectId: 'nammamatrimonyapp',
-  storageBucket: 'nammamatrimonyapp.firebasestorage.app',
-  messagingSenderId: '171195418276',
-  appId: '1:171195418276:web:b31ecb170ecfa29c4b4831',
+  apiKey: params.get('apiKey'),
+  authDomain: params.get('authDomain'),
+  projectId: params.get('projectId'),
+  storageBucket: params.get('storageBucket'),
+  messagingSenderId: params.get('messagingSenderId'),
+  appId: params.get('appId'),
 });
 
 const messaging = firebase.messaging();
