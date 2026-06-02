@@ -1,0 +1,4 @@
+## 2025-02-23 - Prevent XSS in dynamically generated CMS pages
+**Vulnerability:** XSS attack vulnerability in CMS content pages (`ContentPage.tsx`, `ContactUs.tsx`, `CMSPage.tsx`) using `dangerouslySetInnerHTML` directly with unverified external API data.
+**Learning:** Rendering uncontrolled user input or remote content via `dangerouslySetInnerHTML` without server-side validation or client-side DOM-purification opens the app to XSS vulnerabilities. Native regex solutions or custom `DOMParser` sanitizers are naive and insecure for complex SSR environments.
+**Prevention:** Always use established, robust security libraries like `dompurify` to parse and strip malicious scripts before passing content to `dangerouslySetInnerHTML`. Create and mandate the use of a centralized `sanitizeHTML` utility for any direct DOM string injections.
