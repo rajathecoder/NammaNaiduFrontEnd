@@ -83,7 +83,7 @@ const HoroscopeModal: React.FC<HoroscopeModalProps> = ({
     const handleTimeChange = (field: 'hour' | 'minute' | 'period', value: string) => {
         let newHour = field === 'hour' ? value : hour;
         let newMinute = field === 'minute' ? value : minute;
-        let newPeriod = field === 'period' ? value : period;
+        const newPeriod = field === 'period' ? value : period;
 
         // If other fields are empty, set defaults when user interacts
         if (!newHour && field !== 'hour') newHour = '12';
