@@ -1,0 +1,4 @@
+## 2025-06-05 - Hardcoded Inline Fallbacks Statically Embedded by Vite
+**Vulnerability:** Inline hardcoded fallbacks for environment variables (e.g., `import.meta.env.VITE_FIREBASE_API_KEY || 'secret'`) were directly embedded into the statically built client-side bundles by Vite.
+**Learning:** Vite replaces `import.meta.env` references with their static values during the build. If the environment variable is missing (or even if it is not, depending on the setup), any inline string fallbacks are included as plain text in the minified `dist/` JS bundles, exposing sensitive credentials to all users.
+**Prevention:** Never use inline string fallbacks for sensitive credentials in Vite/client-side projects. Rely strictly on `import.meta.env` with explicit runtime validation checks (`if (!config.apiKey) throw new Error()`) to fail securely rather than exposing secrets.
