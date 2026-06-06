@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -207,17 +207,17 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // Calculate pagination with filtering - optimized with useMemo
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
             fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+            const fiveDaysAgoTime = fiveDaysAgo.getTime();
 
             return allMatches.filter(match => {
                 if (match.createdAt) {
-                    const createdDate = new Date(match.createdAt);
-                    return createdDate >= fiveDaysAgo;
+                    return new Date(match.createdAt).getTime() >= fiveDaysAgoTime;
                 }
                 return false;
             });
@@ -230,14 +230,17 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
+    }, [allMatches, selectedFilter]);
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    // Memoize the sliced array to avoid creating a new array reference on every render
+    const currentProfiles = useMemo(
+        () => filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile),
+        [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]
+    );
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
