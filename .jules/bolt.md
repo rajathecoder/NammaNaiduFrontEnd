@@ -1,0 +1,3 @@
+## 2024-06-09 - Memoizing Sliced Arrays
+**Learning:** Extracting invariant date objects and timestamp parsing from inside a `.filter` method prevents thousands of redundant string/object allocations. Furthermore, when slicing an already memoized array for pagination, wrapping the slice operation itself in `useMemo` is crucial to prevent creating a new array reference on renders where the underlying data and page index have not changed.
+**Action:** Always scrutinize array transformation loops (filter, map) for operations that can be hoisted. When chaining expensive array operations (like filtering) with cheaper ones (like slicing), use separate `useMemo` hooks with distinct dependencies to avoid unnecessarily re-running the expensive logic or creating new references.
