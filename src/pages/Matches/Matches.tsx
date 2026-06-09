@@ -129,7 +129,7 @@ const Matches = () => {
                         }
                     );
 
-                    let shortlistedIds = new Set();
+                    const shortlistedIds = new Set();
                     if (shortlistResponse.ok) {
                         const dl = await shortlistResponse.json();
                         if (dl.success && dl.data) {
