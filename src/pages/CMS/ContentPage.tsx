@@ -1,3 +1,4 @@
+import { sanitizeHTML } from "../../utils/sanitize";
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api.config';
@@ -86,7 +87,7 @@ const ContentPage = () => {
             {page.content ? (
               <div
                 className="cms-html-content"
-                dangerouslySetInnerHTML={{ __html: page.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHTML(page.content) }}
               />
             ) : (
               <p className="cms-empty">This page has no content yet. Please check back later.</p>
