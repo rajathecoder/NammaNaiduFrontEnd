@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 interface Match {
   id: number;
@@ -96,15 +96,20 @@ const MatchesManagement: React.FC = () => {
     fetchMatches();
   }, []);
 
-  const filteredMatches = matches.filter(m => {
-    const matchesSearch =
-      m.userA.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userB.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userA.userCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      m.userB.userCode.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || m.status === filterStatus;
-    return matchesSearch && matchesStatus;
-  });
+  // Memoized array filtering to prevent O(N) recalculations on non-filter re-renders (like pagination).
+  // Extracted .toLowerCase() outside the loop to avoid redundant string allocations per iteration.
+  const filteredMatches = useMemo(() => {
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return matches.filter(m => {
+      const matchesSearch =
+        m.userA.name.toLowerCase().includes(lowerSearchTerm) ||
+        m.userB.name.toLowerCase().includes(lowerSearchTerm) ||
+        m.userA.userCode.toLowerCase().includes(lowerSearchTerm) ||
+        m.userB.userCode.toLowerCase().includes(lowerSearchTerm);
+      const matchesStatus = filterStatus === 'all' || m.status === filterStatus;
+      return matchesSearch && matchesStatus;
+    });
+  }, [matches, searchTerm, filterStatus]);
 
   useEffect(() => {
     setCurrentPage(1);

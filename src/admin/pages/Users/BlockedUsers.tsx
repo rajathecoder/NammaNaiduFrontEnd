@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 interface BlockedUser {
@@ -77,12 +77,17 @@ const BlockedUsers: React.FC = () => {
     }
   };
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.userCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.mobile.includes(searchTerm) ||
-    user.email?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Memoized array filtering to prevent O(N) recalculations on non-filter re-renders (like pagination).
+  // Extracted .toLowerCase() outside the loop to avoid redundant string allocations per iteration.
+  const filteredUsers = useMemo(() => {
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return users.filter(user =>
+      user.name.toLowerCase().includes(lowerSearchTerm) ||
+      user.userCode.toLowerCase().includes(lowerSearchTerm) ||
+      user.mobile.includes(searchTerm) ||
+      user.email?.toLowerCase().includes(lowerSearchTerm)
+    );
+  }, [users, searchTerm]);
 
   useEffect(() => {
     setCurrentPage(1);
