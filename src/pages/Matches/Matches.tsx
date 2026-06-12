@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -140,12 +140,13 @@ const Matches = () => {
                     }
 
                     // Optimized: Photos are now included in the response data from backend
+                    const currentYear = new Date().getFullYear();
                     const mappedMatches = response.data.map((profile: any) => {
                         // Calculate age from dateOfBirth
                         let age: number | null = null;
                         if (profile.basicDetail?.dateOfBirth) {
                             const birthYear = new Date(profile.basicDetail.dateOfBirth).getFullYear();
-                            age = new Date().getFullYear() - birthYear;
+                            age = currentYear - birthYear;
                         }
 
                         // Map photo from personPhoto association
@@ -208,16 +209,18 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
             fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+            // Pre-calculate timestamp to avoid multiple new Date() calls during filter
+            const fiveDaysAgoTime = fiveDaysAgo.getTime();
 
             return allMatches.filter(match => {
                 if (match.createdAt) {
-                    const createdDate = new Date(match.createdAt);
-                    return createdDate >= fiveDaysAgo;
+                    const createdTime = new Date(match.createdAt).getTime();
+                    return createdTime >= fiveDaysAgoTime;
                 }
                 return false;
             });
@@ -230,14 +233,20 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
-    const totalProfiles = filteredProfiles.length;
-    const totalPages = Math.ceil(totalProfiles / profilesPerPage);
+    const totalProfiles = useMemo(() => filteredProfiles.length, [filteredProfiles]);
+    const totalPages = useMemo(() => Math.ceil(totalProfiles / profilesPerPage), [totalProfiles, profilesPerPage]);
+
+    const currentProfiles = useMemo(() => {
+        const indexOfLastProfile = currentPage * profilesPerPage;
+        const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, currentPage, profilesPerPage]);
+
+    // Expose variables for JSX
+    const indexOfFirstProfile = (currentPage - 1) * profilesPerPage;
     const indexOfLastProfile = currentPage * profilesPerPage;
-    const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);

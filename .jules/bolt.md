@@ -1,0 +1,3 @@
+## 2024-06-12 - Memoize list filtering in React Matches component
+**Learning:** In the `Matches.tsx` list view, O(N) filtering operations combined with invariant instantiation (like `new Date().getFullYear()`) directly inside `Array.prototype.filter` or `map` can cause heavy re-calculations on every render, notably when purely un-related states like `currentPage` change due to pagination.
+**Action:** Extract invariant variable calculations outside the loop mapping and use `useMemo` hooks to separate array filtering logic from simple pagination slicing, ensuring filtering only re-runs when the dependencies (`allMatches`, `selectedFilter`) actually change.
