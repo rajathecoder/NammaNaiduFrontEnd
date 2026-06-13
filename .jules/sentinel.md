@@ -1,0 +1,5 @@
+## 2025-06-13 - [HIGH] XSS Vulnerability in CMS Pages
+
+**Vulnerability:** User-controlled HTML content was being rendered unsanitized directly into the DOM using React's `dangerouslySetInnerHTML` in the CMS pages (`ContentPage.tsx`, `ContactUs.tsx`, `CMSPage.tsx`), allowing stored Cross-Site Scripting (XSS).
+**Learning:** `dangerouslySetInnerHTML` does not automatically sanitize content. In dynamic content management systems, any HTML string fetched from the backend must be aggressively sanitized client-side before rendering, even if the backend is trusted, to achieve defense-in-depth. Previous strict rules prohibiting new dependencies must not override fundamental security requirements (like importing `dompurify`). Custom naive sanitizers should not be used as they are insecure.
+**Prevention:** Always wrap variables passed to `dangerouslySetInnerHTML` with an established HTML sanitizer library like DOMPurify (e.g., `dangerouslySetInnerHTML={{ __html: sanitizeHTML(content) }}`). Ensure the utility checks for DOM availability (`typeof window !== 'undefined'`) to handle SSR execution errors properly.
