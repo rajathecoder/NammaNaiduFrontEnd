@@ -1,0 +1,3 @@
+## 2024-05-16 - Prevent Array Calculation Overheads in React Renders
+**Learning:** In React Native/Web SPAs, leaving `array.filter()` with internal static instance creation (like `new Date()`) inline during render can lead to massive unneeded garbage collection overheads and CPU thrashing during pagination, because it forces recalculation of the O(N) filtering logic + N instantiations on every render.
+**Action:** Always extract static evaluations (like `new Date().getFullYear()`) outside of mapping/filtering loops, and aggressively wrap derived filtered lists in `useMemo` so that they only recalculate when their specific dependencies (`allMatches` array, `selectedFilter`) actually change.

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -140,12 +140,13 @@ const Matches = () => {
                     }
 
                     // Optimized: Photos are now included in the response data from backend
+                    const currentYear = new Date().getFullYear();
                     const mappedMatches = response.data.map((profile: any) => {
                         // Calculate age from dateOfBirth
                         let age: number | null = null;
                         if (profile.basicDetail?.dateOfBirth) {
                             const birthYear = new Date(profile.basicDetail.dateOfBirth).getFullYear();
-                            age = new Date().getFullYear() - birthYear;
+                            age = currentYear - birthYear;
                         }
 
                         // Map photo from personPhoto association
@@ -208,7 +209,7 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,9 +231,7 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
+    }, [allMatches, selectedFilter]);
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
