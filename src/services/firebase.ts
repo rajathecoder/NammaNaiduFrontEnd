@@ -11,12 +11,12 @@ import type { Firestore } from 'firebase/firestore';
 import type { Messaging } from 'firebase/messaging';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyDBJgZO200L2KrfS4tKtE5VyTKKUZrULvk',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'nammamatrimonyapp.firebaseapp.com',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'nammamatrimonyapp',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:171195418276:web:b31ecb170ecfa29c4b4831',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '171195418276',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'nammamatrimonyapp.firebasestorage.app',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
 };
 
 // VAPID key for web push - get this from Firebase Console > Project Settings > Cloud Messaging > Web Push certificates
@@ -26,6 +26,10 @@ let confirmationResult: ConfirmationResult | null = null;
 let recaptchaVerifier: RecaptchaVerifier | null = null;
 
 const ensureFirebaseApp = () => {
+  if (!firebaseConfig.apiKey) {
+    console.error('Firebase configuration is missing (no apiKey).');
+    return;
+  }
   if (!getApps().length) {
     initializeApp(firebaseConfig);
   }
@@ -129,7 +133,15 @@ export const requestFcmToken = async (): Promise<string | null> => {
     // Register service worker
     let registration: ServiceWorkerRegistration | undefined;
     if ('serviceWorker' in navigator) {
-      registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      const swUrl = new URL('/firebase-messaging-sw.js', window.location.href);
+      swUrl.searchParams.set('apiKey', firebaseConfig.apiKey || '');
+      swUrl.searchParams.set('authDomain', firebaseConfig.authDomain || '');
+      swUrl.searchParams.set('projectId', firebaseConfig.projectId || '');
+      swUrl.searchParams.set('storageBucket', firebaseConfig.storageBucket || '');
+      swUrl.searchParams.set('messagingSenderId', firebaseConfig.messagingSenderId || '');
+      swUrl.searchParams.set('appId', firebaseConfig.appId || '');
+
+      registration = await navigator.serviceWorker.register(swUrl.toString());
       console.log('Service Worker registered:', registration.scope);
     }
 
