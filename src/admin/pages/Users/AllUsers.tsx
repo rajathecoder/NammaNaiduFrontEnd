@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../../services/api/admin.api';
 import { getApiUrl } from '../../../config/api.config';
@@ -141,20 +141,23 @@ const AllUsers: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = 
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.mobile && user.mobile.includes(searchTerm)) ||
-      (user.email && user.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (user.userCode && user.userCode.toLowerCase().includes(searchTerm.toLowerCase()));
-    
-    const matchesStatus = filterStatus === 'all' || 
-      (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
-      (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
-    const matchesGender = filterGender === 'all' || user.gender === filterGender;
-    
-    return matchesSearch && matchesStatus && matchesGender;
-  });
+  const filteredUsers = useMemo(() => {
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return users.filter(user => {
+      const matchesSearch =
+        user.name?.toLowerCase().includes(lowerSearchTerm) ||
+        (user.mobile && user.mobile.includes(searchTerm)) ||
+        (user.email && user.email.toLowerCase().includes(lowerSearchTerm)) ||
+        (user.userCode && user.userCode.toLowerCase().includes(lowerSearchTerm));
+
+      const matchesStatus = filterStatus === 'all' ||
+        (filterStatus === 'Active' && (user.status === 'Active' || user.status === 'active')) ||
+        (filterStatus === 'Inactive' && (user.status === 'Inactive' || user.status === 'inactive'));
+      const matchesGender = filterGender === 'all' || user.gender === filterGender;
+
+      return matchesSearch && matchesStatus && matchesGender;
+    });
+  }, [users, searchTerm, filterStatus, filterGender]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -166,6 +169,10 @@ const AllUsers: React.FC = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+  // Memoize counts to prevent recalculation on every render
+  const maleCount = useMemo(() => users.filter(u => u.gender === 'Male').length, [users]);
+  const femaleCount = useMemo(() => users.filter(u => u.gender === 'Female').length, [users]);
 
   // Helper function to get verification status badge
   const getVerificationStatus = (status: number | undefined): React.JSX.Element => {
@@ -298,13 +305,13 @@ const AllUsers: React.FC = () => {
           className={`flex-1 py-2 px-4 rounded-md font-semibold transition-all duration-200 ${filterGender === 'Male' ? 'bg-[#14b8a6] text-white' : 'bg-transparent text-gray-600 hover:bg-gray-100'}`}
           onClick={() => setFilterGender('Male')}
         >
-          👨 Male ({users.filter(u => u.gender === 'Male').length})
+          👨 Male ({maleCount})
         </button>
         <button
           className={`flex-1 py-2 px-4 rounded-md font-semibold transition-all duration-200 ${filterGender === 'Female' ? 'bg-[#14b8a6] text-white' : 'bg-transparent text-gray-600 hover:bg-gray-100'}`}
           onClick={() => setFilterGender('Female')}
         >
-          👩 Female ({users.filter(u => u.gender === 'Female').length})
+          👩 Female ({femaleCount})
         </button>
       </div>
 
