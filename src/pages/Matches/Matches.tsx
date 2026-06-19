@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -113,12 +113,10 @@ const Matches = () => {
                     return;
                 }
 
-                // Fetch opposite gender profiles
-                const response = await getOppositeGenderProfiles(authData.token);
-
-                if (response.success && response.data) {
-                    // Fetch user's shortlist actions to mark profiles
-                    const shortlistResponse = await fetch(
+                // Run API calls concurrently
+                const [response, shortlistResponse, interestsResponse] = await Promise.all([
+                    getOppositeGenderProfiles(authData.token),
+                    fetch(
                         `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=shortlist`,
                         {
                             method: 'GET',
@@ -127,15 +125,37 @@ const Matches = () => {
                                 'Authorization': `Bearer ${authData.token}`
                             }
                         }
-                    );
+                    ).catch(err => {
+                        console.error('Error fetching shortlist:', err);
+                        return null;
+                    }),
+                    fetch(
+                        `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=interest`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${authData.token}`
+                            }
+                        }
+                    ).catch(err => {
+                        console.error('Error fetching sent interests:', err);
+                        return null;
+                    })
+                ]);
 
-                    let shortlistedIds = new Set();
-                    if (shortlistResponse.ok) {
-                        const dl = await shortlistResponse.json();
-                        if (dl.success && dl.data) {
-                            dl.data.forEach((action: any) => {
-                                shortlistedIds.add(action.targetUserId || action.targetUser?.accountId);
-                            });
+                if (response.success && response.data) {
+                    const shortlistedIds = new Set();
+                    if (shortlistResponse && shortlistResponse.ok) {
+                        try {
+                            const dl = await shortlistResponse.json();
+                            if (dl.success && dl.data) {
+                                dl.data.forEach((action: any) => {
+                                    shortlistedIds.add(action.targetUserId || action.targetUser?.accountId);
+                                });
+                            }
+                        } catch (e) {
+                            console.error('Error parsing shortlist JSON:', e);
                         }
                     }
 
@@ -163,20 +183,8 @@ const Matches = () => {
 
                     setAllMatches(mappedMatches);
 
-                    // Fetch user's sent interests to determine button state
-                    try {
-                        const interestsResponse = await fetch(
-                            `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=interest`,
-                            {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${authData.token}`
-                                }
-                            }
-                        );
-
-                        if (interestsResponse.ok) {
+                    if (interestsResponse && interestsResponse.ok) {
+                        try {
                             const interestsData = await interestsResponse.json();
                             if (interestsData.success && interestsData.data) {
                                 const sentIds = new Set<string>();
@@ -185,9 +193,9 @@ const Matches = () => {
                                 });
                                 setSentInterests(sentIds);
                             }
+                        } catch (e) {
+                            console.error('Error parsing interests JSON:', e);
                         }
-                    } catch (error) {
-                        console.error('Error fetching sent interests:', error);
                     }
                 }
             } catch (error) {
@@ -207,8 +215,8 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // Calculate pagination with filtering using useMemo
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,9 +238,7 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
+    }, [allMatches, selectedFilter]);
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
