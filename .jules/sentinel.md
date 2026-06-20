@@ -1,0 +1,4 @@
+## 2025-02-14 - Fix XSS in CMS Pages via dangerouslySetInnerHTML
+**Vulnerability:** Cross-Site Scripting (XSS) vulnerability was present in CMS pages (`ContentPage.tsx`, `ContactUs.tsx`, `CMSPage.tsx`) where raw, unsanitized HTML from the API/user input was directly injected into the DOM via React's `dangerouslySetInnerHTML`.
+**Learning:** `dangerouslySetInnerHTML` should never be used with unsanitized API data. Even if the data comes from our own "admin", a compromised admin account or man-in-the-middle could inject malicious scripts.
+**Prevention:** Always sanitize HTML data on the client side using a trusted library like `dompurify` before passing it to `dangerouslySetInnerHTML`. The `sanitizeHTML` utility created provides a safe wrapper for `DOMPurify.sanitize()` including an SSR environment check.
