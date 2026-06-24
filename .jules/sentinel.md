@@ -1,0 +1,1 @@
+## 2024-05-30 - Sentinel initialization\n**Vulnerability:** Hardcoded API Keys in frontend code.\n**Learning:** Keys present in source expose secrets.\n**Prevention:** Use environment variables and remove default fallback values.
