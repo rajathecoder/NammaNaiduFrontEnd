@@ -1,0 +1,3 @@
+## 2024-06-25 - Promise.all Fault Tolerance and React useMemo
+**Learning:** When refactoring sequential API requests into a concurrent `Promise.all` array to prevent network waterfall delays, appending `.catch()` to each individual promise is critical. Without it, a single API failure (e.g., fetching sent interests) rejects the entire batch, breaking the UI. Additionally, memoizing expensive array filtering with `useMemo` is essential to prevent unnecessary re-computations on every render.
+**Action:** Always append `.catch()` blocks to individual promises within `Promise.all` arrays for independent data sources. Always wrap derived, computationally intensive state derived from props or other state variables in `useMemo`.
