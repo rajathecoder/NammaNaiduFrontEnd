@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -113,12 +113,13 @@ const Matches = () => {
                     return;
                 }
 
-                // Fetch opposite gender profiles
-                const response = await getOppositeGenderProfiles(authData.token);
-
-                if (response.success && response.data) {
-                    // Fetch user's shortlist actions to mark profiles
-                    const shortlistResponse = await fetch(
+                // Fetch opposite gender profiles, shortlist actions, and interest actions concurrently
+                const [response, shortlistResponse, interestsResponse] = await Promise.all([
+                    getOppositeGenderProfiles(authData.token).catch(err => {
+                        console.error('Error fetching opposite gender profiles:', err);
+                        return { success: false, data: null };
+                    }),
+                    fetch(
                         `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=shortlist`,
                         {
                             method: 'GET',
@@ -127,15 +128,37 @@ const Matches = () => {
                                 'Authorization': `Bearer ${authData.token}`
                             }
                         }
-                    );
+                    ).catch(err => {
+                        console.error('Error fetching shortlist actions:', err);
+                        return null;
+                    }),
+                    fetch(
+                        `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=interest`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${authData.token}`
+                            }
+                        }
+                    ).catch(err => {
+                        console.error('Error fetching interest actions:', err);
+                        return null;
+                    })
+                ]);
 
+                if (response && response.success && response.data) {
                     let shortlistedIds = new Set();
-                    if (shortlistResponse.ok) {
-                        const dl = await shortlistResponse.json();
-                        if (dl.success && dl.data) {
-                            dl.data.forEach((action: any) => {
-                                shortlistedIds.add(action.targetUserId || action.targetUser?.accountId);
-                            });
+                    if (shortlistResponse && shortlistResponse.ok) {
+                        try {
+                            const dl = await shortlistResponse.json();
+                            if (dl.success && dl.data) {
+                                dl.data.forEach((action: any) => {
+                                    shortlistedIds.add(action.targetUserId || action.targetUser?.accountId);
+                                });
+                            }
+                        } catch (error) {
+                            console.error('Error parsing shortlist response:', error);
                         }
                     }
 
@@ -162,32 +185,20 @@ const Matches = () => {
                     });
 
                     setAllMatches(mappedMatches);
+                }
 
-                    // Fetch user's sent interests to determine button state
+                if (interestsResponse && interestsResponse.ok) {
                     try {
-                        const interestsResponse = await fetch(
-                            `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=interest`,
-                            {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${authData.token}`
-                                }
-                            }
-                        );
-
-                        if (interestsResponse.ok) {
-                            const interestsData = await interestsResponse.json();
-                            if (interestsData.success && interestsData.data) {
-                                const sentIds = new Set<string>();
-                                interestsData.data.forEach((action: any) => {
-                                    sentIds.add(action.targetUserId || action.targetUser?.accountId);
-                                });
-                                setSentInterests(sentIds);
-                            }
+                        const interestsData = await interestsResponse.json();
+                        if (interestsData.success && interestsData.data) {
+                            const sentIds = new Set<string>();
+                            interestsData.data.forEach((action: any) => {
+                                sentIds.add(action.targetUserId || action.targetUser?.accountId);
+                            });
+                            setSentInterests(sentIds);
                         }
                     } catch (error) {
-                        console.error('Error fetching sent interests:', error);
+                        console.error('Error parsing interests response:', error);
                     }
                 }
             } catch (error) {
@@ -208,7 +219,7 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,9 +241,8 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
