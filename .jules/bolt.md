@@ -1,0 +1,3 @@
+## 2024-06-26 - [Concurrent API Fetching with Fault Tolerance]
+**Learning:** Refactoring sequential API requests in React components (like `fetchMatches`) to run concurrently via `Promise.all` can significantly improve perceived load times. However, if any single promise fails, it breaks the entire `Promise.all`. To prevent UI breakage and maintain fault tolerance, every individual promise must include a `.catch()` block that logs the error (e.g., `console.error`) and returns a safe fallback.
+**Action:** Always append `.catch()` directly to each individual promise within the `Promise.all` array to preserve debuggability and ensure partial data can still be displayed if one service fails.
