@@ -1,0 +1,3 @@
+## 2024-05-24 - React useMemo and Promise.all API refactoring
+**Learning:** Found sequential API requests in the `Matches` component where independent network calls (user profiles, shortlists, sent interests) were executed one after the other, causing a waterfall delay. Filtering logic for calculating matches based on date was running unnecessarily on every render cycle.
+**Action:** Used `Promise.all` coupled with `.catch()` block fallbacks to parallelize data fetching safely. Adopted React's `useMemo` to memoize the computationally expensive `getFilteredProfiles` calculation. Next time, preemptively look for synchronous sequential API patterns during code reviews.
