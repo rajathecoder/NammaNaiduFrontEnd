@@ -1,0 +1,3 @@
+## 2025-03-09 - [Optimize Matches.tsx Concurrent API Fetching & Memoization]
+**Learning:** `Matches.tsx` currently fetches opposite gender profiles, shortlist actions, and interest actions sequentially using standard `await`, which can cause a network waterfall and slow down the initial render speed for matches. Additionally, `getFilteredProfiles` computes filtered matches on every render, not taking advantage of React's `useMemo` to prevent unnecessary filtering operations.
+**Action:** Use `Promise.all` alongside `.catch()` blocks on the shortlist and interest fetch operations (to ensure fault tolerance) to fetch all initial match data concurrently. Also, memoize the `filteredProfiles` computation using `useMemo` based on `allMatches` and `selectedFilter`.
