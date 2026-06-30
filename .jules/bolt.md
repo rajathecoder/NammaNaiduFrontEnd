@@ -1,0 +1,3 @@
+## 2024-05-18 - Optimize API calls and filtering in Matches Component
+**Learning:** Sequential API calls in React components (`useEffect`) significantly block UI rendering. Combining independent calls using `Promise.all` improves perceived load time. Derived states from complex arrays should be wrapped in `useMemo` to avoid redundant computations on every component re-render.
+**Action:** Always check for independent async calls that can be run concurrently with `Promise.all` and `.catch()` blocks for fault tolerance. Use `useMemo` for filtering, sorting, or derived computations on large arrays like search results or match lists.
