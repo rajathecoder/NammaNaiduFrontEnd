@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -113,22 +113,27 @@ const Matches = () => {
                     return;
                 }
 
-                // Fetch opposite gender profiles
-                const response = await getOppositeGenderProfiles(authData.token);
-
-                if (response.success && response.data) {
-                    // Fetch user's shortlist actions to mark profiles
-                    const shortlistResponse = await fetch(
-                        `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=shortlist`,
-                        {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${authData.token}`
-                            }
+                // ⚡ Bolt Optimization: Use Promise.all to fetch independent data sources concurrently
+                // This prevents network waterfall delays
+                const [profilesResponse, shortlistResponse, interestsResponse] = await Promise.all([
+                    getOppositeGenderProfiles(authData.token),
+                    fetch(`${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=shortlist`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authData.token}`
                         }
-                    );
+                    }).catch(() => ({ ok: false, json: async () => ({}) } as Response)),
+                    fetch(`${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=interest`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authData.token}`
+                        }
+                    }).catch(() => ({ ok: false, json: async () => ({}) } as Response))
+                ]);
 
+                if (profilesResponse.success && profilesResponse.data) {
                     let shortlistedIds = new Set();
                     if (shortlistResponse.ok) {
                         const dl = await shortlistResponse.json();
@@ -139,8 +144,19 @@ const Matches = () => {
                         }
                     }
 
+                    let sentIds = new Set<string>();
+                    if (interestsResponse.ok) {
+                        const interestsData = await interestsResponse.json();
+                        if (interestsData.success && interestsData.data) {
+                            interestsData.data.forEach((action: any) => {
+                                sentIds.add(action.targetUserId || action.targetUser?.accountId);
+                            });
+                            setSentInterests(sentIds);
+                        }
+                    }
+
                     // Optimized: Photos are now included in the response data from backend
-                    const mappedMatches = response.data.map((profile: any) => {
+                    const mappedMatches = profilesResponse.data.map((profile: any) => {
                         // Calculate age from dateOfBirth
                         let age: number | null = null;
                         if (profile.basicDetail?.dateOfBirth) {
@@ -162,33 +178,6 @@ const Matches = () => {
                     });
 
                     setAllMatches(mappedMatches);
-
-                    // Fetch user's sent interests to determine button state
-                    try {
-                        const interestsResponse = await fetch(
-                            `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=interest`,
-                            {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${authData.token}`
-                                }
-                            }
-                        );
-
-                        if (interestsResponse.ok) {
-                            const interestsData = await interestsResponse.json();
-                            if (interestsData.success && interestsData.data) {
-                                const sentIds = new Set<string>();
-                                interestsData.data.forEach((action: any) => {
-                                    sentIds.add(action.targetUserId || action.targetUser?.accountId);
-                                });
-                                setSentInterests(sentIds);
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error fetching sent interests:', error);
-                    }
                 }
             } catch (error) {
                 console.error('Error fetching matches:', error);
@@ -207,8 +196,8 @@ const Matches = () => {
 
 
 
-    // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt Optimization: Memoize filtered and paginated profiles to prevent unnecessary recalculations on every render
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,14 +219,16 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [allMatches, selectedFilter]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
     const indexOfFirstProfile = indexOfLastProfile - profilesPerPage;
-    const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+
+    const currentProfiles = useMemo(() => {
+        return filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile);
+    }, [filteredProfiles, indexOfFirstProfile, indexOfLastProfile]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
