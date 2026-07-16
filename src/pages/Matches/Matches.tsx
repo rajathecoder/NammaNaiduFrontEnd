@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -113,12 +113,10 @@ const Matches = () => {
                     return;
                 }
 
-                // Fetch opposite gender profiles
-                const response = await getOppositeGenderProfiles(authData.token);
-
-                if (response.success && response.data) {
-                    // Fetch user's shortlist actions to mark profiles
-                    const shortlistResponse = await fetch(
+                // Fetch data concurrently
+                const [profilesResponse, shortlistResponse, interestsResponse] = await Promise.all([
+                    getOppositeGenderProfiles(authData.token),
+                    fetch(
                         `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=shortlist`,
                         {
                             method: 'GET',
@@ -127,20 +125,42 @@ const Matches = () => {
                                 'Authorization': `Bearer ${authData.token}`
                             }
                         }
-                    );
+                    ).catch(err => {
+                        console.error('Error fetching shortlists:', err);
+                        return { ok: false, json: async () => ({}) } as Response;
+                    }),
+                    fetch(
+                        `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=interest`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${authData.token}`
+                            }
+                        }
+                    ).catch(err => {
+                        console.error('Error fetching sent interests:', err);
+                        return { ok: false, json: async () => ({}) } as Response;
+                    })
+                ]);
 
+                if (profilesResponse.success && profilesResponse.data) {
                     let shortlistedIds = new Set();
                     if (shortlistResponse.ok) {
-                        const dl = await shortlistResponse.json();
-                        if (dl.success && dl.data) {
-                            dl.data.forEach((action: any) => {
-                                shortlistedIds.add(action.targetUserId || action.targetUser?.accountId);
-                            });
+                        try {
+                            const dl = await shortlistResponse.json();
+                            if (dl.success && dl.data) {
+                                dl.data.forEach((action: any) => {
+                                    shortlistedIds.add(action.targetUserId || action.targetUser?.accountId);
+                                });
+                            }
+                        } catch (e) {
+                            console.error('Error parsing shortlist JSON', e);
                         }
                     }
 
                     // Optimized: Photos are now included in the response data from backend
-                    const mappedMatches = response.data.map((profile: any) => {
+                    const mappedMatches = profilesResponse.data.map((profile: any) => {
                         // Calculate age from dateOfBirth
                         let age: number | null = null;
                         if (profile.basicDetail?.dateOfBirth) {
@@ -163,20 +183,8 @@ const Matches = () => {
 
                     setAllMatches(mappedMatches);
 
-                    // Fetch user's sent interests to determine button state
-                    try {
-                        const interestsResponse = await fetch(
-                            `${getApiUrl(API_ENDPOINTS.USERS.MY_PROFILE_ACTIONS)}?actionType=interest`,
-                            {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${authData.token}`
-                                }
-                            }
-                        );
-
-                        if (interestsResponse.ok) {
+                    if (interestsResponse.ok) {
+                        try {
                             const interestsData = await interestsResponse.json();
                             if (interestsData.success && interestsData.data) {
                                 const sentIds = new Set<string>();
@@ -185,9 +193,9 @@ const Matches = () => {
                                 });
                                 setSentInterests(sentIds);
                             }
+                        } catch (e) {
+                            console.error('Error parsing interests JSON', e);
                         }
-                    } catch (error) {
-                        console.error('Error fetching sent interests:', error);
                     }
                 }
             } catch (error) {
@@ -208,7 +216,7 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,9 +238,8 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
+    }, [selectedFilter, allMatches]);
 
-    const filteredProfiles = getFilteredProfiles();
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
