@@ -1,0 +1,4 @@
+## 2024-11-23 - Prevent XSS in CMS Pages via DOMPurify
+**Vulnerability:** CMS content pages (`src/pages/CMS/ContentPage.tsx`, `src/pages/CMS/ContactUs.tsx`, `src/admin/pages/CMS/CMSPage.tsx`) directly rendered backend API responses containing raw HTML via `dangerouslySetInnerHTML` without any client-side sanitization, exposing users to Stored XSS if the CMS backend was compromised or lacked strict validation.
+**Learning:** The assumption that API responses for CMS content are inherently safe or previously sanitized (e.g., via a non-existent `src/utils/sanitize.ts`) is a dangerous false flag in frontend architectures. Client-side sanitization must be strictly enforced regardless of expected backend behavior.
+**Prevention:** Always parse and sanitize any dynamic HTML from external APIs using `DOMPurify` before injecting it into the DOM via `dangerouslySetInnerHTML`, ensuring defense-in-depth on the client side.
