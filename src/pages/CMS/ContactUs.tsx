@@ -1,3 +1,4 @@
+import { sanitizeHTML } from '../../utils/sanitize';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api.config';
@@ -78,7 +79,8 @@ const ContactUs = () => {
           {!loading && page?.content && (
             <div
               className="cms-html-content contact-intro"
-              dangerouslySetInnerHTML={{ __html: page.content }}
+              // Sanitize CMS content to prevent XSS
+                dangerouslySetInnerHTML={{ __html: sanitizeHTML(page.content) }}
             />
           )}
 
