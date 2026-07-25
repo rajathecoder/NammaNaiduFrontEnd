@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -129,10 +129,11 @@ const Matches = () => {
                         }
                     );
 
-                    let shortlistedIds = new Set();
+                    const shortlistedIds = new Set();
                     if (shortlistResponse.ok) {
                         const dl = await shortlistResponse.json();
                         if (dl.success && dl.data) {
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             dl.data.forEach((action: any) => {
                                 shortlistedIds.add(action.targetUserId || action.targetUser?.accountId);
                             });
@@ -140,6 +141,7 @@ const Matches = () => {
                     }
 
                     // Optimized: Photos are now included in the response data from backend
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const mappedMatches = response.data.map((profile: any) => {
                         // Calculate age from dateOfBirth
                         let age: number | null = null;
@@ -180,6 +182,7 @@ const Matches = () => {
                             const interestsData = await interestsResponse.json();
                             if (interestsData.success && interestsData.data) {
                                 const sentIds = new Set<string>();
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 interestsData.data.forEach((action: any) => {
                                     sentIds.add(action.targetUserId || action.targetUser?.accountId);
                                 });
@@ -208,7 +211,8 @@ const Matches = () => {
 
 
     // Calculate pagination with filtering
-    const getFilteredProfiles = () => {
+    // ⚡ Bolt: Memoize filtered profiles to avoid O(N) recalculations
+    const filteredProfiles = useMemo(() => {
         if (selectedFilter === 'newly-joined') {
             // Filter profiles created in the last 5 days
             const fiveDaysAgo = new Date();
@@ -230,9 +234,7 @@ const Matches = () => {
 
         // Add other filters here if needed
         return allMatches;
-    };
-
-    const filteredProfiles = getFilteredProfiles();
+    }, [allMatches, selectedFilter]);
     const totalProfiles = filteredProfiles.length;
     const totalPages = Math.ceil(totalProfiles / profilesPerPage);
     const indexOfLastProfile = currentPage * profilesPerPage;
