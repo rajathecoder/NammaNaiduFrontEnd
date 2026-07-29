@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import verifiedBadge from '../../../assets/images/verified-badge.png';
 
 interface MatchCardProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     profile: any;
     profilePhoto?: string;
     primaryButtonText?: string;
@@ -116,5 +117,5 @@ const MatchCard: React.FC<MatchCardProps> = ({
 };
 
 
-export default MatchCard;
+export default React.memo(MatchCard);
 
