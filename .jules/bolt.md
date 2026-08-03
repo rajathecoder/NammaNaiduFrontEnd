@@ -1,0 +1,3 @@
+## 2025-02-18 - Eliminated N+1 photo fetching in HomePage and Matches
+**Learning:** The backend `getOppositeGenderProfiles` API payload already includes the user's primary photo link nested at `personPhoto.photo1`. Previously, the frontend performed separate `/api/users/photos` (`GET_PHOTOS`) API calls for each profile. This led to an N+1 query problem, heavily degrading rendering performance for the initial load.
+**Action:** Removed redundant individual photo API calls within loops (e.g., in `HomePage.tsx`, `useHomePageData.ts`). Directly mapped `personPhoto.photo1` into the frontend state for performance gains. Always check existing API payload data first before making secondary requests.
