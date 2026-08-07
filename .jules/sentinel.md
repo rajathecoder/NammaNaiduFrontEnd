@@ -1,0 +1,4 @@
+## 2025-02-27 - Reject Custom Sanitizers
+**Vulnerability:** XSS mitigation implemented using a custom `DOMParser`-based sanitizer.
+**Learning:** Custom HTML sanitizers are an insecure anti-pattern. Even seemingly comprehensive `DOMParser` logic (removing `<script>`, `on*` events, `javascript:` URIs) can be bypassed by edge cases like tab/newline characters in URIs (`<a href="java&#x09;script:alert(1)">`), nested documents (`iframe srcdoc`), and obscure dangerous elements (`<object data=...>`).
+**Prevention:** Strictly adhere to the 'Ask first' boundary for new security dependencies. When encountering missing sanitization, propose the installation of battle-tested libraries (like `dompurify` or `sanitize-html`) and document the necessity, rather than attempting to roll a vulnerable custom fallback.
