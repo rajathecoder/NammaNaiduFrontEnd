@@ -371,44 +371,13 @@ const HomePage = () => {
                     setOppositeGenderProfiles(response.data);
                     console.log(`Successfully loaded ${response.data.length} profiles`);
 
-                    // Fetch photos for each profile
+                    // ⚡ Bolt: Prevent N+1 API calls by mapping photos directly from the nested relation included in the initial payload
                     const photosMap: Record<string, { photo1link?: string }> = {};
-                    await Promise.all(
-                        response.data.map(async (profile: UserProfile) => {
-                            try {
-                                const photosResponse = await fetch(
-                                    getApiUrl(API_ENDPOINTS.USERS.GET_PHOTOS(profile.accountId)),
-                                    {
-                                        method: 'GET',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'Authorization': `Bearer ${authData.token}`
-                                        }
-                                    }
-                                );
-
-                                if (photosResponse.ok) {
-                                    const photosData = await photosResponse.json();
-                                    if (photosData.success && photosData.data?.personphoto) {
-                                        const photos = photosData.data.personphoto;
-                                        if (Array.isArray(photos) && photos.length > 0) {
-                                            // Find photo1 - API returns objects with photoplacement and photo1link
-                                            const photo1 = photos.find((p: any) => p.photoplacement === 1);
-                                            if (photo1) {
-                                                // The link is stored as photo1link when photoplacement is 1
-                                                const photo1link = photo1.photo1link;
-                                                if (photo1link && photo1link.trim() !== '' && photo1link !== 'null') {
-                                                    photosMap[profile.accountId] = { photo1link: photo1link };
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            } catch (error) {
-                                console.error(`Error fetching photos for ${profile.accountId}:`, error);
-                            }
-                        })
-                    );
+                    response.data.forEach((profile: UserProfile & { personPhoto?: { photo1?: string } }) => {
+                        if (profile.personPhoto?.photo1 && profile.personPhoto.photo1 !== 'null') {
+                            photosMap[profile.accountId] = { photo1link: profile.personPhoto.photo1 };
+                        }
+                    });
                     setProfilePhotos(photosMap);
 
                     // Fetch user's sent interests to determine button state
