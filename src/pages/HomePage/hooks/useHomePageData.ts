@@ -6,7 +6,7 @@ import { getAuthData, clearAuthData } from '../../../utils/auth';
 
 export const useHomePageData = () => {
     const navigate = useNavigate();
-    const [userInfo, setUserInfo] = useState<any>(null);
+    const [userInfo, setUserInfo] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const [oppositeGenderProfiles, setOppositeGenderProfiles] = useState<UserProfile[]>([]);
     const [profilesLoading, setProfilesLoading] = useState(false);
@@ -81,41 +81,16 @@ export const useHomePageData = () => {
             const profiles = response.data || [];
             setOppositeGenderProfiles(profiles);
 
-            // Fetch photos for each profile
+            // ⚡ Bolt: Prevent N+1 fetches by extracting photo1 from the payload directly.
+            // This eliminates redundant API calls and improves page load performance.
             if (authData?.token) {
-                const photoPromises = profiles.map(async (profile: UserProfile) => {
-                    try {
-                        const photoResponse = await fetch(
-                            getApiUrl(API_ENDPOINTS.USERS.GET_PHOTOS(profile.accountId)),
-                            {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${authData.token}`
-                                }
-                            }
-                        );
-
-                        if (photoResponse.ok) {
-                            const photoData = await photoResponse.json();
-                            if (photoData.success && photoData.data) {
-                                return {
-                                    accountId: profile.accountId,
-                                    photo1link: photoData.data.personphoto?.[0]?.photo1link || null
-                                };
-                            }
-                        }
-                    } catch (error) {
-                        console.error(`Error fetching photos for ${profile.accountId}:`, error);
-                    }
-                    return { accountId: profile.accountId, photo1link: null };
-                });
-
-                const photos = await Promise.all(photoPromises);
                 const photosMap: Record<string, { photo1link?: string }> = {};
-                photos.forEach(photo => {
-                    if (photo.photo1link) {
-                        photosMap[photo.accountId] = { photo1link: photo.photo1link };
+                profiles.forEach((profile: UserProfile & { personphoto?: Array<{ photoplacement: number, photo1link?: string }> }) => {
+                    if (profile.personphoto && Array.isArray(profile.personphoto)) {
+                        const photo1 = profile.personphoto.find(p => p.photoplacement === 1);
+                        if (photo1 && photo1.photo1link) {
+                            photosMap[profile.accountId] = { photo1link: photo1.photo1link };
+                        }
                     }
                 });
                 setProfilePhotos(photosMap);
@@ -147,12 +122,12 @@ export const useHomePageData = () => {
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success && data.data) {
-                        const photoLinks: any = {};
+                        const photoLinks: Record<string, string> = {};
                         if (data.data.personphoto && Array.isArray(data.data.personphoto)) {
-                            data.data.personphoto.forEach((photo: any) => {
+                            data.data.personphoto.forEach((photo: Record<string, unknown>) => {
                                 const placement = photo.photoplacement;
                                 const linkKey = `photo${placement}link` as keyof typeof photoLinks;
-                                photoLinks[linkKey] = photo[linkKey];
+                                photoLinks[linkKey] = photo[linkKey] as string;
                             });
                         }
                         setUserPhotos(photoLinks);
@@ -166,6 +141,7 @@ export const useHomePageData = () => {
 
     useEffect(() => {
         verifyAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -173,6 +149,7 @@ export const useHomePageData = () => {
             fetchOppositeGenderProfiles();
             fetchUserPhotos();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userInfo, loading]);
 
     return {
