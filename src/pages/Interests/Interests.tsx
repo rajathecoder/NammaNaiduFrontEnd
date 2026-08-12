@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/layout/Header';
 import Loading from '../../components/common/Loading';
@@ -148,6 +148,7 @@ const Interests = () => {
                 const data = await response.json();
                 if (data.success && data.data) {
                     const shortlistedIds = new Set<string>();
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     data.data.forEach((action: any) => {
                         shortlistedIds.add(action.targetUserId || action.targetUser?.accountId);
                     });
@@ -205,10 +206,12 @@ const Interests = () => {
 
                     if (sentData?.success && sentData.data) {
                         // Filter for only 'interest' and 'accept' actions
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         const relevantActions = sentData.data.filter((action: any) =>
                             action.actionType === 'interest' || action.actionType === 'accept'
                         );
 
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         myInterests = relevantActions.map((action: any) => {
                             const profile = action.targetUser;
                             if (!profile) return null;
@@ -231,6 +234,7 @@ const Interests = () => {
                     if (receivedData?.success && receivedData.data) {
                         // For received, we only care about pending interests
                         // But we also need to filter out ones we've already Accepted (which are in myInterests now)
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         otherInterests = receivedData.data.map((action: any) => {
                             const profile = action.user;
                             if (!profile) return null;
@@ -268,6 +272,11 @@ const Interests = () => {
         fetchInterests();
     }, [navigate]);
 
+    // ⚡ Bolt: Memoize the current interests selection to avoid re-evaluating on unrelated renders
+    const currentInterests = useMemo(() =>
+        activeTab === 'received' ? interestsByOther : interestsByMe,
+    [activeTab, interestsByOther, interestsByMe]);
+
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-100">
@@ -278,8 +287,6 @@ const Interests = () => {
             </div>
         );
     }
-
-    const currentInterests = activeTab === 'received' ? interestsByOther : interestsByMe;
     const emptyMessage = activeTab === 'received'
         ? 'No interests received from others yet.'
         : 'You haven\'t sent any interests yet.';

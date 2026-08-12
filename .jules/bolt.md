@@ -1,0 +1,3 @@
+## 2025-05-19 - Unnecessary Filtering and Map Calculations in Matches & Interests
+**Learning:** Found unnecessary filtering calculation (`filteredProfiles` in Matches.tsx) and unmemoized array selection (`currentInterests` in Interests.tsx) executing on every render. Given these arrays hold potentially large sets of user objects, re-calculating or re-evaluating them unmemoized during unrelated state changes (like scrolling/pagination) negatively impacts UI responsiveness.
+**Action:** Always memoize derived lists and array operations using `useMemo` in React when they depend on state that changes less frequently than other component renders to preserve reference equality and avoid expensive re-calculations.
