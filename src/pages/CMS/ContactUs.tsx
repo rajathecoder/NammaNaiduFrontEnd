@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { sanitizeHtml } from '../../utils/sanitize';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api.config';
 import logo from '../../assets/images/logoonly.png';
 import './CMSPublic.css';
@@ -78,7 +79,7 @@ const ContactUs = () => {
           {!loading && page?.content && (
             <div
               className="cms-html-content contact-intro"
-              dangerouslySetInnerHTML={{ __html: page.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content) }}
             />
           )}
 
