@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import verifiedBadge from '../../../assets/images/verified-badge.png';
 
 interface MatchCardProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     profile: any;
     profilePhoto?: string;
     primaryButtonText?: string;
@@ -11,7 +12,8 @@ interface MatchCardProps {
     isFavorite?: boolean;
 }
 
-const MatchCard: React.FC<MatchCardProps> = ({
+// ⚡ Bolt: Memoize MatchCard to prevent unnecessary re-renders when rendering lists of matches
+const MatchCard: React.FC<MatchCardProps> = memo(({
     profile,
     profilePhoto,
     primaryButtonText = "Connect",
@@ -113,8 +115,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
             </div>
         </div>
     );
-};
-
+});
 
 export default MatchCard;
 
