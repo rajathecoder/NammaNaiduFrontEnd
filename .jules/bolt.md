@@ -1,0 +1,3 @@
+## 2026-09-02 - Memoizing MatchCard
+**Learning:** Functional components that render within lists, like `MatchCard`, can cause significant re-rendering overhead if not memoized, especially when their parent components (like `HomePage`) receive frequent state updates (e.g., from loading states, modal toggles, or periodic data fetching). Wrapping them in `React.memo` prevents unnecessary rendering when props haven't changed.
+**Action:** When encountering a list of cards rendering inside a complex parent component, always consider wrapping the card component in `React.memo()` to ensure optimal rendering performance.
