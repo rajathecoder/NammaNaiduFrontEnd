@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api.config';
 import logo from '../../assets/images/logoonly.png';
 import './CMSPublic.css';
+import { sanitizeHtml } from '../../utils/sanitizeHtml';
 
 interface PageData {
   slug: string;
@@ -78,7 +79,7 @@ const ContactUs = () => {
           {!loading && page?.content && (
             <div
               className="cms-html-content contact-intro"
-              dangerouslySetInnerHTML={{ __html: page.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content) }}
             />
           )}
 
