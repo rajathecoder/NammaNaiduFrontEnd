@@ -1,0 +1,3 @@
+## 2026-09-09 - Eliminate N+1 API Calls for Profile Photos
+**Learning:** The backend `getOppositeGenderProfiles` payload already includes the user's photo information nested in a lowercase `personphoto` array. Previously, the frontend was making N+1 redundant fetch calls to the `/api/users/photos/${accountId}` endpoint for every single profile loaded on the homepage.
+**Action:** Always inspect the main API payload (e.g., `opposite-gender-profiles`) to see if associated data (like photos) is already embedded. Map this nested data directly in the frontend state instead of relying on separate endpoints to prevent N+1 performance bottlenecks.
