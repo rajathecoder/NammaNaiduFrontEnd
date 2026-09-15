@@ -1,0 +1,3 @@
+## 2024-05-24 - N+1 API Calls on Frontend
+**Learning:** The frontend makes N+1 API calls to fetch photos for opposite-gender profiles (`/api/users/photos/${profile.accountId}`). However, the backend payload for `getOppositeGenderProfiles` already includes nested `personphoto` data (which contains `photoplacement` and `photo1link`). This is redundant and unnecessarily blocks rendering, increasing network requests by O(N).
+**Action:** When a list endpoint already embeds the necessary nested resource (e.g. photos), extract it directly from the payload instead of making subsequent N+1 calls per item.
