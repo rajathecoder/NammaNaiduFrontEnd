@@ -1,0 +1,3 @@
+## 2026-09-23 - N+1 Query in HomePage for profile photos
+**Learning:** The HomePage component triggers a classic N+1 query issue for profile photos, calling the photo endpoint individually for every opposite gender profile returned, which could be up to 100 times. Wait, the `getOppositeGenderProfiles` payload already returns nested photo data! Matches.tsx was already partially optimized to use it (`profile.personPhoto?.photo1`). HomePage shouldn't be making extra photo requests.
+**Action:** Always check if the required data is already included in the main API payload before making secondary batched or N+1 requests, and refactor the component to map nested data directly rather than fetching it.
