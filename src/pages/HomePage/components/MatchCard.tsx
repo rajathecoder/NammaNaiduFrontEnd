@@ -116,5 +116,6 @@ const MatchCard: React.FC<MatchCardProps> = ({
 };
 
 
-export default MatchCard;
+// ⚡ Bolt: Memoize MatchCard to prevent unnecessary re-renders in list views (Search, Interests, Matches, HomePage)
+export default React.memo(MatchCard);
 
