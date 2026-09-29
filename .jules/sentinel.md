@@ -1,0 +1,4 @@
+## 2024-05-18 - XSS via dangerouslySetInnerHTML in CMS
+**Vulnerability:** Found `dangerouslySetInnerHTML` directly rendering user-controlled content from the CMS API (`page.content`) without any sanitization in `ContentPage.tsx`, `ContactUs.tsx`, and `CMSPage.tsx`.
+**Learning:** The application was trusting database content directly, which allows any administrator (or compromised admin account/database injection) to execute arbitrary JavaScript (XSS) on visitor's browsers. Basic XSS sanitizers fail to account for hidden control characters or inline event handlers in URIs.
+**Prevention:** Always pass user-supplied HTML through a strict, robust HTML sanitizer like `DOMParser` with a strict allowlist of tags and attributes, explicitly stripping dangerous protocols (`javascript:`, `data:`, `vbscript:`), inline event handlers (`on*`), and dangerous attributes (`srcdoc`) before rendering it in React.
