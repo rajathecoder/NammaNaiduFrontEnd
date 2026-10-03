@@ -81,45 +81,21 @@ export const useHomePageData = () => {
             const profiles = response.data || [];
             setOppositeGenderProfiles(profiles);
 
-            // Fetch photos for each profile
-            if (authData?.token) {
-                const photoPromises = profiles.map(async (profile: UserProfile) => {
-                    try {
-                        const photoResponse = await fetch(
-                            getApiUrl(API_ENDPOINTS.USERS.GET_PHOTOS(profile.accountId)),
-                            {
-                                method: 'GET',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `Bearer ${authData.token}`
-                                }
-                            }
-                        );
-
-                        if (photoResponse.ok) {
-                            const photoData = await photoResponse.json();
-                            if (photoData.success && photoData.data) {
-                                return {
-                                    accountId: profile.accountId,
-                                    photo1link: photoData.data.personphoto?.[0]?.photo1link || null
-                                };
-                            }
-                        }
-                    } catch (error) {
-                        console.error(`Error fetching photos for ${profile.accountId}:`, error);
+            // ⚡ Bolt: Removed N+1 API calls. Map photos directly from the getOppositeGenderProfiles response data.
+            const photosMap: Record<string, { photo1link?: string }> = {};
+            profiles.forEach((profile: any) => {
+                const photos = profile.personphoto || profile.personPhoto;
+                if (Array.isArray(photos) && photos.length > 0) {
+                    const photo1 = photos.find((p: any) => p.photoplacement === 1);
+                    if (photo1 && photo1.photo1link && typeof photo1.photo1link === 'string' && photo1.photo1link.trim() !== '' && photo1.photo1link !== 'null') {
+                        photosMap[profile.accountId] = { photo1link: photo1.photo1link };
+                    } else if (photos[0] && photos[0].photo1link) {
+                         // Fallback just in case
+                         photosMap[profile.accountId] = { photo1link: photos[0].photo1link };
                     }
-                    return { accountId: profile.accountId, photo1link: null };
-                });
-
-                const photos = await Promise.all(photoPromises);
-                const photosMap: Record<string, { photo1link?: string }> = {};
-                photos.forEach(photo => {
-                    if (photo.photo1link) {
-                        photosMap[photo.accountId] = { photo1link: photo.photo1link };
-                    }
-                });
-                setProfilePhotos(photosMap);
-            }
+                }
+            });
+            setProfilePhotos(photosMap);
         } catch (error) {
             console.error('Error fetching opposite gender profiles:', error);
         } finally {

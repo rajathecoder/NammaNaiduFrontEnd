@@ -1,0 +1,3 @@
+## 2025-03-09 - N+1 Queries on Frontend Profile Photos
+**Learning:** `getOppositeGenderProfiles` backend endpoint already includes `personphoto` (nested as `profile.personphoto` or `profile.personPhoto`). Fetching them individually in a loop (`/api/users/photos/${id}`) causes an N+1 API call issue on the frontend, slowing down rendering significantly.
+**Action:** Remove the `Promise.all` loop fetching photos individually in `useHomePageData.ts` and `HomePage.tsx`. Instead, map the photo directly from the `getOppositeGenderProfiles` response using `profile.personphoto?.find(p => p.photoplacement === 1)?.photo1link` (or equivalent nested structure) just like how it is optimized in `Matches.tsx`.
