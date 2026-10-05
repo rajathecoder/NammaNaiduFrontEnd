@@ -1,0 +1,4 @@
+## 2025-02-14 - CMS XSS Vulnerability in dangerouslySetInnerHTML
+**Vulnerability:** Found `dangerouslySetInnerHTML` directly rendering unvalidated CMS content from the API in `src/pages/CMS/ContentPage.tsx`, `src/pages/CMS/ContactUs.tsx`, and `src/admin/pages/CMS/CMSPage.tsx`
+**Learning:** `dangerouslySetInnerHTML` passes a raw string directly to the DOM which is highly susceptible to Stored XSS when rendering user-submitted or API data. The codebase memory indicated custom DOMParser logic needs SSR checks (`typeof window === 'undefined'`) failing securely to avoid hydration mismatch/XSS, and explicit filtering of `srcdoc` on `iframe`, `data:` URLs, and `javascript:` URLs bypassing strategies.
+**Prevention:** Always implement a rigorous sanitizer before rendering API provided HTML. When `dompurify` isn't permitted via dependencies, create a robust custom HTML sanitizer utility built on `DOMParser`, strictly allowing only permitted tags and safe protocols.
