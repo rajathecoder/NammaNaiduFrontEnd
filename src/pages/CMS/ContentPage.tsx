@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { API_BASE_URL, API_ENDPOINTS } from '../../config/api.config';
 import logo from '../../assets/images/logoonly.png';
+import { sanitizeHtml } from '../../utils/security/sanitizeHtml';
 import './CMSPublic.css';
 
 interface PageData {
@@ -84,9 +85,10 @@ const ContentPage = () => {
           <article className="cms-article">
             <h1>{page.title}</h1>
             {page.content ? (
+              /* 🛡️ Sentinel: Sanitize HTML content before rendering to prevent XSS */
               <div
                 className="cms-html-content"
-                dangerouslySetInnerHTML={{ __html: page.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content) }}
               />
             ) : (
               <p className="cms-empty">This page has no content yet. Please check back later.</p>
