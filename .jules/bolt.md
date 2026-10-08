@@ -1,0 +1,3 @@
+## 2024-05-18 - Avoid N+1 API Calls for Profile Photos
+**Learning:** The `getOppositeGenderProfiles` backend API endpoint returns profile data that already includes a nested `personPhoto` or `personphoto` object (which directly contains the `photo1link`). Despite this, `HomePage.tsx` and `useHomePageData.ts` make redundant N+1 requests to `/api/users/photos/${id}` for every loaded profile, significantly degrading page load performance and spamming the backend API.
+**Action:** Extract the photo directly from the `personPhoto` or `personphoto` property included in the initial bulk profile fetch payload instead of firing individual photo API calls per user.
