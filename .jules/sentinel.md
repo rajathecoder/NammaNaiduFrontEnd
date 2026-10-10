@@ -1,0 +1,4 @@
+## 2023-10-10 - Custom HTML Sanitization Implemented
+**Vulnerability:** XSS vulnerability through unfiltered usage of dangerouslySetInnerHTML in CMS components.
+**Learning:** React's dangerouslySetInnerHTML opens an application to XSS attacks if data is derived from unverified origins (like a generic CMS). Since I cannot install unapproved dependencies like dompurify, a custom HTML sanitization function that properly leverages DOMParser was created.
+**Prevention:** In React applications without dompurify or similar libraries, wrap dangerouslySetInnerHTML with a robust custom sanitization function that explicitly allows specific safe tags, strips inline events (on*), blocks srcdoc in iframes, and strictly checks URI schemes against javascript: and data: prefixes (by first scrubbing whitespace/control characters).
