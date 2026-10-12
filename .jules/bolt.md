@@ -1,0 +1,3 @@
+## 2024-03-24 - N+1 Query in Profile Photo Fetching
+**Learning:** The frontend makes a separate API call for each profile's photos when fetching opposite gender profiles on the HomePage, creating an N+1 problem on the client side. The backend API (`getOppositeGenderProfiles`) already includes the photos in the payload directly (as either `personphoto` array with `photo1link` or `personPhoto.photo1`), as noted in the system memory.
+**Action:** When fetching opposite gender profiles on the frontend, extract the photos directly from the payload instead of making redundant network requests to `/api/users/photos/${id}`. This improves page load time and reduces server load.
